@@ -1,0 +1,44 @@
+/* --- Estilo general (desktop) --- */
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  background-color: #e8f0fe; /* celeste claro */
+}
+
+.nav-links {
+  display: flex;
+  gap: 1rem;
+}
+
+.menu-btn {
+  display: none; /* Oculto en pantallas grandes */
+}
+
+/* --- Versión móvil --- */
+@media (max-width: 768px) {
+  .menu-btn {
+    display: block; /* Se ve el botón ☰ */
+    font-size: 1.5rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+  }
+
+  .nav-links {
+    display: none; /* El menú se oculta por defecto */
+    flex-direction: column;
+    background-color: white;
+    position: absolute;
+    top: 60px;
+    left: 0;
+    width: 100%;
+    padding: 1rem;
+  }
+
+  /* Cuando el menú esté activo (más adelante con JS) */
+  .nav-links.active {
+    display: flex;
+  }
+}
