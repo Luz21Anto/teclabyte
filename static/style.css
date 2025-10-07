@@ -1,10 +1,9 @@
-/* --- Estilo general (desktop) --- */
 header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 1rem 2rem;
-  background-color: #e8f0fe; /* celeste claro */
+  background-color: #e8f0fe;
 }
 
 .nav-links {
@@ -13,13 +12,12 @@ header {
 }
 
 .menu-btn {
-  display: none; /* Oculto en pantallas grandes */
+  display: none;
 }
 
-/* --- Versión móvil --- */
 @media (max-width: 768px) {
   .menu-btn {
-    display: block; /* Se ve el botón ☰ */
+    display: block;
     font-size: 1.5rem;
     background: none;
     border: none;
@@ -27,7 +25,7 @@ header {
   }
 
   .nav-links {
-    display: none; /* El menú se oculta por defecto */
+    display: none; 
     flex-direction: column;
     background-color: white;
     position: absolute;
