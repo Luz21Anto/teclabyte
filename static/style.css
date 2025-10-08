@@ -1,42 +1,165 @@
+/* ---------------- RESET ---------------- */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* ---------------- BODY ---------------- */
+body {
+  display: flex;       
+  flex-direction: row;
+  height: 100vh;
+  gap: 20px;
+  font-family: sans-serif;
+}
+
+/* ---------------- HEADER ---------------- */
 header {
+  width: 250px;          
+  background-color: #e8f1ff;
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1rem 2rem;
-  background-color: #e8f0fe;
+  flex-direction: column;
+  padding: 10px;
+}
+
+.logo {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 10px;
 }
 
 .nav-links {
   display: flex;
-  gap: 1rem;
+  flex-direction: column;
+  gap: 5px;
 }
 
-.menu-btn {
-  display: none;
+.nav-links a {
+  text-decoration: none;
+  color: #333;
+  padding: 8px;
+  border-radius: 4px;
+  background-color: #e8f1ff;
+  text-align: center;
+}
+
+.nav-links a:hover {
+  background-color: #ddd;
+}
+
+/* ---------------- EN PROGRESO ---------------- */
+.en-progreso {
+  flex: 1;               
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  background-color: #e8f1ff;
+  gap: 20px;
+}
+
+/* Páginas */
+.en-progreso .paginas {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.pagina {
+  flex: 1 1 20%;
+  min-width: 120px;
+  height: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #ffffff;
+  border-radius: 15px;
+}
+
+/* Fecha de finalización */
+.fecha-finalizacion {
+  background: linear-gradient(45deg, #cdffd8, #94b9ff);
+  border-radius: 15px;
+  padding: 15px;
+  text-align: center;
+  font-size: 24px;
+}
+
+/* Contenedor de etapas */
+.etapas-container {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+/* Etapa izquierda */
+.etapa1 {
+  flex: 1 1 45%;
+  background-color: #ffffff;
+  border-radius: 15px;
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* Etapa derecha */
+.etapa2 {
+  flex: 1 1 50%;
+  background-color: #ffffff;
+  border-radius: 15px;
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* Botones y inputs */
+.etapa1 .acciones, .etapa2 .acciones {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+input, button {
+  padding: 5px 10px;
+  border-radius: 5px;
+  border: 1px solid #aaa;
+  font-size: 14px;
+}
+
+/* ---------------- MEDIA QUERIES ---------------- */
+@media (max-width: 1024px) {
+  body {
+    flex-direction: column; 
+    height: auto;
+  }
+
+  header {
+    width: 100%;           
+  }
 }
 
 @media (max-width: 768px) {
-  .menu-btn {
-    display: block;
-    font-size: 1.5rem;
-    background: none;
-    border: none;
-    cursor: pointer;
+  .etapas-container {
+    flex-direction: column; 
+  }
+
+  .etapa1, .etapa2 {
+    flex: 1 1 100%;        
+  }
+
+  .en-progreso .paginas {
+    flex-direction: column;
+  }
+
+  .pagina {
+    flex: 1 1 100%;
   }
 
   .nav-links {
-    display: none; 
-    flex-direction: column;
-    background-color: white;
-    position: absolute;
-    top: 60px;
-    left: 0;
-    width: 100%;
-    padding: 1rem;
-  }
-
-  /* Cuando el menú esté activo (más adelante con JS) */
-  .nav-links.active {
-    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 5px;
   }
 }
