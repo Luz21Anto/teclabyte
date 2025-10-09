@@ -5,22 +5,32 @@
   padding: 0;
 }
 
-/* ---------------- BODY ---------------- */
-body {
-  display: flex;       
-  flex-direction: row;
-  height: 100vh;
-  gap: 20px;
+html, body {
+  height: 100%;
+  width: 100%;
   font-family: sans-serif;
 }
 
-/* ---------------- HEADER ---------------- */
+/* ---------------- BODY ---------------- */
+body {
+  display: flex;
+  flex-direction: row;
+  height: 100vh;
+  background-color: #e8f1ff;
+}
+
+/* ---------------- HEADER (MENÚ FIJO) ---------------- */
 header {
-  width: 250px;          
+  width: 250px;
   background-color: #e8f1ff;
   display: flex;
   flex-direction: column;
   padding: 10px;
+
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
 }
 
 .logo {
@@ -48,14 +58,22 @@ header {
   background-color: #ddd;
 }
 
+/* ---------------- MAIN ---------------- */
+main {
+  flex: 1;
+  margin-left: 250px; /* espacio exacto para el menú fijo */
+  display: flex;
+}
+
 /* ---------------- EN PROGRESO ---------------- */
 .en-progreso {
-  flex: 1;               
+  flex: 1;
   display: flex;
   flex-direction: column;
   padding: 20px;
-  background-color: #e8f1ff;
+  background-color: #f5f8ff; 
   gap: 20px;
+  overflow-y: auto; /* scroll si hay mucho contenido */
 }
 
 /* Páginas */
@@ -74,48 +92,82 @@ header {
   align-items: center;
   background-color: #ffffff;
   border-radius: 15px;
+  font-weight: 600;
 }
 
-/* Fecha de finalización */
-.fecha-finalizacion {
-  background: linear-gradient(45deg, #cdffd8, #94b9ff);
+/* Bloques idénticos: fecha y progreso */
+.fecha-finalizacion,
+.progreso {
+  width: 100%;
+  box-sizing: border-box;
   border-radius: 15px;
   padding: 15px;
   text-align: center;
-  font-size: 24px;
+  font-size: 20px;
+  font-weight: 500;
 }
 
-/* Contenedor de etapas */
+.fecha-finalizacion {
+  background: linear-gradient(45deg, #cdffd8, #94b9ff);
+}
+
+.progreso {
+  background-color: #ffffff;
+}
+
+/* ---------------- ETAPAS ---------------- */
 .etapas-container {
   display: flex;
-  gap: 20px;
+  justify-content: center; /* centra el conjunto */
+  align-items: flex-start;
+  gap: 30px; /* separa las columnas con un valor fijo */
   flex-wrap: wrap;
 }
 
-/* Etapa izquierda */
-.etapa1 {
+.etapas-izquierda {
   flex: 1 1 45%;
-  background-color: #ffffff;
-  border-radius: 15px;
-  padding: 15px;
+  max-width: 550px;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 20px;
 }
 
-/* Etapa derecha */
-.etapa2 {
+.etapas-derecha {
   flex: 1 1 50%;
+  max-width: 650px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+
+.etapa2 {
   background-color: #ffffff;
   border-radius: 15px;
   padding: 15px;
   display: flex;
   flex-direction: column;
   gap: 10px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+  width: 100%;
+  height: auto;
 }
 
-/* Botones y inputs */
-.etapa1 .acciones, .etapa2 .acciones {
+.etapa1 {
+  background-color: #ffffff;
+  border-radius: 15px;
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+  width: 50%;     /* ocupa 80% del ancho del contenedor */
+  max-width: 600px;  /* pero no más grande que 600px */
+  height: auto;   /* se ajusta al contenido */
+}
+
+/* Botones e inputs */
+.acciones {
   display: flex;
   gap: 10px;
   flex-wrap: wrap;
@@ -131,22 +183,28 @@ input, button {
 /* ---------------- MEDIA QUERIES ---------------- */
 @media (max-width: 1024px) {
   body {
-    flex-direction: column; 
+    flex-direction: column;
     height: auto;
   }
 
   header {
-    width: 100%;           
+    position: relative;
+    width: 100%;
+    height: auto;
+  }
+
+  main {
+    margin-left: 0;
   }
 }
 
 @media (max-width: 768px) {
   .etapas-container {
-    flex-direction: column; 
+    flex-direction: column;
   }
 
-  .etapa1, .etapa2 {
-    flex: 1 1 100%;        
+  .etapas-izquierda, .etapas-derecha {
+    flex: 1 1 100%;
   }
 
   .en-progreso .paginas {
