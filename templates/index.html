@@ -5,113 +5,103 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Panel de Cliente - En progreso</title>
   <link rel="stylesheet" href="../static/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
-    <header>
-    <div class="logo">MiProyecto</div>
-
-    <!-- Botón del menú (solo se verá en móvil con CSS) -->
-    <!-- <button class="menu-btn">☰</button> -->
-
-    <!-- Menú único -->
+  <!-- MENÚ LATERAL -->
+  <header>
+    <div class="logo">Nombre</div>
     <nav class="nav-links">
-        <a href="#">Páginas activas</a>
-        <a href="#">En progreso</a>
-        <a href="#">Dominios</a>
-        <a href="#">Hostings</a>
-        <a href="#">Plugins</a>
-        <a href="#">Configuración</a>
+      <a href="#">Paginas activas</a>
+      <a href="#">En progreso</a>
+      <a href="#">Dominios</a>
+      <a href="#">Hostings</a>
+      <a href="#">Plugins</a>
+      <a href="#">Configuración</a>
     </nav>
-    </header>
+  </header>
 
-    <main>
+  <!-- CONTENIDO PRINCIPAL -->
+  <main>
     <section class="en-progreso">
-      <h2>En progreso:</h2>
-      <!-- Las paginas -->
+      <!-- Pestañas de páginas -->
       <div class="paginas">
-        <div class="pagina">Mi_Pagina</div>
-        <div class="pagina">Mi_Pagina_new</div>
-        <div class="pagina">Mi_Pagina_wow</div>
+        <div class="pagina">Pagina 1</div>
+        <div class="pagina">Pagina 2</div>
+        <div class="pagina">Pagina 3</div>
       </div>
 
+      <!-- Mensaje principal -->
       <div class="fecha-finalizacion">
-        <p>✨ ¡Excelente! Tu sitio web estará listo el <strong>15 de abril</strong>.</p>
+        ✨ <strong>¡Excelente!</strong> Tu sitio web estará listo el <strong>15 de abril.</strong>
       </div>
 
+      <!-- Contenedor de etapas -->
       <div class="etapas-container">
-        <!-- fechas y hora a agendar o modificar -->
+
+        <!-- IZQUIERDA: reuniones y despliegue -->
         <div class="etapas-izquierda">
+
           <div class="etapa1">
-            <h3>Primera reunión</h3>
-            <label for="fecha-reunion">Fecha:</label>
-            <input type="date" id="fecha-reunion" name="fecha-reunion">
-
-            <label for="hora-reunion">Hora:</label>
-            <input type="time" id="hora-reunion" name="hora-reunion">
-
+            <h3>① Reunión:</h3>
+            <label for="fecha">📅</label>
+            <input type="date" id="fecha">
             <div class="acciones">
-                <button>Agendar</button>
-                <button>Modificar</button>
+              <button>Agendar</button>
+              <button>Modificar</button>
             </div>
           </div>
 
           <div class="etapa1">
-            <h3>Reunion confirmacion</h3>
-            <p>Fecha programada: <strong>20 de abril, 15:00 hs</strong></p>
-                <input type="date" id="fecha-reunion" name="fecha-reunion">
-
-                <label for="hora-reunion">Hora:</label>
-                <input type="time" id="hora-reunion" name="hora-reunion">
-
-                <div class="acciones">
-                    <button>Agendar</button>
-                    <button>Modificar</button>
-                </div>
+            <h3>② Reunión:</h3>
+            <label for="fecha">📅</label>
+            <input type="date" id="fecha">
+            <div class="acciones">
+              <button>Agendar</button>
+              <button>Modificar</button>
+            </div>
           </div>
 
           <div class="etapa1">
-            <h3>Reunion confirmacion II</h3>
-            <p>Fecha programada: <strong>27 de abril, 11:00 hs</strong></p>
-            <input type="date" id="fecha-reunion" name="fecha-reunion">
-
-                <label for="hora-reunion">Hora:</label>
-                <input type="time" id="hora-reunion" name="hora-reunion">
-
-                <div class="acciones">
-                    <button>Agendar</button>
-                    <button>Modificar</button>
-                </div>
+            <h3>③ Reunión:</h3>
+            <label for="fecha">📅</label>
+            <input type="date" id="fecha">
+            <div class="acciones">
+              <button>Agendar</button>
+              <button>Modificar</button>
+            </div>
           </div>
 
           <div class="etapa1">
-            <h3>Despliegue</h3>
-            <p>Fecha estimada de publicación: <strong>30 de abril de 2025</strong></p>
+            <h3>Despliegue:</h3>
+            <p>(Pendiente)</p>
           </div>
         </div>
-        
+
+        <!-- DERECHA: elementos del diseño y maqueta -->
         <div class="etapas-derecha">
           <div class="etapa2">
-            <h3>Definición de secciones y estilo</h3>
-            <p>Descarga los archivos para ver las opciones de fuentes, paleta de colores y elementos gráficos.</p>
-            <a href="#">🎨 Paleta de colores</a>
-            <a href="#">🔤 Fuentes propuestas</a>
-            <a href="#">🖼️ Elementos gráficos</a>
+            <h3>Elementos clave del diseño:</h3>
+            <div class="acciones">
+              <button>Fuentes</button>
+              <button>Paleta de colores</button>
+              <button>Elementos gráficos</button>
+              <button>Guion</button>
+            </div>
           </div>
 
           <div class="etapa2">
-            <h3>Maquetas/ prediseños</h3>
-            <p>
-                Aquí podrás visualizar los prediseños propuestos para tu sitio web.
-                Se mostrarán las versiones de escritorio y móvil.
-            </p>
+            <h3>Maqueta/ Prediseño:</h3>
+            <p>(Aquí podrás visualizar la maqueta una vez cargada)</p>
           </div>
+        </div>
       </div>
-      
+
+      <!-- PROGRESO -->
       <div class="progreso">
-        <p>Progreso del proyecto: 40% completado✅</p>
+        Progreso del proyecto: <strong>40% completado ✅</strong>
       </div>
     </section>
   </main>
-
 </body>
 </html>
