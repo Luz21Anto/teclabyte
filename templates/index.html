@@ -3,86 +3,87 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Panel de Cliente - En progreso</title>
-  <link rel="stylesheet" href="../static/style.css">
+  <title>Panel de usuario</title>
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../static/css/style.css">
 </head>
 <body>
-  <!-- MENÚ LATERAL -->
-  <header>
-    <div class="logo">Nombre</div>
-    <nav class="nav-links">
-      <a href="#">Paginas activas</a>
-      <a href="#">En progreso</a>
-      <a href="#">Dominios</a>
-      <a href="#">Hostings</a>
-      <a href="#">Plugins</a>
-      <a href="#">Configuración</a>
-    </nav>
-  </header>
+  <div class="panel-container">
+    <!-- Barra lateral -->
+    <aside class="sidebar">
+      <h2>Nombre</h2>
+      <nav>
+        <ul>
+          <li>Paginas activas</li>
+          <li class="active">En progreso</li>
+          <li>Dominios</li>
+          <li>Hostings</li>
+          <li>Plugins</li>
+          <li>Configuración</li>
+        </ul>
+      </nav>
+    </aside>
 
-  <!-- CONTENIDO PRINCIPAL -->
-  <main>
-    <section class="en-progreso">
-      <!-- Pestañas de páginas -->
-      <div class="paginas">
-        <div class="pagina">Pagina 1</div>
-        <div class="pagina">Pagina 2</div>
-        <div class="pagina">Pagina 3</div>
-      </div>
+    <!-- Contenido principal -->
+    <main class="main-content">
+      <header class="top-bar">
+        <div class="tabs">
+          <button class="tab active">Página 1</button>
+          <button class="tab">Página 2</button>
+          <button class="tab">Página 3</button>
+        </div>
+        <div class="header-actions">
+          <button class="bell">🔔</button>
+          <button class="logout">Salir</button>
+        </div>
+      </header>
 
-      <!-- Mensaje principal -->
-      <div class="fecha-finalizacion">
+      <section class="banner">
         ✨ <strong>¡Excelente!</strong> Tu sitio web estará listo el <strong>15 de abril.</strong>
-      </div>
+      </section>
 
-      <!-- Contenedor de etapas -->
-      <div class="etapas-container">
-
-        <!-- IZQUIERDA: reuniones y despliegue -->
-        <div class="etapas-izquierda">
-
-          <div class="etapa1">
-            <h3>① Reunión:</h3>
-            <label for="fecha">📅</label>
-            <input type="date" id="fecha">
-            <div class="acciones">
+      <div class="content-grid">
+        <div class="left-column">
+          <div class="reunion">
+            <h3>① Reunión</h3>
+            <p>📅 <input type="datetime-local" value="2025-04-12T10:00"></p>
+            <div class="buttons">
               <button>Agendar</button>
               <button>Modificar</button>
+              <button class="meet">Acceder a reunión</button>
             </div>
           </div>
 
-          <div class="etapa1">
-            <h3>② Reunión:</h3>
-            <label for="fecha">📅</label>
-            <input type="date" id="fecha">
-            <div class="acciones">
+          <div class="reunion">
+            <h3>② Reunión</h3>
+            <p>📅 <input type="datetime-local" value="2025-04-19T10:00"></p>
+            <div class="buttons">
               <button>Agendar</button>
               <button>Modificar</button>
+              <button class="meet">Acceder a reunión</button>
             </div>
           </div>
 
-          <div class="etapa1">
-            <h3>③ Reunión:</h3>
-            <label for="fecha">📅</label>
-            <input type="date" id="fecha">
-            <div class="acciones">
+          <div class="reunion">
+            <h3>③ Reunión</h3>
+            <p>📅 <input type="datetime-local" value="2025-04-26T10:00"></p>
+            <div class="buttons">
               <button>Agendar</button>
               <button>Modificar</button>
+              <button class="meet">Acceder a reunión</button>
             </div>
           </div>
 
-          <div class="etapa1">
+          <div class="despliegue">
             <h3>Despliegue:</h3>
-            <p>(Pendiente)</p>
+            <textarea placeholder="Notas o comentarios..."></textarea>
           </div>
         </div>
 
-        <!-- DERECHA: elementos del diseño y maqueta -->
-        <div class="etapas-derecha">
-          <div class="etapa2">
+        <div class="right-column">
+          <div class="elementos">
             <h3>Elementos clave del diseño:</h3>
-            <div class="acciones">
+            <div class="chips">
               <button>Fuentes</button>
               <button>Paleta de colores</button>
               <button>Elementos gráficos</button>
@@ -90,18 +91,17 @@
             </div>
           </div>
 
-          <div class="etapa2">
-            <h3>Maqueta/ Prediseño:</h3>
-            <p>(Aquí podrás visualizar la maqueta una vez cargada)</p>
+          <div class="maqueta">
+            <h3>Maqueta / Prediseño:</h3>
+            <div class="preview"></div>
           </div>
         </div>
       </div>
 
-      <!-- PROGRESO -->
-      <div class="progreso">
-        Progreso del proyecto: <strong>40% completado ✅</strong>
-      </div>
-    </section>
-  </main>
+      <footer class="progress">
+        <p>Progreso del proyecto: <strong>40% completado ✅</strong></p>
+      </footer>
+    </main>
+  </div>
 </body>
 </html>
