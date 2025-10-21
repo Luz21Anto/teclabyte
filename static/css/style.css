@@ -55,6 +55,32 @@ body {
   color: white;
 }
 
+/* ----- SUBMENÚ ----- */
+.submenu {
+  display: none; /* Oculto por defecto */
+  flex-direction: column;
+  background-color: #b4cfff;
+  border-radius: 8px;
+  margin-top: 0.3rem;
+  margin-left: 1rem;
+  padding-left: 0;
+  list-style: none;
+}
+
+.submenu li {
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+}
+
+.submenu li:hover {
+  background-color: #66a1ff ;
+}
+
+/* Mostrar al pasar el mouse */
+.has-submenu:hover .submenu {
+  display: flex;
+}
+
 /* ----- MAIN ----- */
 .main-content {
   flex: 1;
