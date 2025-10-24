@@ -37,6 +37,63 @@ body {
   pointer-events: none;
 }
 
+/* Encabezados y párrafos: tamaño y peso consistente */
+.editor-area h1 {
+  font-size: 2em;
+  font-weight: 700;
+  margin: 0.8em 0;
+}
+
+.editor-area h2 {
+  font-size: 1.7em;
+  font-weight: 700;
+  margin: 0.7em 0;
+}
+
+.editor-area h3 {
+  font-size: 1.5em;
+  font-weight: 600;
+  margin: 0.6em 0;
+}
+
+.editor-area h4 {
+  font-size: 1.3em;
+  font-weight: 600;
+  margin: 0.5em 0;
+}
+
+.editor-area h5 {
+  font-size: 1.1em;
+  font-weight: 600;
+  margin: 0.4em 0;
+}
+
+.editor-area p {
+  font-size: 1em;
+  font-weight: 400;
+  margin: 0.5em 0;
+}
+
+/* Links */
+.editor-area a {
+  color: #0077cc;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.editor-area a:hover {
+  color: #004a80;
+  text-decoration: none;
+}
+
+/* Imágenes */
+.editor-area img {
+  max-width: 100%;
+  display: block;
+  margin: 10px 0;
+  border-radius: 8px;
+}
+
 /* Menú lateral */
 .editor-sidebar {
   width: 220px;
@@ -70,9 +127,8 @@ body {
 }
 
 /* Botón Aa con submenú */
-/* ----- SUBMENÚ ----- */
 .submenu {
-  display: none; /* Oculto por defecto */
+  display: none; 
   flex-direction: column;
   background-color: #b4cfff;
   border-radius: 8px;
@@ -88,10 +144,9 @@ body {
 }
 
 .submenu li:hover {
-  background-color: #66a1ff ;
+  background-color: #66a1ff;
 }
 
-/* Mostrar al pasar el mouse */
 .tool-aa:hover .submenu {
   display: flex;
 }
@@ -156,3 +211,11 @@ body {
   }
 }
 
+.tool-font .submenu {
+  display: none;
+}
+
+.tool-font.show .submenu {
+  display: flex;
+  flex-direction: column;
+}
