@@ -1,55 +1,52 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Editor de Blog</title>
-  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../static/css/blog.css">
-  <script src="../static/js/blog.js" defer></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Editor de Blog</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../static/css/blog.css">
+<script src="../static/js/blog.js" defer></script>
 </head>
 <body>
-  <div class="editor-container">
-    
-    <!-- Área de escritura -->
-    <main class="editor-main">
-      <div id="editor" contenteditable="true" class="editor-area" data-placeholder="Escribí acá..."></div>
-    </main>
+<div class="editor-container">
+  <!-- Área de escritura -->
+  <main class="editor-main">
+    <div id="editor" contenteditable="true" class="editor-area" data-placeholder="Escribí acá..."></div>
+  </main>
 
-    <!-- Menú lateral / flotante -->
-    <aside class="editor-sidebar">
-      <ul>
-        <li class="tool-aa">
-            Aa
-            <ul class="submenu">
-                <li class="format-bold">Negrita</li>
-                <li class="format-italic">Cursiva</li>
-            </ul>
-        </li>
-        <li class="tool-font">
-            Fuente
-            <ul class="submenu font-submenu">
-              <li data-font="Arial, sans-serif">Arial</li>
-              <li data-font="'Courier New', monospace">Courier New</li>
-            </ul>
-        </li>
-        <li class="tool-color">
-            Color
-            <input type="color" class="color-picker" />
-        </li>
-        <li class="tool-link">Link</li>
-        <li class="tool-title tool-heading">Título</li>
-        <li class="tool-subtitle tool-heading">Subtítulo</li>
-        <li class="tool-encabezado3 tool-heading">Encabezado 1</li>
-        <li class="tool-encabezado4 tool-heading">Encabezado 2</li>
-        <li class="tool-encabezado5 tool-heading">Encabezado 3</li>
-        <li class="tool-image">Cargar imagen</li>
-      </ul>
-    </aside>
+  <!-- Menú lateral -->
+  <aside class="editor-sidebar">
+    <ul>
+      <li class="tool-aa">
+        Aa
+        <ul class="submenu">
+          <li class="format-bold">Negrita</li>
+          <li class="format-italic">Cursiva</li>
+        </ul>
+      </li>
+      <li class="tool-font">
+        Fuente
+        <ul class="submenu font-submenu">
+          <li data-font="Arial, sans-serif">Arial</li>
+          <li data-font="'Courier New', monospace">Courier New</li>
+        </ul>
+      </li>
+      <li class="tool-color">
+        Color
+        <input type="color" class="color-picker" />
+      </li>
+      <li class="tool-link">Link</li>
+      <li class="tool-title tool-heading">Título</li>
+      <li class="tool-subtitle tool-heading">Subtítulo</li>
+      <li class="tool-encabezado3 tool-heading">Encabezado 1</li>
+      <li class="tool-encabezado4 tool-heading">Encabezado 2</li>
+      <li class="tool-encabezado5 tool-heading">Encabezado 3</li>
+      <li class="tool-image">Cargar imagen</li>
+    </ul>
+  </aside>
 
-    <!-- Botón flotante para móvil -->
-    <button class="menu-toggle">☰</button>
-
-  </div>
+  <button class="menu-toggle">☰</button>
+</div>
 </body>
 </html>

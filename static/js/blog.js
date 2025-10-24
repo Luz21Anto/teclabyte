@@ -29,51 +29,43 @@ document.addEventListener("DOMContentLoaded", () => {
   applyFormat(italicBtn, "italic");
 
   // Submenú de fuentes
-const fontTool = document.querySelector(".tool-font");
-const fontItems = document.querySelectorAll(".font-submenu li");
+  const fontTool = document.querySelector(".tool-font");
+  const fontItems = document.querySelectorAll(".font-submenu li");
 
-// Toggle submenú
-fontTool.addEventListener("click", (e) => {
-  e.stopPropagation();
-  fontTool.classList.toggle("show");
-});
-
-// Cerrar si clic fuera
-document.addEventListener("click", (e) => {
-  if (!fontTool.contains(e.target)) fontTool.classList.remove("show");
-});
-
-// Aplicar fuente al texto seleccionado
-fontItems.forEach(item => {
-  item.addEventListener("click", () => {
-    const font = item.getAttribute("data-font");
-
-    // Aplicar a la selección
-    const selection = window.getSelection();
-    if (!selection.rangeCount) return;
-
-    const range = selection.getRangeAt(0);
-    if (range.collapsed) {
-      // Si no hay texto seleccionado, aplicar al bloque actual
-      let block = range.startContainer;
-      while (block && block !== editor && !/^(P|DIV|H[1-5])$/.test(block.nodeName)) {
-        block = block.parentNode;
-      }
-      if (block && block !== editor) block.style.fontFamily = font;
-    } else {
-      // Texto seleccionado → envolver en span
-      const span = document.createElement("span");
-      span.style.fontFamily = font;
-      span.textContent = range.toString();
-      range.deleteContents();
-      range.insertNode(span);
-    }
-
-    editor.focus();
-    fontTool.classList.remove("show");
+  fontTool.addEventListener("click", (e) => {
+    e.stopPropagation();
+    fontTool.classList.toggle("show");
   });
-});
 
+  document.addEventListener("click", (e) => {
+    if (!fontTool.contains(e.target)) fontTool.classList.remove("show");
+  });
+
+  fontItems.forEach(item => {
+    item.addEventListener("click", () => {
+      const font = item.getAttribute("data-font");
+      const selection = window.getSelection();
+      if (!selection.rangeCount) return;
+
+      const range = selection.getRangeAt(0);
+      if (range.collapsed) {
+        let block = range.startContainer;
+        while (block && block !== editor && !/^(P|DIV|H[1-5])$/.test(block.nodeName)) {
+          block = block.parentNode;
+        }
+        if (block && block !== editor) block.style.fontFamily = font;
+      } else {
+        const span = document.createElement("span");
+        span.style.fontFamily = font;
+        span.textContent = range.toString();
+        range.deleteContents();
+        range.insertNode(span);
+      }
+
+      editor.focus();
+      fontTool.classList.remove("show");
+    });
+  });
 
   // -------------------- COLOR --------------------
   const colorPicker = document.querySelector(".color-picker");
@@ -171,41 +163,94 @@ fontItems.forEach(item => {
 
   // -------------------- IMAGEN --------------------
   const imageTool = document.querySelector(".tool-image");
-  if (imageTool) {
-    imageTool.addEventListener("click", () => {
-      const input = document.createElement("input");
-      input.type = "file";
-      input.accept = "image/*";
+  const imageInput = document.createElement("input");
+  imageInput.type = "file";
+  imageInput.accept = "image/*";
+  imageInput.style.display = "none";
+  document.body.appendChild(imageInput);
 
-      input.addEventListener("change", e => {
-        const file = e.target.files[0];
-        if (!file) return;
+  imageTool.addEventListener("click", () => imageInput.click());
 
-        const reader = new FileReader();
-        reader.onload = event => {
-          const img = document.createElement("img");
-          img.src = event.target.result;
-          img.alt = "Imagen subida";
+  imageInput.addEventListener("change", e => {
+    const file = e.target.files[0];
+    if (!file) return;
 
-          const selection = window.getSelection();
-          if (selection.rangeCount > 0) {
-            const range = selection.getRangeAt(0);
-            range.insertNode(img);
+    const reader = new FileReader();
+    reader.onload = ev => {
+      const wrapper = document.createElement("div");
+      wrapper.classList.add("image-wrapper");
+      wrapper.style.position = "relative";
 
-            range.setStartAfter(img);
-            range.setEndAfter(img);
-            selection.removeAllRanges();
-            selection.addRange(range);
-          } else {
-            editor.appendChild(img);
-          }
+      const img = document.createElement("img");
+      img.src = ev.target.result;
+      img.alt = "Imagen insertada";
+      img.style.width = "100%";
+      img.style.height = "auto";
 
-          editor.focus();
-        };
-        reader.readAsDataURL(file);
-      });
+      const handle = document.createElement("div");
+      handle.classList.add("resize-handle");
 
-      input.click();
+      wrapper.appendChild(img);
+      wrapper.appendChild(handle);
+
+      // Insertar en el editor en la posición actual del cursor
+      editor.focus();
+      const sel = window.getSelection();
+      if (sel.rangeCount > 0) {
+        const range = sel.getRangeAt(0);
+        range.collapse(false);
+        range.insertNode(wrapper);
+
+        range.setStartAfter(wrapper);
+        range.setEndAfter(wrapper);
+        sel.removeAllRanges();
+        sel.addRange(range);
+      } else {
+        editor.appendChild(wrapper);
+      }
+
+      activateResize(wrapper, img, handle);
+      imageInput.value = "";
+    };
+    reader.readAsDataURL(file);
+  });
+
+  // -------------------- FUNCIÓN DE REDIMENSIONAR --------------------
+  function activateResize(wrapper, img, handle) {
+    let isResizing = false;
+    let startX, startY, startWidth, startHeight;
+
+    handle.addEventListener("mousedown", e => {
+      e.preventDefault();
+      e.stopPropagation();
+      isResizing = true;
+
+      startX = e.clientX;
+      startY = e.clientY;
+      const rect = wrapper.getBoundingClientRect();
+      startWidth = rect.width;
+      startHeight = rect.height;
+
+      document.body.style.userSelect = "none";
+    });
+
+    document.addEventListener("mousemove", e => {
+      if (!isResizing) return;
+
+      const newWidth = startWidth + (e.clientX - startX);
+      const newHeight = startHeight + (e.clientY - startY);
+
+      wrapper.style.width = newWidth + "px";
+      wrapper.style.height = newHeight + "px";
+      img.style.width = "100%";
+      img.style.height = "100%";
+    });
+
+    document.addEventListener("mouseup", () => {
+      if (isResizing) {
+        isResizing = false;
+        document.body.style.userSelect = "";
+      }
     });
   }
 
