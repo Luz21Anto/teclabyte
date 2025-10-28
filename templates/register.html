@@ -11,6 +11,22 @@
     <div class="registro">
         <h1>Crear cuenta</h1>
         <form id="registro_email">
+            <div id="paso_nombre">
+                <div class="input-group">
+                    <label>
+                        Nombre: 
+                        <input type="text" id="input_nombre" name="nombre" required>
+                    </label>
+                </div>
+                <div class="input-group">
+                    <label>
+                        Apellido: 
+                        <input type="text" id="input_apellido" name="apellido" required>
+                    </label>
+                </div>
+                <button type="button" id="siguiente1"> Siguiente </button>
+
+            </div>
             <div id="paso_email">
                 <div class="input-group">
                     <label>
@@ -24,7 +40,7 @@
                         <input type="email" id="input_confirmar_email" name="email" placeholder="tu@email.com">
                     </label>
                 </div>
-                <button type="button" id="Siguiente"> Siguiente </button>
+                <button type="button" id="siguiente2"> Siguiente </button>
             </div>
 
             <div id="paso_contraseña">
@@ -42,7 +58,8 @@
                 </div>
                 <div class="input-group">
                     <label> 
-                        <input type="checkbox" id="acepto" required> Acepto los términos y condiciones.
+                        <input type="checkbox" id="acepto" required>
+                        Acepto los términos y condiciones.
                     </label>
                 </div>
                 <button type="submit"> Crear cuenta </button>

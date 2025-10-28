@@ -53,6 +53,12 @@ body {
   font-size: 16px;
 }
 
+input[type="checkbox"] {
+  display: inline-block;
+  width: auto;
+  margin-right: 8px; /* separa un poco el texto del cuadradito */
+}
+
 /* ----------- BOTÓN ----------- */
 button {
   background-color: #f5f5f7;
@@ -84,9 +90,13 @@ button:hover {
   text-decoration: underline;
 }
 
-/* ----------- OCULTO CONTRASEÑA MIENTRAS SE MUESTRA EMAIL ----------- */
+/* ----------- OCULTO CONTRASEÑA Y EMAIL ----------- */
+#paso_email {
+  display: none;
+}
+
 #paso_contraseña {
-    display: none;
+  display: none;
 }
 
 /* ----------- RESPONSIVE ----------- */
