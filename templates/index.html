@@ -6,7 +6,9 @@
   <title>Panel de usuario</title>
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../static/css/style.css">
+  <script src="../static/js/index.js" defer></script>
 </head>
+
 <body>
   <div class="panel-container">
     <!-- Barra lateral -->
@@ -23,7 +25,15 @@
           <li class="active">En progreso</li>
           <li>Dominios</li>
           <li>Hostings</li>
-          <li>Plugins</li>
+          <li class="has-submenu" id="plugins-menu">
+            Plugins ▼
+            <ul class="submenu" id="submenu-plugins">
+              <li data-plugin="calendario">Calendario</li>
+              <li data-plugin="mails">Captura de mails</li>
+              <li data-plugin="clasificacion">Clasificación</li>
+              <li data-plugin="id">ID</li>
+            </ul>
+          </li>
           <li>Configuración</li>
         </ul>
       </nav>
@@ -103,9 +113,49 @@
         </div>
       </div>
 
+      <!-- Plugins -->
+      <div id="plugin-container" class="plugin-container">
+        <section id="calendario" class="plugin" style="display:none;">
+          <button onclick="cerrarPlugin('calendario')">Cerrar</button>
+          <h2>📅 Calendario</h2>
+          <iframe src="https://calendar.google.com/calendar/embed?src=tu_correo%40gmail.com&ctz=America%2FBuenos_Aires" title="Calendario"></iframe>
+        </section>
+
+        <section id="mails" class="plugin" style="display:none;">
+          <button onclick="cerrarPlugin('mails')">Cerrar</button>
+          <h2>📩 Captura de mails</h2>
+          <label>Clasificación:</label>
+          <input type="text" placeholder="Ej.: noticias, actividades...">
+          <div class="mail-list">
+            <h3>Mails para actualizaciones</h3>
+            <button>Enviar mail</button>
+            <ul>
+              <li>actualizacion1@ejemplo.com</li>
+              <li>actualizacion2@ejemplo.com</li>
+            </ul>
+          </div>
+        </section>
+
+        <section id="clasificacion" class="plugin" style="display:none;">
+          <button onclick="cerrarPlugin('clasificacion')">Cerrar</button>
+          <h2>🗂 Clasificación de correos</h2>
+          <input type="text" placeholder="Ej.: noticias, promociones, soporte...">
+          <button>Guardar clasificación</button>
+        </section>
+
+        <section id="id" class="plugin" style="display:none;">
+          <button onclick="cerrarPlugin('id')">Cerrar</button>
+          <h2>🔗 ID de vinculación</h2>
+          <div class="id-box">
+            <strong>ID:</strong> #mailsInfo
+          </div>
+        </section>
+      </div>
+
       <footer class="progress">
         <p>Progreso del proyecto: <strong>40% completado ✅</strong></p>
       </footer>
+      
     </main>
   </div>
 </body>

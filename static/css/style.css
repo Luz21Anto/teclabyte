@@ -83,10 +83,9 @@ body {
 
 /* ----- MAIN ----- */
 .main-content {
-  flex: 1;
-  padding: 1rem 2rem;
   display: flex;
   flex-direction: column;
+  height: 100%;
 }
 
 /* Header superior */
@@ -145,6 +144,7 @@ body {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1.2rem;
+  flex-grow: 1; /* ocupa el espacio disponible */
 }
 
 /* Columna izquierda */
@@ -239,6 +239,41 @@ body {
   margin-top: 1rem;
   text-align: center;
   font-weight: 700;
+}
+
+/* Contenedor de plugins */
+.plugin-container {
+    display: block;
+    width: 100%;
+    max-width: 100%;  /* ✅ para que ocupe el ancho completo */
+    height: 100%;
+}
+
+/* Cada plugin */
+.plugin {
+    display: none;       /* oculto por defecto */
+    width: 100%;
+    max-width: 100%;     /* ✅ evita que se achique */
+    height: 85vh;        /* Alto grande */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+/* Todo iframe dentro del plugin */
+.plugin iframe {
+    width: 100%;
+    height: 80vh;
+    border: none;
+}
+
+/* Si el main tiene límites de ancho, los eliminamos */
+main {
+    width: 100%;
+    max-width: none;
 }
 
 /* ----- RESPONSIVE ----- */
