@@ -31,3 +31,12 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     });
 });
+
+document.getElementById("hosting-button").addEventListener("click", () => { 
+    document.getElementById("container").style.display = "none";
+    document.getElementById("hosting").style.display = "block";
+});
+
+document.getElementById('menu-toggle').addEventListener('click', () => {
+  document.getElementById('sidebar').classList.toggle('active');
+});

@@ -11,8 +11,9 @@
 
 <body>
   <div class="panel-container">
+    <button class="menu-toggle" id="menu-toggle">☰ Menú</button>
     <!-- Barra lateral -->
-    <aside class="sidebar">
+    <aside class="sidebar" id="sidebar">
       <h2>Nombre</h2>
       <nav>
         <ul>
@@ -24,7 +25,9 @@
           </li>
           <li class="active">En progreso</li>
           <li>Dominios</li>
-          <li>Hostings</li>
+          <li class="hosting-opcion" id="hosting-button">
+            Hostings
+          </li>
           <li class="has-submenu" id="plugins-menu">
             Plugins ▼
             <ul class="submenu" id="submenu-plugins">
@@ -57,7 +60,7 @@
         ✨ <strong>¡Excelente!</strong> Tu sitio web estará listo el <strong>15 de abril.</strong>
       </section>
 
-      <div class="content-grid">
+      <div class="content-grid" id="container">
         <div class="left-column">
           <div class="reunion">
             <h3>① Reunión</h3>
@@ -151,6 +154,71 @@
           </div>
         </section>
       </div>
+
+      <section class="hosting-section" id="hosting">
+        <h2>Hosting</h2>
+
+        <!-- Plan actual -->
+        <div class="current-plan">
+          <h3>Plan actual: Básico</h3>
+          <p><strong>10GB espacio</strong> | <strong>50GB tráfico</strong> | $5/mes</p>
+
+          <div class="usage">
+            <p>Almacenamiento: 6.4GB / 10GB</p>
+            <div class="bar"><div class="fill" style="width:64%"></div></div>
+
+            <p>Tráfico mensual: 22GB / 50GB</p>
+            <div class="bar"><div class="fill" style="width:44%"></div></div>
+          </div>
+
+          <p>Estado del servidor: <span class="online">● Online</span> | Uptime: 99.98% | Latencia: 42ms</p>
+
+          <div class="actions">
+            <button>Crear backup</button>
+            <button>Ver backups →</button>
+            <button>Administrar archivos →</button>
+            <button class="upgrade">Mejorar plan</button>
+          </div>
+        </div>
+
+        <!-- Planes disponibles -->
+        <h3>Planes disponibles</h3>
+        <div class="plans">
+          <div class="plan-card basico">
+            <h4>Starter</h4>
+            <ul>
+              <li>10GB de espacio</li>
+              <li>50GB de tráfico</li>
+              <li>Backups semanales</li>
+            </ul>
+            <p class="price">$5/mes</p>
+            <button>Tu plan actual</button>
+          </div>
+
+          <div class="plan-card pro">
+            <h4>Pro</h4>
+            <ul>
+              <li>50GB de espacio</li>
+              <li>200GB de tráfico</li>
+              <li>Backups diarios</li>
+            </ul>
+            <p class="price">$15/mes</p>
+            <button class="upgrade">Mejorar a Pro</button>
+          </div>
+
+          <div class="plan-card premium">
+            <h4>Premium</h4>
+            <ul>
+              <li>200GB de espacio</li>
+              <li>Tráfico ilimitado</li>
+              <li>Backups diarios</li>
+              <li>Soporte prioritario</li>
+            </ul>
+            <p class="price">$30/mes</p>
+            <button class="upgrade">Mejorar a Premium</button>
+          </div>
+        </div>
+      </section>
 
       <footer class="progress">
         <p>Progreso del proyecto: <strong>40% completado ✅</strong></p>

@@ -55,6 +55,22 @@ body {
   color: white;
 }
 
+/* Sidebar desplegable en celular */
+.sidebar.active {
+  display: block;
+}
+
+/* 🔸 Botón hamburguesa (solo se muestra en pantallas pequeñas) */
+.menu-toggle {
+  display: none;
+  background: #333;
+  color: white;
+  font-size: 1.2em;
+  border: none;
+  padding: 10px 15px;
+  cursor: pointer;
+}
+
 /* ----- SUBMENÚ ----- */
 .submenu {
   display: none; /* Oculto por defecto */
@@ -241,6 +257,111 @@ body {
   font-weight: 700;
 }
 
+/****************HOSTING****************/
+
+.hosting-section {
+  font-family: 'Nunito', sans-serif;
+  color: #222;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.current-plan {
+  background: #f8f9fa;
+  border: 2px solid #ccc;
+  border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 30px;
+}
+
+.bar {
+  height: 10px;
+  background: #ddd;
+  border-radius: 5px;
+  overflow: hidden;
+  margin-bottom: 10px;
+}
+
+.bar .fill {
+  height: 10px;
+  background: linear-gradient(90deg, #00b894, #0984e3);
+}
+
+.online {
+  color: #00b894;
+  font-weight: bold;
+}
+
+.actions button {
+  margin: 5px;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  background: #0984e3;
+  color: white;
+  transition: 0.3s;
+}
+
+.actions button:hover {
+  background: #74b9ff;
+}
+
+.plans {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.plan-card {
+  border: 2px solid #ccc;
+  border-radius: 10px;
+  padding: 20px;
+}
+
+.plan-card h4 {
+  margin-bottom: 10px;
+}
+
+.plan-card ul {
+  list-style: none;
+  padding: 0;
+  margin-bottom: 15px;
+}
+
+.plan-card li {
+  margin: 4px 0;
+}
+
+.plan-card .price {
+  font-size: 1.2em;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.plan-card button {
+  background: #636e72;
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.plan-card button.upgrade {
+  background: #00b894;
+}
+
+.plan-card button.upgrade:hover {
+  background: #55efc4;
+}
+
+/* Colores distintivos por plan */
+.plan-card.basico { border-left: 6px solid #74b9ff; }
+.plan-card.pro { border-left: 6px solid #00cec9; }
+.plan-card.premium { border-left: 6px solid #fdcb6e; }
+
 /* Contenedor de plugins */
 .plugin-container {
     display: block;
@@ -316,5 +437,13 @@ main {
 
   .banner {
     font-size: 0.9rem;
+  }
+
+  .sidebar {
+    display: none;
+  }
+
+  .menu-toggle {
+    display: block;
   }
 }
