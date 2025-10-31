@@ -269,3 +269,19 @@ document.addEventListener("DOMContentLoaded", () => {
     sidebar.classList.toggle("show");
   });
 });
+
+document.getElementById("publicarBtn").addEventListener("click", () => {
+  const editorContent = document.getElementById("editor").innerHTML;
+
+  const articulo = {
+    titulo: "", // Podrías agregar un campo de título aparte si querés
+    subtitulo: "",
+    autor: "",
+    fecha: new Date().toISOString().split("T")[0],
+    contenidoHTML: editorContent
+  };
+
+  localStorage.setItem("miArticuloGuardado", JSON.stringify(articulo));
+  window.location.href = "post.html";
+});
+

@@ -1,0 +1,17 @@
+body {
+  font-family: "Nunito", sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+.articulo {
+  max-width: 800px;
+  margin: auto;
+  padding: 1rem;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+}
