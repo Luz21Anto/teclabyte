@@ -397,6 +397,27 @@ main {
     max-width: none;
 }
 
+/************ Ocultar y mostrar opciones ************/
+
+.seccion {
+  display: none;
+  padding: 20px;
+}
+
+.seccion.active {
+  display: block;
+}
+
+.sidebar ul li {
+  cursor: pointer;
+  list-style: none;
+  padding: 8px;
+}
+
+.sidebar ul li:hover {
+  background: #eee;
+}
+
 /* ----- RESPONSIVE ----- */
 @media (max-width: 900px) {
   .panel-container {

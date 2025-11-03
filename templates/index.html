@@ -8,10 +8,10 @@
   <link rel="stylesheet" href="../static/css/style.css">
   <script src="../static/js/index.js" defer></script>
 </head>
-
 <body>
   <div class="panel-container">
     <button class="menu-toggle" id="menu-toggle">☰ Menú</button>
+
     <!-- Barra lateral -->
     <aside class="sidebar" id="sidebar">
       <h2>Nombre</h2>
@@ -20,30 +20,29 @@
           <li class="has-submenu">
             Paginas activas ▼
             <ul class="submenu">
-              <li><a href="../templates/blog.html">Blog</a></li>
+              <li data-seccion="blog">Blog</li>
             </ul>
           </li>
-          <li class="active">En progreso</li>
-          <li>Dominios</li>
-          <li class="hosting-opcion" id="hosting-button">
-            Hostings
-          </li>
-          <li class="has-submenu" id="plugins-menu">
+          <li data-seccion="progreso" class="active">En progreso</li>
+          <li data-seccion="dominios">Dominios</li>
+          <li data-seccion="hosting">Hostings</li>
+          <li class="has-submenu">
             Plugins ▼
-            <ul class="submenu" id="submenu-plugins">
-              <li data-plugin="calendario">Calendario</li>
-              <li data-plugin="mails">Captura de mails</li>
-              <li data-plugin="clasificacion">Clasificación</li>
-              <li data-plugin="id">ID</li>
+            <ul class="submenu">
+              <li data-seccion="calendario">Calendario</li>
+              <li data-seccion="mails">Captura de mails</li>
+              <li data-seccion="clasificacion">Clasificación</li>
+              <li data-seccion="id">ID</li>
             </ul>
           </li>
-          <li>Configuración</li>
+          <li data-seccion="configuracion">Configuración</li>
         </ul>
       </nav>
     </aside>
 
     <!-- Contenido principal -->
     <main class="main-content">
+
       <header class="top-bar">
         <div class="tabs">
           <button class="tab active">Página 1</button>
@@ -60,119 +59,77 @@
         ✨ <strong>¡Excelente!</strong> Tu sitio web estará listo el <strong>15 de abril.</strong>
       </section>
 
-      <div class="content-grid" id="container">
-        <div class="left-column">
-          <div class="reunion">
-            <h3>① Reunión</h3>
-            <p>📅 <input type="datetime-local" value="2025-04-12T10:00"></p>
-            <div class="buttons">
-              <button>Agendar</button>
-              <button>Modificar</button>
-              <button class="meet">Acceder a reunión</button>
+      <!-- Secciones alternables -->
+      <div id="progreso" class="seccion" style="display:block;">
+        <div class="content-grid">
+          <div class="left-column">
+            <div class="reunion">
+              <h3>① Reunión</h3>
+              <p>📅 <input type="datetime-local" value="2025-04-12T10:00"></p>
+              <div class="buttons">
+                <button>Agendar</button>
+                <button>Modificar</button>
+                <button class="meet">Acceder a reunión</button>
+              </div>
+            </div>
+
+            <div class="reunion">
+              <h3>② Reunión</h3>
+              <p>📅 <input type="datetime-local" value="2025-04-19T10:00"></p>
+              <div class="buttons">
+                <button>Agendar</button>
+                <button>Modificar</button>
+                <button class="meet">Acceder a reunión</button>
+              </div>
+            </div>
+
+            <div class="reunion">
+              <h3>③ Reunión</h3>
+              <p>📅 <input type="datetime-local" value="2025-04-26T10:00"></p>
+              <div class="buttons">
+                <button>Agendar</button>
+                <button>Modificar</button>
+                <button class="meet">Acceder a reunión</button>
+              </div>
+            </div>
+
+            <div class="despliegue">
+              <h3>Despliegue:</h3>
+              <textarea placeholder="Notas o comentarios..."></textarea>
             </div>
           </div>
 
-          <div class="reunion">
-            <h3>② Reunión</h3>
-            <p>📅 <input type="datetime-local" value="2025-04-19T10:00"></p>
-            <div class="buttons">
-              <button>Agendar</button>
-              <button>Modificar</button>
-              <button class="meet">Acceder a reunión</button>
+          <div class="right-column">
+            <div class="elementos">
+              <h3>Elementos clave del diseño:</h3>
+              <div class="chips">
+                <button>Fuentes</button>
+                <button>Paleta de colores</button>
+                <button>Elementos gráficos</button>
+                <button>Guion</button>
+              </div>
             </div>
-          </div>
 
-          <div class="reunion">
-            <h3>③ Reunión</h3>
-            <p>📅 <input type="datetime-local" value="2025-04-26T10:00"></p>
-            <div class="buttons">
-              <button>Agendar</button>
-              <button>Modificar</button>
-              <button class="meet">Acceder a reunión</button>
+            <div class="maqueta">
+              <h3>Maqueta / Prediseño:</h3>
+              <div class="preview"></div>
             </div>
-          </div>
-
-          <div class="despliegue">
-            <h3>Despliegue:</h3>
-            <textarea placeholder="Notas o comentarios..."></textarea>
-          </div>
-        </div>
-
-        <div class="right-column">
-          <div class="elementos">
-            <h3>Elementos clave del diseño:</h3>
-            <div class="chips">
-              <button>Fuentes</button>
-              <button>Paleta de colores</button>
-              <button>Elementos gráficos</button>
-              <button>Guion</button>
-            </div>
-          </div>
-
-          <div class="maqueta">
-            <h3>Maqueta / Prediseño:</h3>
-            <div class="preview"></div>
           </div>
         </div>
       </div>
 
-      <!-- Plugins -->
-      <div id="plugin-container" class="plugin-container">
-        <section id="calendario" class="plugin" style="display:none;">
-          <button onclick="cerrarPlugin('calendario')">Cerrar</button>
-          <h2>📅 Calendario</h2>
-          <iframe src="https://calendar.google.com/calendar/embed?src=tu_correo%40gmail.com&ctz=America%2FBuenos_Aires" title="Calendario"></iframe>
-        </section>
-
-        <section id="mails" class="plugin" style="display:none;">
-          <button onclick="cerrarPlugin('mails')">Cerrar</button>
-          <h2>📩 Captura de mails</h2>
-          <label>Clasificación:</label>
-          <input type="text" placeholder="Ej.: noticias, actividades...">
-          <div class="mail-list">
-            <h3>Mails para actualizaciones</h3>
-            <button>Enviar mail</button>
-            <ul>
-              <li>actualizacion1@ejemplo.com</li>
-              <li>actualizacion2@ejemplo.com</li>
-            </ul>
-          </div>
-        </section>
-
-        <section id="clasificacion" class="plugin" style="display:none;">
-          <button onclick="cerrarPlugin('clasificacion')">Cerrar</button>
-          <h2>🗂 Clasificación de correos</h2>
-          <input type="text" placeholder="Ej.: noticias, promociones, soporte...">
-          <button>Guardar clasificación</button>
-        </section>
-
-        <section id="id" class="plugin" style="display:none;">
-          <button onclick="cerrarPlugin('id')">Cerrar</button>
-          <h2>🔗 ID de vinculación</h2>
-          <div class="id-box">
-            <strong>ID:</strong> #mailsInfo
-          </div>
-        </section>
-      </div>
-
-      <section class="hosting-section" id="hosting">
+      <section id="hosting" class="seccion" style="display:none;">
         <h2>Hosting</h2>
-
-        <!-- Plan actual -->
         <div class="current-plan">
           <h3>Plan actual: Básico</h3>
           <p><strong>10GB espacio</strong> | <strong>50GB tráfico</strong> | $5/mes</p>
-
           <div class="usage">
             <p>Almacenamiento: 6.4GB / 10GB</p>
             <div class="bar"><div class="fill" style="width:64%"></div></div>
-
             <p>Tráfico mensual: 22GB / 50GB</p>
             <div class="bar"><div class="fill" style="width:44%"></div></div>
           </div>
-
           <p>Estado del servidor: <span class="online">● Online</span> | Uptime: 99.98% | Latencia: 42ms</p>
-
           <div class="actions">
             <button>Crear backup</button>
             <button>Ver backups →</button>
@@ -180,8 +137,6 @@
             <button class="upgrade">Mejorar plan</button>
           </div>
         </div>
-
-        <!-- Planes disponibles -->
         <h3>Planes disponibles</h3>
         <div class="plans">
           <div class="plan-card basico">
@@ -194,7 +149,6 @@
             <p class="price">$5/mes</p>
             <button>Tu plan actual</button>
           </div>
-
           <div class="plan-card pro">
             <h4>Pro</h4>
             <ul>
@@ -205,7 +159,6 @@
             <p class="price">$15/mes</p>
             <button class="upgrade">Mejorar a Pro</button>
           </div>
-
           <div class="plan-card premium">
             <h4>Premium</h4>
             <ul>
@@ -220,10 +173,38 @@
         </div>
       </section>
 
+      <section id="calendario" class="plugin seccion" style="display:none;">
+        <h2>📅 Calendario</h2>
+        <iframe src="https://calendar.google.com/calendar/embed?src=tu_correo%40gmail.com&ctz=America%2FBuenos_Aires" title="Calendario"></iframe>
+      </section>
+
+      <section id="mails" class="plugin seccion" style="display:none;">
+        <h2>📩 Captura de mails</h2>
+        <label>Clasificación:</label>
+        <input type="text" placeholder="Ej.: noticias, actividades...">
+        <div class="mail-list">
+          <h3>Mails para actualizaciones</h3>
+          <ul>
+            <li>actualizacion1@ejemplo.com</li>
+            <li>actualizacion2@ejemplo.com</li>
+          </ul>
+        </div>
+      </section>
+
+      <section id="clasificacion" class="plugin seccion" style="display:none;">
+        <h2>🗂 Clasificación</h2>
+        <input type="text" placeholder="Ej.: noticias, soporte...">
+        <button>Guardar</button>
+      </section>
+
+      <section id="id" class="plugin seccion" style="display:none;">
+        <h2>🔗 ID de vinculación</h2>
+        <div class="id-box"><strong>ID:</strong> #mailsInfo</div>
+      </section>
+
       <footer class="progress">
         <p>Progreso del proyecto: <strong>40% completado ✅</strong></p>
       </footer>
-      
     </main>
   </div>
 </body>

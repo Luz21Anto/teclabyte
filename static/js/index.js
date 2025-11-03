@@ -1,42 +1,27 @@
-function toggleSubmenu() {
-    document.getElementById('submenu-plugins').classList.toggle('active');
-}
+document.addEventListener("DOMContentLoaded", () => {
+  const menuToggle = document.getElementById("menu-toggle");
+  const sidebar = document.getElementById("sidebar");
+  const secciones = document.querySelectorAll(".seccion");
 
-function mostrarPlugin(id) {
-    // Oculta columnas izquierda y derecha
-    document.querySelector('.left-column').style.display = 'none';
-    document.querySelector('.right-column').style.display = 'none';
+  // Toggle menú lateral (modo responsive)
+  menuToggle.addEventListener("click", () => {
+    sidebar.classList.toggle("active");
+  });
 
-    // Muestra plugin
-    const plugin = document.getElementById(id);
-    if(plugin) plugin.style.display = 'block';
-}
+  // Click en cada opción del menú
+  document.querySelectorAll("[data-seccion]").forEach(item => {
+    item.addEventListener("click", () => {
+      const id = item.dataset.seccion;
 
-function cerrarPlugin(id) {
-    // Oculta plugin
-    const plugin = document.getElementById(id);
-    if(plugin) plugin.style.display = 'none';
+      // Oculta todas las secciones
+      secciones.forEach(sec => sec.style.display = "none");
 
-    // Vuelve a mostrar columnas
-    document.querySelector('.left-column').style.display = 'block';
-    document.querySelector('.right-column').style.display = 'block';
-}
+      // Muestra la sección correspondiente
+      const activa = document.getElementById(id);
+      if (activa) activa.style.display = "block";
 
-// Asignar click a los items del submenu
-document.addEventListener('DOMContentLoaded', () => {
-    document.querySelectorAll('#submenu-plugins li').forEach(li => {
-    li.addEventListener('click', () => {
-        const pluginId = li.dataset.plugin;
-        mostrarPlugin(pluginId);
+      // Cierra el menú si está en móvil
+      sidebar.classList.remove("active");
     });
-    });
-});
-
-document.getElementById("hosting-button").addEventListener("click", () => { 
-    document.getElementById("container").style.display = "none";
-    document.getElementById("hosting").style.display = "block";
-});
-
-document.getElementById('menu-toggle').addEventListener('click', () => {
-  document.getElementById('sidebar').classList.toggle('active');
+  });
 });
