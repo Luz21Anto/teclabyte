@@ -20,7 +20,7 @@
           <li class="has-submenu">
             Paginas activas ▼
             <ul class="submenu">
-              <li data-seccion="blog">Blog</li>
+              <li data-seccion="blog"><a href="../templates/blog.html">Blog</a></li>
             </ul>
           </li>
           <li data-seccion="progreso" class="active">En progreso</li>
@@ -175,11 +175,45 @@
 
       <section id="calendario" class="plugin seccion" style="display:none;">
         <h2>📅 Calendario</h2>
-        <iframe src="https://calendar.google.com/calendar/embed?src=tu_correo%40gmail.com&ctz=America%2FBuenos_Aires" title="Calendario"></iframe>
+        <div class="navegacion">
+          <button id="prev">◀</button>
+          <h2 id="mes-anio"></h2>
+          <button id="next">▶</button>
+        </div>
+
+        <div class="calendario">
+          <div class="semana encabezado">
+            <div>Dom</div><div>Lun</div><div>Mar</div><div>Mié</div><div>Jue</div><div>Vie</div><div>Sáb</div>
+          </div>
+          <div id="dias" class="dias"></div>
+        </div>
+
+        <!-- Modal para agregar actividad -->
+        <div id="modal" class="modal">
+          <div class="modal-content">
+            <h3>Agregar actividad</h3>
+            <p id="fecha-seleccionada"></p>
+            <form id="form-actividad">
+              <input type="time" id="hora" required>
+              <input type="text" id="titulo" placeholder="Título" required>
+              <textarea id="descripcion" placeholder="Descripción"></textarea>
+              <div class="botones">
+                <button type="submit">Guardar</button>
+                <button type="button" id="cerrar-modal">Cancelar</button>
+              </div>
+            </form>
+          </div>
+        </div>
+        <h4>Actividades del día</h4>
+        <ul id="lista-actividades"></ul>
       </section>
 
       <section id="mails" class="plugin seccion" style="display:none;">
-        <h2>📩 Captura de mails</h2>
+        <h2>📩 Captura de mails</h2> completos listos para copiar y reemplazar.
+        
+        
+        
+        
 
         <div class="mails-container">
           <label for="clasificacion">Clasificación:</label>

@@ -25,3 +25,129 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 });
+
+//Calendario
+document.addEventListener("DOMContentLoaded", () => {
+  const diasEl = document.getElementById("dias");
+  const mesAnioEl = document.getElementById("mes-anio");
+  const prevBtn = document.getElementById("prev");
+  const nextBtn = document.getElementById("next");
+  const modal = document.getElementById("modal");
+  const cerrarModal = document.getElementById("cerrar-modal");
+  const form = document.getElementById("form-actividad");
+  const fechaSel = document.getElementById("fecha-seleccionada");
+  const listaActividades = document.getElementById("lista-actividades");
+
+  let actividades = JSON.parse(localStorage.getItem("actividades")) || [];
+  let fechaSeleccionada = null;
+  let fechaActual = new Date();
+
+  function renderCalendario() {
+    const año = fechaActual.getFullYear();
+    const mes = fechaActual.getMonth();
+
+    mesAnioEl.textContent = fechaActual.toLocaleString("es-ES", { month: "long", year: "numeric" });
+
+    const primerDia = new Date(año, mes, 1);
+    const ultimoDia = new Date(año, mes + 1, 0);
+    const diaInicio = primerDia.getDay();
+    const totalDias = ultimoDia.getDate();
+
+    diasEl.innerHTML = "";
+
+    for (let i = 0; i < (diaInicio === 0 ? 6 : diaInicio - 1); i++) {
+      const vacio = document.createElement("div");
+      diasEl.appendChild(vacio);
+    }
+
+    for (let d = 1; d <= totalDias; d++) {
+      const fecha = `${año}-${String(mes + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
+      const diaEl = document.createElement("div");
+      diaEl.classList.add("dia");
+
+      const num = document.createElement("div");
+      num.classList.add("dia-num");
+      num.textContent = d;
+      diaEl.appendChild(num);
+
+      const eventos = actividades.filter(a => a.fecha === fecha);
+      eventos.forEach(ev => {
+        const eventoEl = document.createElement("div");
+        eventoEl.classList.add("evento");
+        eventoEl.textContent = ev.titulo;
+        diaEl.appendChild(eventoEl);
+      });
+
+      diaEl.addEventListener("click", () => abrirModal(fecha));
+      diasEl.appendChild(diaEl);
+    }
+  }
+
+  function abrirModal(fecha) {
+    fechaSeleccionada = fecha;
+    fechaSel.textContent = fecha;
+    renderListaActividades();
+    modal.style.display = "flex";
+  }
+
+  function renderListaActividades() {
+    listaActividades.innerHTML = "";
+    const eventos = actividades.filter(a => a.fecha === fechaSeleccionada);
+
+    if (eventos.length === 0) {
+      listaActividades.innerHTML = "<li>(Sin actividades)</li>";
+      return;
+    }
+
+    eventos.forEach((ev, index) => {
+      const li = document.createElement("li");
+      li.innerHTML = `<strong>${ev.hora}</strong> - ${ev.titulo}<br><small>${ev.descripcion || ""}</small>`;
+      
+      const btnEliminar = document.createElement("button");
+      btnEliminar.textContent = "✖";
+      btnEliminar.addEventListener("click", () => eliminarActividad(index, fechaSeleccionada));
+
+      li.appendChild(btnEliminar);
+      listaActividades.appendChild(li);
+    });
+  }
+
+  function eliminarActividad(index, fecha) {
+    const eventos = actividades.filter(a => a.fecha === fecha);
+    const globalIndex = actividades.findIndex(a => a === eventos[index]);
+    if (globalIndex !== -1) actividades.splice(globalIndex, 1);
+    localStorage.setItem("actividades", JSON.stringify(actividades));
+    renderListaActividades();
+    renderCalendario();
+  }
+
+  form.addEventListener("submit", e => {
+    e.preventDefault();
+    const hora = document.getElementById("hora").value;
+    const titulo = document.getElementById("titulo").value;
+    const descripcion = document.getElementById("descripcion").value;
+
+    actividades.push({ fecha: fechaSeleccionada, hora, titulo, descripcion });
+    localStorage.setItem("actividades", JSON.stringify(actividades));
+
+    form.reset();
+    renderListaActividades();
+    renderCalendario();
+  });
+
+  cerrarModal.addEventListener("click", () => {
+    modal.style.display = "none";
+  });
+
+  prevBtn.addEventListener("click", () => {
+    fechaActual.setMonth(fechaActual.getMonth() - 1);
+    renderCalendario();
+  });
+
+  nextBtn.addEventListener("click", () => {
+    fechaActual.setMonth(fechaActual.getMonth() + 1);
+    renderCalendario();
+  });
+
+  renderCalendario();
+});
