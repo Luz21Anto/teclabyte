@@ -180,14 +180,29 @@
 
       <section id="mails" class="plugin seccion" style="display:none;">
         <h2>📩 Captura de mails</h2>
-        <label>Clasificación:</label>
-        <input type="text" placeholder="Ej.: noticias, actividades...">
-        <div class="mail-list">
-          <h3>Mails para actualizaciones</h3>
-          <ul>
-            <li>actualizacion1@ejemplo.com</li>
-            <li>actualizacion2@ejemplo.com</li>
-          </ul>
+
+        <div class="mails-container">
+          <label for="clasificacion">Clasificación:</label>
+          <input id="clasificacion" type="text" placeholder="Ej.: suscritos a novedades">
+
+          <div class="add-mail">
+            <input id="new-mail" type="email" placeholder="Agregar mail (ej. usuario@mail.com)">
+            <button id="add-mail-btn">➕ Agregar</button>
+          </div>
+
+          <div class="mail-list">
+            <h3>Lista de mails</h3>
+            <ul id="mail-list">
+              <!-- Se llenará dinámicamente -->
+            </ul>
+          </div>
+
+          <div class="mail-actions">
+            <button id="copy-mails" class="copy-btn">📋 Copiar lista</button>
+            <button id="open-gmail" class="gmail-btn">✉️ Abrir Gmail</button>
+          </div>
+          
+          <p id="copy-confirm" class="copy-confirm" style="display:none;">✅ ¡Lista copiada al portapapeles!</p>
         </div>
       </section>
 
