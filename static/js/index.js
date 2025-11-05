@@ -177,3 +177,90 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 });
+
+//Notificaciones:
+const bellBtn = document.getElementById('bellBtn');
+const notifMenu = document.getElementById('notifMenu');
+
+bellBtn.addEventListener('click', () => {
+  notifMenu.classList.toggle('show');
+});
+
+// Cerrar el menú si se hace clic fuera
+document.addEventListener('click', (e) => {
+  if (!bellBtn.contains(e.target) && !notifMenu.contains(e.target)) {
+    notifMenu.classList.remove('show');
+  }
+});
+
+// Captura de mails
+document.addEventListener("DOMContentLoaded", () => {
+  const addMailBtn = document.getElementById("add-mail-btn");
+  const newMailInput = document.getElementById("new-mail");
+  const mailList = document.getElementById("mail-list");
+  const copyBtn = document.getElementById("copy-mails");
+  const openGmailBtn = document.getElementById("open-gmail");
+  const copyConfirm = document.getElementById("copy-confirm");
+
+  // --- Agregar mail ---
+  addMailBtn.addEventListener("click", () => {
+    const mail = newMailInput.value.trim();
+
+    if (mail === "") {
+      alert("Por favor, ingresá un mail antes de agregarlo.");
+      return;
+    }
+
+    // Validar formato de email básico
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(mail)) {
+      alert("Ingresá un email válido.");
+      return;
+    }
+
+    // Crear nuevo elemento de lista
+    const li = document.createElement("li");
+    li.textContent = mail;
+
+    // Botón de eliminar (opcional)
+    const removeBtn = document.createElement("button");
+    removeBtn.textContent = "❌";
+    removeBtn.style.marginLeft = "10px";
+    removeBtn.style.cursor = "pointer";
+    removeBtn.addEventListener("click", () => {
+      li.remove();
+    });
+
+    li.appendChild(removeBtn);
+    mailList.appendChild(li);
+
+    // Limpiar input
+    newMailInput.value = "";
+  });
+
+  // --- Copiar lista de mails ---
+  copyBtn.addEventListener("click", async () => {
+    const mails = [...mailList.querySelectorAll("li")]
+      .map(li => li.firstChild.textContent.trim())
+      .join(", ");
+
+    if (mails === "") {
+      alert("No hay mails para copiar.");
+      return;
+    }
+
+    try {
+      await navigator.clipboard.writeText(mails);
+      copyConfirm.style.display = "block";
+      setTimeout(() => (copyConfirm.style.display = "none"), 2000);
+    } catch (err) {
+      console.error("Error al copiar:", err);
+      alert("No se pudo copiar la lista.");
+    }
+  });
+
+  // --- Abrir Gmail ---
+  openGmailBtn.addEventListener("click", () => {
+    window.open("https://mail.google.com/mail/u/0/#inbox?compose=new", "_blank");
+  });
+});

@@ -282,6 +282,6 @@ document.getElementById("publicarBtn").addEventListener("click", () => {
   };
 
   localStorage.setItem("miArticuloGuardado", JSON.stringify(articulo));
-  window.location.href = "../../templates/post.html";
+  window.location.href = "post.html";
 });
 

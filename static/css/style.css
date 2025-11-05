@@ -66,9 +66,14 @@ body {
   border-radius: 5px; /* Opcional, bordes suaves */
 }
 
-/* Si los <li> contienen <a>, asegurate de que el enlace herede el color */
-.sidebar li.active a {
-  color: white;
+.sidebar li a {
+  display: block;         /* hace que el enlace ocupe todo el <li> */
+  width: 100%;            /* ancho completo */
+  height: 100%;           /* alto completo */
+  color: inherit;         /* hereda el color del <li> */
+  text-decoration: none;  /* quita el subrayado */
+  padding: 0.5rem 1rem;   /* mantiene el espacio clickeable */
+  border-radius: 10px;    /* igual que el li */
 }
 
 /* Sidebar desplegable en celular */
@@ -153,6 +158,46 @@ body {
   display: flex;
   gap: 0.5rem;
   align-items: center;
+}
+
+.notificaciones {
+  position: relative;
+  display: inline-block;
+}
+
+/* Botón */
+.bell {
+  background: none;
+  border: none;
+  font-size: 17px;
+  cursor: pointer;
+}
+
+/* Menú desplegable oculto */
+.notificaciones-menu {
+  display: none; /* se oculta al inicio */
+  position: absolute;
+  top: 40px; /* separa del ícono */
+  right: 0;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  padding: 10px 20px;
+  width: 220px;
+  z-index: 10;
+}
+
+/* Texto dentro del menú */
+.notificaciones-menu p {
+  margin: 0;
+  color: #555;
+  font-size: 14px;
+}
+
+/* Mostrar el menú cuando se activa */
+.notificaciones-menu.show {
+  display: block;
 }
 
 .bell,

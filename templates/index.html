@@ -20,7 +20,7 @@
           <li class="has-submenu">
             Paginas activas ▼
             <ul class="submenu">
-              <li data-seccion="blog"><a href="../static/js/blog.html">Blog</a></li>
+              <li data-seccion="blog"><a href="blog.html">Blog</a></li>
             </ul>
           </li>
           <li data-seccion="progreso" >En progreso</li>
@@ -45,8 +45,14 @@
 
       <header class="top-bar">
         <div class="header-actions">
-          <button class="bell">🔔</button>
-          <button class="logout">Salir</button>
+          <div class="notificaciones">
+            <button class="bell" id="bellBtn">🔔</button>
+            <div class="notificaciones-menu" id="notifMenu">
+              <p>No hay notificaciones</p>
+            </div>
+          </div>
+
+          <a href="login.html" class="logout">Salir</a> 
         </div>
       </header>
 
@@ -234,17 +240,6 @@
           
           <p id="copy-confirm" class="copy-confirm" style="display:none;">✅ ¡Lista copiada al portapapeles!</p>
         </div>
-      </section>
-
-      <section id="clasificacion" class="plugin seccion" style="display:none;">
-        <h2>🗂 Clasificación</h2>
-        <input type="text" placeholder="Ej.: noticias, soporte...">
-        <button>Guardar</button>
-      </section>
-
-      <section id="id" class="plugin seccion" style="display:none;">
-        <h2>🔗 ID de vinculación</h2>
-        <div class="id-box"><strong>ID:</strong> #mailsInfo</div>
       </section>
 
       <footer class="progress">
