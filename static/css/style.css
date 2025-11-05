@@ -55,9 +55,19 @@ body {
   cursor: pointer;
 }
 
-.sidebar li.active,
 .sidebar li:hover {
   background-color: #8bb3ff;
+  color: white;
+}
+
+.sidebar li.active {
+  background-color: #007bff; /* Azul */
+  color: white;
+  border-radius: 5px; /* Opcional, bordes suaves */
+}
+
+/* Si los <li> contienen <a>, asegurate de que el enlace herede el color */
+.sidebar li.active a {
   color: white;
 }
 
@@ -116,7 +126,7 @@ body {
 /* Header superior */
 .top-bar {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
   align-items: center;
 }
 
@@ -162,6 +172,7 @@ body {
   border-radius: 12px;
   margin: 1rem 0;
   font-size: 1.1rem;
+  text-align: center;
 }
 
 /* Contenido */
@@ -424,10 +435,6 @@ main {
   padding: 8px;
 }
 
-.sidebar ul li:hover {
-  background: #eee;
-}
-
 /* ----- CALENDARIO ----- */
 .contenedor {
   background: white;
@@ -447,7 +454,7 @@ main {
 button {
   cursor: pointer;
   background: #007bff;
-  color: white;
+  color: black;
   border: none;
   border-radius: 6px;
   padding: 6px 10px;
@@ -553,7 +560,7 @@ button:hover {
 
   .sidebar ul {
     display: flex;
-    justify-content: space-around;
+    flex-direction: column; 
   }
 
   .content-grid {
@@ -587,6 +594,17 @@ button:hover {
   }
 
   .menu-toggle {
+    display: block;
+  }
+
+    /* Oculto por defecto */
+  .submenu {
+    display: none;
+    margin-left: 15px;
+  }
+
+  /* Cuando el mouse pasa sobre el padre, se muestra */
+  .has-submenu:hover > .submenu {
     display: block;
   }
 }

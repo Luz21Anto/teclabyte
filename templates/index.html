@@ -23,7 +23,7 @@
               <li data-seccion="blog"><a href="../templates/blog.html">Blog</a></li>
             </ul>
           </li>
-          <li data-seccion="progreso" class="active">En progreso</li>
+          <li data-seccion="progreso" >En progreso</li>
           <li data-seccion="dominios">Dominios</li>
           <li data-seccion="hosting">Hostings</li>
           <li class="has-submenu">
@@ -44,23 +44,23 @@
     <main class="main-content">
 
       <header class="top-bar">
-        <div class="tabs">
-          <button class="tab active">Página 1</button>
-          <button class="tab">Página 2</button>
-          <button class="tab">Página 3</button>
-        </div>
         <div class="header-actions">
           <button class="bell">🔔</button>
           <button class="logout">Salir</button>
         </div>
       </header>
 
+      <!-- Secciones alternables -->
+      <div id="progreso" class="seccion" style="display:block;">
+         <div class="tabs">
+          <button class="tab active">Página 1</button>
+          <button class="tab">Página 2</button>
+          <button class="tab">Página 3</button>
+        </div>
+
       <section class="banner">
         ✨ <strong>¡Excelente!</strong> Tu sitio web estará listo el <strong>15 de abril.</strong>
       </section>
-
-      <!-- Secciones alternables -->
-      <div id="progreso" class="seccion" style="display:block;">
         <div class="content-grid">
           <div class="left-column">
             <div class="reunion">
@@ -210,10 +210,6 @@
 
       <section id="mails" class="plugin seccion" style="display:none;">
         <h2>📩 Captura de mails</h2> completos listos para copiar y reemplazar.
-        
-        
-        
-        
 
         <div class="mails-container">
           <label for="clasificacion">Clasificación:</label>

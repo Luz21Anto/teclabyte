@@ -151,3 +151,29 @@ document.addEventListener("DOMContentLoaded", () => {
 
   renderCalendario();
 });
+
+document.addEventListener("DOMContentLoaded", () => {
+  const submenuItems = document.querySelectorAll(".has-submenu");
+
+  submenuItems.forEach(item => {
+    item.addEventListener("click", () => {
+      item.classList.toggle("open"); // Alterna mostrar/ocultar el submenú
+    });
+  });
+});
+
+// Cambia de color la opción seleccionada.
+document.addEventListener("DOMContentLoaded", () => {
+  // Selecciona todos los <li> que tengan data-seccion (tus opciones principales y submenús)
+  const menuItems = document.querySelectorAll(".sidebar li[data-seccion]");
+
+  menuItems.forEach(item => {
+    item.addEventListener("click", () => {
+      // Quita la clase 'active' de todos los elementos
+      menuItems.forEach(i => i.classList.remove("active"));
+
+      // Agrega 'active' al elemento clickeado
+      item.classList.add("active");
+    });
+  });
+});
