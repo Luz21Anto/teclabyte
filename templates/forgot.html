@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Recuperar contraseña</title>
+  <link rel="stylesheet" href="../static/css/login.css">
+</head>
+
+<body>
+  <div class="login">
+    <h1>Recuperar contraseña</h1>
+    <form id="forgot-form">
+      <div class="input-group">
+        <label>
+          Ingresá tu email:
+          <input type="email" id="email" name="email" placeholder="tu@email.com" required>
+        </label>
+      </div>
+      <button type="submit">Enviar enlace</button>
+    </form>
+    <p><a href="login.html">Volver al login</a></p>
+    <p id="mensaje" style="margin-top:10px;"></p>
+  </div>
+
+  <script src="../static/js/forgot.js"></script>
+</body>
+</html>
