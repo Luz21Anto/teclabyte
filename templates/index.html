@@ -6,7 +6,6 @@
   <title>Panel de usuario</title>
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../static/css/style.css">
-  <script src="../static/js/index.js" defer></script>
 </head>
 <body>
   <div class="panel-container">
@@ -52,7 +51,9 @@
             </div>
           </div>
 
-          <a href="login.html" class="logout">Salir</a> 
+          <button id="logoutBtn" class="logout">Salir</button>
+          <p id="logoutMsg" style="color:red; font-weight:600; text-align:center;"></p>
+ 
         </div>
       </header>
 
@@ -247,5 +248,7 @@
       </footer>
     </main>
   </div>
+  <script src="../static/js/index.js" defer></script>
+  <script src="../static/js/panel.js"></script>
 </body>
 </html>
