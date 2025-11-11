@@ -436,18 +436,20 @@ body {
     height: 100%;
 }
 
-/* Cada plugin */
+/* ----- SECCIONES DE PLUGINS (común a todas) ----- */
 .plugin {
-    display: none;       /* oculto por defecto */
-    width: 100%;
-    max-width: 100%;     /* ✅ evita que se achique */
-    height: 85vh;        /* Alto grande */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: white;
-    padding: 20px;
-    box-sizing: border-box;
+  display: none; /* ocultas por defecto */
+  width: 100%;
+  max-width: 800px;
+  margin: 30px auto;
+  background: #fff;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
 }
 
 /* Todo iframe dentro del plugin */
@@ -591,6 +593,342 @@ button:hover {
   display: flex;
   justify-content: space-between;
 }
+
+/* ----- TITULOS DE PLUGINS -----*/
+section h2 {
+  text-align: center;
+  font-weight: 800;
+  color: #2c3e50;
+}
+
+/* ----- CAPTURA DE MAILS ----- */
+.mails-container {
+  background: #fff;
+  border-radius: 12px;
+  padding: 20px;
+  max-width: 600px;
+  margin: 0 auto;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.mails-container label {
+  font-weight: 700;
+  color: #333;
+}
+
+.mails-container input[type="text"],
+.mails-container input[type="email"] {
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid #cdd9f0;
+  border-radius: 8px;
+  font-size: 0.95rem;
+}
+
+.add-mail {
+  display: flex;
+  gap: 10px;
+}
+
+.add-mail input {
+  flex: 1;
+}
+
+.add-mail button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 12px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.add-mail button:hover {
+  background-color: #0056b3;
+}
+
+.mail-list {
+  background: #f8faff;
+  border-radius: 8px;
+  padding: 12px;
+  border: 1px solid #d8e3ff;
+}
+
+.mail-list h3 {
+  margin-bottom: 8px;
+  font-size: 1.1rem;
+}
+
+.mail-list ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.mail-list li {
+  background: #eef4ff;
+  border-radius: 6px;
+  padding: 6px 10px;
+  margin-bottom: 6px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.mail-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
+.mail-actions button {
+  background-color: #66a1ff;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.mail-actions button:hover {
+  background-color: #0056b3;
+}
+
+.copy-confirm {
+  text-align: center;
+  color: #00b894;
+  font-weight: 700;
+  margin-top: 10px;
+}
+
+/* ----- WHATSAPP ----- */
+#whatsapp {
+  display: flex;
+  flex-direction: column;
+  align-items: center;     /* ✅ centra todo horizontalmente */
+  justify-content: center; /* ✅ centra verticalmente si hay espacio */
+  background: white;
+  padding: 40px 20px;
+  border-radius: 12px;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+  max-width: 600px;
+  margin: 30px auto;       /* ✅ centra la sección en la página */
+  text-align: center;      /* ✅ centra el texto del título y etiquetas */
+}
+
+/* ----- TÍTULO ----- */
+#whatsapp h2 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: 1.6rem;
+  color: #222;
+  margin-bottom: 25px;
+}
+
+.whatsapp-img {
+  width: 28px;
+  height: auto;
+  vertical-align: middle;
+}
+
+/* ----- FORMULARIO ----- */
+#whatsapp-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  width: 100%;
+  max-width: 400px;
+  background: #f9f9f9;              /* ✅ recuadro gris claro */
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  margin: 0 auto;                   /* ✅ centra el formulario dentro del section */
+}
+
+/* ----- CAMPOS Y ETIQUETAS ----- */
+#whatsapp-form label {
+  font-weight: 600;
+  color: #333;
+  text-align: left;
+  width: 100%;
+}
+
+#whatsapp-form input[type="text"],
+#whatsapp-form input[type="tel"] {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccd8ff;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+#whatsapp-form input:focus {
+  border-color: #25D366;
+  box-shadow: 0 0 4px rgba(37, 211, 102, 0.4);
+  outline: none;
+}
+
+/* ----- CHECKBOX ----- */
+#whatsapp-form label input[type="checkbox"] {
+  margin-right: 6px;
+  transform: scale(1.1);
+}
+
+/* ----- BOTÓN ----- */
+#whatsapp-form button {
+  background-color: #25D366;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+#whatsapp-form button:hover {
+  background-color: #1ebe5b;
+}
+
+/* ----- REDES SOCIALES ----- */
+#redes {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: white;
+  padding: 40px 20px;
+  border-radius: 12px;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+  max-width: 600px;
+  margin: 30px auto;
+  text-align: center;
+}
+
+#redes h2 {
+  font-size: 1.6rem;
+  color: #222;
+  margin-bottom: 25px;
+}
+
+#redes-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  width: 100%;
+  max-width: 400px;
+  background: #f9f9f9;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  margin: 0 auto;
+}
+
+#redes-form label {
+  font-weight: 600;
+  color: #333;
+  text-align: left;
+  width: 100%;
+}
+
+#redes-form input[type="text"] {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccd8ff;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+#redes-form input:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 4px rgba(0, 123, 255, 0.4);
+  outline: none;
+}
+
+#redes-form button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+#redes-form button:hover {
+  background-color: #0069d9;
+}
+
+/* ----- GALERÍA ----- */
+#galeria {
+  background: white;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+  max-width: 700px;
+  margin: 30px auto;
+  text-align: center;
+}
+
+#galeria h2 {
+  margin-bottom: 20px;
+  color: #222;
+  font-size: 1.6rem;
+}
+
+#galeria-form {
+  margin-bottom: 20px;
+}
+
+#galeria-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 15px;
+  justify-items: center;
+}
+
+.galeria-item {
+  position: relative;
+  width: 150px;
+  height: 150px;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.galeria-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.borrar-btn {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  background: rgba(255, 0, 0, 0.8);
+  border: none;
+  color: white;
+  font-size: 14px;
+  padding: 4px 6px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.borrar-btn:hover {
+  background: rgba(220, 0, 0, 1);
+}
+
 
 /* ----- RESPONSIVE ----- */
 @media (max-width: 900px) {

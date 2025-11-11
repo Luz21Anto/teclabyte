@@ -302,3 +302,39 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 
+// --- Galería ---
+document.addEventListener("DOMContentLoaded", () => {
+  const input = document.getElementById("imagen");
+  const contenedor = document.getElementById("galeria-container");
+
+  if (!input || !contenedor) return; // evita errores si la sección no está visible
+
+  input.addEventListener("change", (event) => {
+    const archivos = event.target.files;
+
+    for (let archivo of archivos) {
+      const lector = new FileReader();
+
+      lector.onload = (e) => {
+        const div = document.createElement("div");
+        div.classList.add("galeria-item");
+
+        const img = document.createElement("img");
+        img.src = e.target.result;
+
+        const btn = document.createElement("button");
+        btn.classList.add("borrar-btn");
+        btn.textContent = "×";
+        btn.addEventListener("click", () => div.remove());
+
+        div.appendChild(img);
+        div.appendChild(btn);
+        contenedor.appendChild(div);
+      };
+
+      lector.readAsDataURL(archivo);
+    }
+
+    input.value = "";
+  });
+});

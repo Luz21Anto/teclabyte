@@ -30,8 +30,9 @@
             <ul class="submenu">
               <li data-seccion="calendario">Calendario</li>
               <li data-seccion="mails">Captura de mails</li>
-              <li data-seccion="clasificacion">Clasificación</li>
-              <li data-seccion="id">ID</li>
+              <li data-seccion="whatsapp">WhatsApp</li>
+              <li data-seccion="redes">Redes sociales</li>
+              <li data-seccion="galeria">Galeria</li>
             </ul>
           </li>
           <li data-seccion="configuracion">Configuración</li>
@@ -216,7 +217,7 @@
       </section>
 
       <section id="mails" class="plugin seccion" style="display:none;">
-        <h2>📩 Captura de mails</h2> completos listos para copiar y reemplazar.
+        <h2>📩 Captura de mails</h2> 
 
         <div class="mails-container">
           <label for="clasificacion">Clasificación:</label>
@@ -241,6 +242,66 @@
           
           <p id="copy-confirm" class="copy-confirm" style="display:none;">✅ ¡Lista copiada al portapapeles!</p>
         </div>
+      </section>
+
+      <section id="whatsapp" class="plugin seccion" style="display:none;">
+        <h2><img class="whatsapp-img" src="../static/images/whatsapp.png" alt="Ícono de WhatsApp"> WhatsApp</h2>
+        <div>
+            <form id="whatsapp-form">
+              <label for="whatsapp-number">Número:</label>
+              <input type="text" id="whatsapp-number" name="number" placeholder="Ej: 5491122334455" required>
+
+              <label for="whatsapp-message">Mensaje:</label>
+              <input type="text" id="whatsapp-message" name="message" placeholder="Ej: Hola, quiero saber más sobre sus servicios.">
+
+              <label>
+                <input type="checkbox" id="whatsapp-active" name="active">
+                Activar WhatsApp
+              </label>
+
+              <button type="submit">Guardar</button>
+            </form>
+        </div>
+      </section>
+
+      <section id="redes" class="plugin seccion" style="display:none;">
+        <h2>Redes Sociales</h2>
+
+        <form id="redes-form">
+          <label for="instagram">Instagram:</label>
+          <input type="text" id="instagram" name="instagram" placeholder="https://instagram.com/tuusuario">
+
+          <label for="x">X (Twitter):</label>
+          <input type="text" id="x" name="x" placeholder="https://x.com/tuusuario">
+
+          <label for="facebook">Facebook:</label>
+          <input type="text" id="facebook" name="facebook" placeholder="https://facebook.com/tuusuario">
+
+          <label for="whatsapp">WhatsApp:</label>
+          <input type="text" id="whatsapp-link" name="whatsapp" placeholder="https://wa.me/549...">
+
+          <label for="tiktok">TikTok:</label>
+          <input type="text" id="tiktok" name="tiktok" placeholder="https://tiktok.com/@tuusuario">
+
+          <label for="youtube">YouTube:</label>
+          <input type="text" id="youtube" name="youtube" placeholder="https://youtube.com/@tuusuario">
+
+          <label for="linkedin">LinkedIn:</label>
+          <input type="text" id="linkedin" name="linkedin" placeholder="https://linkedin.com/in/tuusuario">
+
+          <button type="submit">Guardar</button>
+        </form>
+      </section>
+
+      <section id="galeria" class="plugin seccion" style="display:none;">
+        <h2>Galería de Imágenes</h2>
+
+        <form id="galeria-form">
+          <label for="imagen">Subir imagen:</label>
+          <input type="file" id="imagen" accept="image/*" multiple>
+        </form>
+
+        <div id="galeria-container"></div>
       </section>
 
       <footer class="progress">
