@@ -193,77 +193,108 @@ document.addEventListener('click', (e) => {
   }
 });
 
-// Captura de mails
+//captura de mails
 document.addEventListener("DOMContentLoaded", () => {
   const addMailBtn = document.getElementById("add-mail-btn");
-  const newMailInput = document.getElementById("new-mail");
-  const mailList = document.getElementById("mail-list");
+  const mailInput = document.getElementById("new-mail");
+  const clasificacionInput = document.getElementById("clasificacion");
+  const mailListContainer = document.querySelector(".mail-list");
   const copyBtn = document.getElementById("copy-mails");
-  const openGmailBtn = document.getElementById("open-gmail");
   const copyConfirm = document.getElementById("copy-confirm");
+  const openGmailBtn = document.getElementById("open-gmail");
 
-  // --- Agregar mail ---
+  // Función para crear una sección de clasificación si no existe
+  function getOrCreateList(clasificacion) {
+    let existingSection = mailListContainer.querySelector(
+      `[data-clasificacion="${clasificacion.toLowerCase()}"]`
+    );
+
+    if (!existingSection) {
+      // Crear nuevo bloque
+      const section = document.createElement("div");
+      section.classList.add("mail-section");
+      section.dataset.clasificacion = clasificacion.toLowerCase();
+
+      const title = document.createElement("h3");
+      title.textContent = clasificacion;
+
+      const ul = document.createElement("ul");
+      ul.classList.add("mail-group");
+
+      section.appendChild(title);
+      section.appendChild(ul);
+      mailListContainer.appendChild(section);
+
+      return ul;
+    }
+
+    return existingSection.querySelector("ul");
+  }
+
+  // Agregar mail
   addMailBtn.addEventListener("click", () => {
-    const mail = newMailInput.value.trim();
+    const mail = mailInput.value.trim();
+    const clasificacion = clasificacionInput.value.trim();
 
-    if (mail === "") {
-      alert("Por favor, ingresá un mail antes de agregarlo.");
+    if (!mail || !clasificacion) {
+      alert("Por favor completa la clasificación y el mail.");
       return;
     }
 
-    // Validar formato de email básico
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(mail)) {
-      alert("Ingresá un email válido.");
+    if (!/\S+@\S+\.\S+/.test(mail)) {
+      alert("Por favor ingresa un mail válido.");
       return;
     }
 
-    // Crear nuevo elemento de lista
+    const ul = getOrCreateList(clasificacion);
+
+    // Evita duplicados dentro de la misma clasificación
+    const existingMail = Array.from(ul.querySelectorAll("li")).some(
+      li => li.dataset.mail === mail.toLowerCase()
+    );
+    if (existingMail) {
+      alert("Ese mail ya está en esta clasificación.");
+      return;
+    }
+
+    // Crear elemento del mail
     const li = document.createElement("li");
+    li.dataset.mail = mail.toLowerCase();
     li.textContent = mail;
 
-    // Botón de eliminar (opcional)
-    const removeBtn = document.createElement("button");
-    removeBtn.textContent = "❌";
-    removeBtn.style.marginLeft = "10px";
-    removeBtn.style.cursor = "pointer";
-    removeBtn.addEventListener("click", () => {
-      li.remove();
-    });
+    const deleteBtn = document.createElement("button");
+    deleteBtn.textContent = "❌";
+    deleteBtn.classList.add("delete-mail");
+    deleteBtn.addEventListener("click", () => li.remove());
 
-    li.appendChild(removeBtn);
-    mailList.appendChild(li);
+    li.appendChild(deleteBtn);
+    ul.appendChild(li);
 
-    // Limpiar input
-    newMailInput.value = "";
+    mailInput.value = "";
   });
 
-  // --- Copiar lista de mails ---
-  copyBtn.addEventListener("click", async () => {
-    const mails = [...mailList.querySelectorAll("li")]
-      .map(li => li.firstChild.textContent.trim())
-      .join(", ");
+  // Copiar todos los mails
+  copyBtn.addEventListener("click", () => {
+    const mails = Array.from(document.querySelectorAll(".mail-group li")).map(
+      li => li.dataset.mail
+    );
 
-    if (mails === "") {
+    if (mails.length === 0) {
       alert("No hay mails para copiar.");
       return;
     }
 
-    try {
-      await navigator.clipboard.writeText(mails);
-      copyConfirm.style.display = "block";
-      setTimeout(() => (copyConfirm.style.display = "none"), 2000);
-    } catch (err) {
-      console.error("Error al copiar:", err);
-      alert("No se pudo copiar la lista.");
-    }
+    navigator.clipboard.writeText(mails.join(", "));
+    copyConfirm.style.display = "block";
+    setTimeout(() => (copyConfirm.style.display = "none"), 2000);
   });
 
-  // --- Abrir Gmail ---
+  // Abrir Gmail directamente en modo redacción
   openGmailBtn.addEventListener("click", () => {
-    window.open("https://mail.google.com/mail/u/0/#inbox?compose=new", "_blank");
+    window.open("https://mail.google.com/mail/?view=cm&fs=1&to=", "_blank");
   });
 });
+
 
 // --- Logout ---
 document.addEventListener("DOMContentLoaded", () => {
