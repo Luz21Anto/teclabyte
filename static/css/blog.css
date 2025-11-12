@@ -170,3 +170,39 @@ body {
 
 .tool-font .submenu { display:none; }
 .tool-font.show .submenu { display:flex; flex-direction:column; }
+
+
+.font-submenu li.active {
+  background-color: #8bb3ff;
+  color: white !important;
+  font-weight: bold;
+}
+
+/* Fuente aplicada en el editor */
+.editor-area span[style*="font-family"] {
+  display: inline;
+}
+
+/* Placeholder con fuente base */
+.editor-area:empty::before {
+  font-family: 'Nunito', sans-serif;
+}
+
+/* 🔹 Ver claramente el cambio de fuente */
+.editor-area .custom-font {
+  font-family: inherit;
+}
+
+.editor-sidebar li:focus,
+.editor-sidebar button:focus {
+  outline: none;          /* quita el borde azul */
+  box-shadow: none;       /* por si algún reset o framework aplica sombra */
+}
+
+.editor-sidebar {
+  height: 100vh;          /* ocupa el 100% del alto del viewport */
+  overflow-y: auto;       /* agrega scroll si el contenido es largo */
+  display: flex;
+  flex-direction: column;
+}
+
