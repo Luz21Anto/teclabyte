@@ -130,7 +130,11 @@ body {
 .submenu li:hover { background-color:#66a1ff; }
 
 .tool-aa:hover .submenu { display:flex; }
-.submenu li.active { background-color:#8bb3ff; color:white; }
+.submenu li.active { 
+  background-color:#8bb3ff; 
+  color:white; 
+  font-weight: bold;
+}
 
 .color-picker { margin-left:0.5rem; vertical-align:middle; width:30px; height:25px; border:none; cursor:pointer; }
 

@@ -24,32 +24,71 @@ document.addEventListener("DOMContentLoaded", () => {
   editor.addEventListener("keyup", saveSelection);
   editor.addEventListener("mouseup", saveSelection);
 
-  // -------------------- SUBMENÚ Aa --------------------
-  const toolAa = document.querySelector(".tool-aa");
-  const boldBtn = document.querySelector(".format-bold");
-  const italicBtn = document.querySelector(".format-italic");
+// -------------------- SUBMENÚ Aa --------------------
+const toolAa = document.querySelector(".tool-aa");
+const boldBtn = document.querySelector(".format-bold");
+const italicBtn = document.querySelector(".format-italic");
 
-  toolAa.addEventListener("click", e => {
-    e.stopPropagation();
-    toolAa.classList.toggle("show");
+// Abrir/cerrar menú
+toolAa.addEventListener("click", e => {
+  e.stopPropagation();
+  toolAa.classList.toggle("show");
+});
+
+document.addEventListener("click", e => {
+  if (!toolAa.contains(e.target)) toolAa.classList.remove("show");
+});
+
+// Estados persistentes
+let boldActive = false;
+let italicActive = false;
+
+// Activar/desactivar botones persistentes
+function toggle(button, flagName) {
+  button.addEventListener("mousedown", e => {
+    e.preventDefault();
+    editor.focus();
+
+    // Cambia el estado
+    if (flagName === "bold") boldActive = !boldActive;
+    if (flagName === "italic") italicActive = !italicActive;
+
+    // Toggle visual
+    button.classList.toggle("active");
   });
+}
 
-  document.addEventListener("click", e => {
-    if (!toolAa.contains(e.target)) toolAa.classList.remove("show");
-  });
+toggle(boldBtn, "bold");
+toggle(italicBtn, "italic");
 
-  function applyFormat(button, command) {
-    button.addEventListener("mousedown", e => {
-      e.preventDefault();
-      restoreSelection();
-      document.execCommand(command, false, null);
-      saveSelection();
-      editor.focus();
-    });
+// Aplicar estilos persistentes ANTES de insertar texto
+editor.addEventListener("beforeinput", e => {
+  if (e.inputType === "insertText") {
+    let text = e.data;
+
+    // Evitamos que el navegador inserte el texto
+    e.preventDefault();
+
+    // Creamos un span con los estilos activos
+    const span = document.createElement("span");
+    span.textContent = text;
+
+    if (boldActive) span.style.fontWeight = "bold";
+    if (italicActive) span.style.fontStyle = "italic";
+
+    // Insertamos en la posición del cursor
+    const sel = window.getSelection();
+    const range = sel.getRangeAt(0);
+    range.insertNode(span);
+
+    // Reposicionar cursor después del span
+    range.setStartAfter(span);
+    range.collapse(true);
+    sel.removeAllRanges();
+    sel.addRange(range);
   }
+});
 
-  applyFormat(boldBtn, "bold");
-  applyFormat(italicBtn, "italic");
 
   // -------------------- SUBMENÚ DE FUENTES --------------------
   const fontTool = document.querySelector(".tool-font");

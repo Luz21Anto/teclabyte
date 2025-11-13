@@ -929,6 +929,119 @@ section h2 {
   background: rgba(220, 0, 0, 1);
 }
 
+/* ----- DONACIONES ----- */
+/* === SECCIÓN DONACIONES === */
+#donaciones {
+  padding: 20px;
+}
+
+.donaciones-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background: #f8f8f8;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+/* Select e inputs */
+#donaciones select,
+#donaciones input {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 15px;
+  font-family: inherit;
+  transition: border-color 0.2s;
+}
+
+#donaciones select:focus,
+#donaciones input:focus {
+  outline: none;
+  border-color: #007bff;
+}
+
+/* Botón de guardar/actualizar */
+#add-donacion-btn {
+  padding: 10px 16px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 600;
+  transition: background-color 0.2s;
+}
+
+#add-donacion-btn:hover {
+  background-color: #0056b3;
+}
+
+/* Lista de montos */
+.donaciones-list {
+  margin-top: 20px;
+  background: white;
+  border-radius: 10px;
+  padding: 15px;
+  border: 1px solid #ddd;
+}
+
+.donaciones-list h3 {
+  margin-bottom: 10px;
+  font-size: 18px;
+}
+
+#donaciones-ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+#donaciones-ul li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #f1f1f1;
+  margin-bottom: 8px;
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-size: 15px;
+}
+
+#donaciones-ul li a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+#donaciones-ul li a:hover {
+  text-decoration: underline;
+}
+
+/* Botones de editar y borrar */
+#donaciones-ul button {
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: 17px;
+  margin-left: 5px;
+  transition: transform 0.1s;
+}
+
+#donaciones-ul button:hover {
+  transform: scale(1.15);
+}
+
+#donaciones-ul button.editar {
+  color: #007bff;
+}
+
+#donaciones-ul button.borrar {
+  color: #dc3545;
+}
+
+
 
 /* ----- RESPONSIVE ----- */
 @media (max-width: 900px) {

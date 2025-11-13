@@ -33,6 +33,7 @@
               <li data-seccion="whatsapp">WhatsApp</li>
               <li data-seccion="redes">Redes sociales</li>
               <li data-seccion="galeria">Galeria</li>
+              <li data-seccion="donaciones">Donaciones</li>
             </ul>
           </li>
           <li data-seccion="configuracion">Configuración</li>
@@ -239,6 +240,21 @@
             <button id="copy-mails" class="copy-btn">📋 Copiar lista</button>
             <button id="open-gmail" class="gmail-btn">✉️ Abrir Gmail</button>
           </div>
+
+          <!-- Nueva sección de selección de destinatarios -->
+          <div class="mail-selection">
+            <label for="selection-type">Seleccionar mails:</label>
+            <select id="selection-type">
+              <option value="todos">Todos (sin duplicados)</option>
+              <option value="clasificacion">Por clasificación</option>
+              <option value="manual">Selección manual</option>
+            </select>
+
+            <div id="clasificacion-selector" style="display:none; margin-top:10px;">
+              <label for="clasificacion-select">Elegir clasificación:</label>
+              <select id="clasificacion-select"></select>
+            </div>
+          </div>
           
           <p id="copy-confirm" class="copy-confirm" style="display:none;">✅ ¡Lista copiada al portapapeles!</p>
         </div>
@@ -302,6 +318,34 @@
         </form>
 
         <div id="galeria-container"></div>
+      </section>
+
+      <section id="donaciones" class="plugin seccion" style="display:none;">
+        <h2>💰 Donaciones</h2>
+
+        <div class="donaciones-container">
+          <label for="monto-select">Monto:</label>
+          <select id="monto-select">
+            <option value="1000">$1000</option>
+            <option value="2500">$2500</option>
+            <option value="5000">$5000</option>
+            <option value="10000">$10000</option>
+            <option value="15000">$15000</option>
+            <option value="20000">$20000</option>
+            <option value="personalizado">Personalizado</option>
+          </select>
+
+          <input id="donacion-alias" type="text" placeholder="Alias o nombre (opcional)">
+          <input id="donacion-link" type="url" placeholder="Link de pago (ej. https://mpago.la/xxxx)">
+          <button id="add-donacion-btn">➕ Guardar / Actualizar</button>
+
+          <div class="donaciones-list">
+            <h3>Montos configurados</h3>
+            <ul id="donaciones-ul">
+              <!-- Se llenará dinámicamente -->
+            </ul>
+          </div>
+        </div>
       </section>
 
       <footer class="progress">

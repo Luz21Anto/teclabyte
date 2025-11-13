@@ -202,6 +202,19 @@ document.addEventListener("DOMContentLoaded", () => {
   const copyBtn = document.getElementById("copy-mails");
   const copyConfirm = document.getElementById("copy-confirm");
   const openGmailBtn = document.getElementById("open-gmail");
+  const selectionType = document.getElementById("selection-type");
+  const clasificacionSelector = document.getElementById("clasificacion-selector");
+  const clasificacionSelect = document.getElementById("clasificacion-select");
+
+    // Mostrar u ocultar el selector según el tipo elegido
+  selectionType.addEventListener("change", () => {
+    if (selectionType.value === "clasificacion") {
+      clasificacionSelector.style.display = "block";
+      actualizarClasificaciones(); // Rellenamos el dropdown
+    } else {
+      clasificacionSelector.style.display = "none";
+    }
+  });
 
   // Función para crear una sección de clasificación si no existe
   function getOrCreateList(clasificacion) {
@@ -230,6 +243,21 @@ document.addEventListener("DOMContentLoaded", () => {
 
     return existingSection.querySelector("ul");
   }
+
+  // Cargar dinámicamente las clasificaciones en el select
+  function actualizarClasificaciones() {
+    const secciones = document.querySelectorAll(".mail-section");
+    clasificacionSelect.innerHTML = ""; // limpiar opciones
+
+    secciones.forEach(section => {
+      const nombre = section.dataset.clasificacion;
+      const option = document.createElement("option");
+      option.value = nombre;
+      option.textContent = nombre.charAt(0).toUpperCase() + nombre.slice(1);
+      clasificacionSelect.appendChild(option);
+    });
+  }
+
 
   // Agregar mail
   addMailBtn.addEventListener("click", () => {
@@ -289,12 +317,41 @@ document.addEventListener("DOMContentLoaded", () => {
     setTimeout(() => (copyConfirm.style.display = "none"), 2000);
   });
 
-  // Abrir Gmail directamente en modo redacción
+  // Abrir Gmail con los mails seleccionados
   openGmailBtn.addEventListener("click", () => {
-    window.open("https://mail.google.com/mail/?view=cm&fs=1&to=", "_blank");
-  });
-});
+    let mails = [];
 
+    const allMails = Array.from(document.querySelectorAll(".mail-group li")).map(
+      li => li.dataset.mail
+    );
+
+    if (selectionType.value === "todos") {
+      mails = [...new Set(allMails)]; // todos, sin duplicados
+
+    } else if (selectionType.value === "clasificacion") {
+      const clasifElegida = clasificacionSelect.value.toLowerCase();
+      const section = document.querySelector(`[data-clasificacion="${clasifElegida}"]`);
+      if (section) {
+        mails = Array.from(section.querySelectorAll("li")).map(li => li.dataset.mail);
+      }
+
+    } else if (selectionType.value === "manual") {
+      const seleccionadas = prompt("Ingresá los mails separados por coma (,):");
+      if (seleccionadas) {
+        mails = seleccionadas.split(",").map(m => m.trim());
+      }
+    }
+
+    if (mails.length === 0) {
+      alert("No hay mails seleccionados.");
+      return;
+    }
+
+    const gmailURL = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(mails.join(","))}`;
+    window.open(gmailURL, "_blank");
+  });
+
+});
 
 // --- Logout ---
 document.addEventListener("DOMContentLoaded", () => {
@@ -369,3 +426,68 @@ document.addEventListener("DOMContentLoaded", () => {
     input.value = "";
   });
 });
+
+//Donaciones
+document.addEventListener("DOMContentLoaded", () => {
+  const montoSelect = document.getElementById("monto-select");
+  const aliasInput = document.getElementById("donacion-alias");
+  const linkInput = document.getElementById("donacion-link");
+  const addBtn = document.getElementById("add-donacion-btn");
+  const listContainer = document.getElementById("donaciones-ul");
+
+  // Objeto donde se guardan los links por monto
+  const donaciones = {};
+
+  // Función para actualizar la lista visible
+  function renderDonaciones() {
+    listContainer.innerHTML = "";
+    for (const monto in donaciones) {
+      const li = document.createElement("li");
+      const info = donaciones[monto];
+      li.innerHTML = `
+        <strong>${monto === "personalizado" ? "Personalizado" : "$" + monto}</strong> 
+        - <a href="${info.link}" target="_blank">${info.link}</a>
+        ${info.alias ? ` (Alias: ${info.alias})` : ""}
+        <button class="editar" data-monto="${monto}">✏️ Editar</button>
+        <button class="borrar" data-monto="${monto}">❌</button>
+      `;
+      listContainer.appendChild(li);
+    }
+  }
+
+  // Guardar / actualizar una donación
+  addBtn.addEventListener("click", () => {
+    const monto = montoSelect.value;
+    const alias = aliasInput.value.trim();
+    const link = linkInput.value.trim();
+
+    if (!link) {
+      alert("Por favor, ingresá un link de pago.");
+      return;
+    }
+
+    donaciones[monto] = { alias, link };
+    renderDonaciones();
+    aliasInput.value = "";
+    linkInput.value = "";
+  });
+
+  // Delegación de eventos para editar / borrar
+  listContainer.addEventListener("click", (e) => {
+    const target = e.target;
+    const monto = target.dataset.monto;
+
+    if (target.classList.contains("editar")) {
+      const info = donaciones[monto];
+      montoSelect.value = monto;
+      aliasInput.value = info.alias || "";
+      linkInput.value = info.link;
+    }
+
+    if (target.classList.contains("borrar")) {
+      delete donaciones[monto];
+      renderDonaciones();
+    }
+  });
+});
+
