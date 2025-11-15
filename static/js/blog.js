@@ -46,17 +46,36 @@ let italicActive = false;
 // Activar/desactivar botones persistentes
 function toggle(button, flagName) {
   button.addEventListener("mousedown", e => {
-    e.preventDefault();
-    editor.focus();
+    e.preventDefault();   
+    restoreSelection();
 
-    // Cambia el estado
-    if (flagName === "bold") boldActive = !boldActive;
-    if (flagName === "italic") italicActive = !italicActive;
+    if (flagName === "bold") {
+        boldActive = !boldActive;
 
-    // Toggle visual
+        // Si se desactiva negrita → separar el cursor del span anterior
+        if (!boldActive) {
+            const sel = window.getSelection();
+            const range = sel.getRangeAt(0);
+
+            const separator = document.createTextNode("");
+            range.insertNode(separator);
+
+            range.setStartAfter(separator);
+            range.collapse(true);
+
+            sel.removeAllRanges();
+            sel.addRange(range);
+        }
+    }
+
+    if (flagName === "italic") {
+        italicActive = !italicActive;
+    }
+
     button.classList.toggle("active");
   });
 }
+
 
 toggle(boldBtn, "bold");
 toggle(italicBtn, "italic");
@@ -259,101 +278,123 @@ editor.addEventListener("beforeinput", e => {
     });
   });
 
-  // -------------------- IMAGEN --------------------
-  const imageTool = document.querySelector(".tool-image");
-  const imageInput = document.createElement("input");
-  imageInput.type = "file";
-  imageInput.accept = "image/*";
-  imageInput.style.display = "none";
-  document.body.appendChild(imageInput);
+ // -------------------- IMAGEN --------------------
+const imageTool = document.querySelector(".tool-image");
+const imageInput = document.createElement("input");
+imageInput.type = "file";
+imageInput.accept = "image/*";
+imageInput.style.display = "none";
+document.body.appendChild(imageInput);
 
-  imageTool.addEventListener("click", () => imageInput.click());
+imageTool.addEventListener("mousedown", e => {
+  e.preventDefault();  // evita perder el rango dentro del editor
+  restoreSelection();   // vuelve a la selección exacta donde escribir
+  imageInput.click();
+});
 
-  imageInput.addEventListener("change", e => {
-    const file = e.target.files[0];
-    if (!file) return;
+imageInput.addEventListener("change", e => {
+  const file = e.target.files[0];
+  if (!file) return;
 
-    const reader = new FileReader();
-    reader.onload = ev => {
-      restoreSelection();
+  const reader = new FileReader();
+  reader.onload = ev => {
+    restoreSelection();
 
-      const wrapper = document.createElement("div");
-      wrapper.classList.add("image-wrapper");
-      wrapper.style.position = "relative";
+    const wrapper = document.createElement("div");
+    wrapper.classList.add("image-wrapper");
+    wrapper.style.position = "relative";
 
-      const img = document.createElement("img");
-      img.src = ev.target.result;
-      img.alt = "Imagen insertada";
-      img.style.width = "100%";
-      img.style.height = "auto";
+    // 🔥 NECESARIO → evita que el editor capture clics
+    wrapper.contentEditable = "false";
 
-      const handle = document.createElement("div");
-      handle.classList.add("resize-handle");
+    const img = document.createElement("img");
+    img.src = ev.target.result;
+    img.alt = "Imagen insertada";
+    img.style.width = "100%";
+    img.style.height = "auto";
 
-      wrapper.appendChild(img);
-      wrapper.appendChild(handle);
+    const handle = document.createElement("div");
+    handle.classList.add("resize-handle");
+    handle.style.pointerEvents = "auto";
+    handle.style.cursor = "nwse-resize";
+    handle.contentEditable = "false";
 
-      const sel = window.getSelection();
-      if (sel.rangeCount > 0) {
-        const range = sel.getRangeAt(0);
-        range.collapse(false);
-        range.insertNode(wrapper);
-        range.setStartAfter(wrapper);
-        range.setEndAfter(wrapper);
-        sel.removeAllRanges();
-        sel.addRange(range);
-      } else {
-        editor.appendChild(wrapper);
-      }
+    wrapper.appendChild(img);
+    wrapper.appendChild(handle);
 
-      activateResize(wrapper, img, handle);
-      imageInput.value = "";
-      saveSelection();
-      editor.focus();
-    };
-    reader.readAsDataURL(file);
+    const sel = window.getSelection();
+    if (sel.rangeCount > 0) {
+      const range = sel.getRangeAt(0);
+      range.collapse(false);
+      range.insertNode(wrapper);
+
+      // 🔥 SEPARADOR PARA POSICIONAR EL CURSOR BIEN
+      const separator = document.createTextNode("");
+
+      // 🔥 NECESARIO → hace que el cursor pueda colocarse acá
+      separator.contentEditable = "true";
+
+      wrapper.after(separator);
+
+      // Mover el cursor después del separador
+      range.setStartAfter(separator);
+      range.collapse(true);
+      sel.removeAllRanges();
+      sel.addRange(range);
+
+    } else {
+      editor.appendChild(wrapper);
+    }
+
+    activateResize(wrapper, img, handle);
+    imageInput.value = "";
+    saveSelection();
+    editor.focus();
+  };
+  reader.readAsDataURL(file);
+});
+
+function activateResize(wrapper, img, handle) {
+  let isResizing = false;
+  let startX, startY, startWidth, startHeight, aspectRatio;
+
+  handle.addEventListener("mousedown", e => {
+    e.preventDefault();
+    e.stopPropagation();
+    isResizing = true;
+
+    startX = e.clientX;
+    startY = e.clientY;
+    const rect = wrapper.getBoundingClientRect();
+    startWidth = rect.width;
+    startHeight = rect.height;
+    aspectRatio = startWidth / startHeight;
+
+    document.body.style.userSelect = "none";
   });
 
-  function activateResize(wrapper, img, handle) {
-    let isResizing = false;
-    let startX, startY, startWidth, startHeight, aspectRatio;
+  document.addEventListener("mousemove", e => {
+    if (!isResizing) return;
 
-    handle.addEventListener("mousedown", e => {
-      e.preventDefault();
-      e.stopPropagation();
-      isResizing = true;
+    const deltaX = e.clientX - startX;
+    const newWidth = startWidth + deltaX;
+    const newHeight = newWidth / aspectRatio;
 
-      startX = e.clientX;
-      startY = e.clientY;
-      const rect = wrapper.getBoundingClientRect();
-      startWidth = rect.width;
-      startHeight = rect.height;
-      aspectRatio = startWidth / startHeight;
+    wrapper.style.width = newWidth + "px";
+    wrapper.style.height = newHeight + "px";
+    img.style.width = "100%";
+    img.style.height = "100%";
+    img.style.objectFit = "contain";
+  });
 
-      document.body.style.userSelect = "none";
-    });
+  document.addEventListener("mouseup", () => {
+    if (isResizing) {
+      isResizing = false;
+      document.body.style.userSelect = "";
+    }
+  });
+}
 
-    document.addEventListener("mousemove", e => {
-      if (!isResizing) return;
-
-      const deltaX = e.clientX - startX;
-      const newWidth = startWidth + deltaX;
-      const newHeight = newWidth / aspectRatio;
-
-      wrapper.style.width = newWidth + "px";
-      wrapper.style.height = newHeight + "px";
-      img.style.width = "100%";
-      img.style.height = "100%";
-      img.style.objectFit = "contain";
-    });
-
-    document.addEventListener("mouseup", () => {
-      if (isResizing) {
-        isResizing = false;
-        document.body.style.userSelect = "";
-      }
-    });
-  }
 
   // -------------------- MENÚ ACTIVO --------------------
   menuItems.forEach(item => {
