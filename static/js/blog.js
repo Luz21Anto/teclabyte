@@ -109,82 +109,100 @@ editor.addEventListener("beforeinput", e => {
 });
 
 
-  // -------------------- SUBMENÚ DE FUENTES --------------------
-  const fontTool = document.querySelector(".tool-font");
-  const fontItems = document.querySelectorAll(".font-submenu li");
+// -------------------- SUBMENÚ DE FUENTES --------------------
+const fontTool = document.querySelector(".tool-font");
+const fontItems = document.querySelectorAll(".font-submenu li");
 
-  // Mostrar submenú al pasar el mouse
-  fontTool.addEventListener("mouseenter", () => fontTool.classList.add("show"));
-  fontTool.addEventListener("mouseleave", () => fontTool.classList.remove("show"));
+// Abrir/cerrar submenú por hover (tu lógica original)
+fontTool.addEventListener("mouseenter", () => fontTool.classList.add("show"));
+fontTool.addEventListener("mouseleave", () => fontTool.classList.remove("show"));
 
-  let currentFont = "'Nunito', sans-serif";
+let currentFont = "'Nunito', sans-serif";
 
-  fontItems.forEach(item => {
-    item.addEventListener("mousedown", e => {
-      e.preventDefault();
-      e.stopPropagation();
+// Aplicar fuente al texto seleccionado o futura escritura
+fontItems.forEach(item => {
+  item.addEventListener("click", e => {     // 👈 CAMBIADO A CLICK
+    e.preventDefault();                     
 
-      // Marcar como activa
-      fontItems.forEach(i => i.classList.remove("active"));
-      item.classList.add("active");
+    // Marcar como activa
+    fontItems.forEach(i => i.classList.remove("active"));
+    item.classList.add("active");
 
-      const font = item.getAttribute("data-font");
-      currentFont = font;
-      restoreSelection();
+    const font = item.getAttribute("data-font");
+    currentFont = font;
 
-      const selection = window.getSelection();
-      if (!selection.rangeCount) return;
-      const range = selection.getRangeAt(0);
-
-      if (!range.collapsed) {
-        const span = document.createElement("span");
-        span.style.fontFamily = font;
-        range.surroundContents(span);
-      } else {
-        const placeholder = document.createElement("span");
-        placeholder.style.fontFamily = font;
-        placeholder.appendChild(document.createTextNode("\u200B"));
-        range.insertNode(placeholder);
-        const newRange = document.createRange();
-        newRange.setStart(placeholder.firstChild, 1);
-        newRange.collapse(true);
-        selection.removeAllRanges();
-        selection.addRange(newRange);
-      }
-
-      saveSelection();
-      editor.focus();
-    });
-  });
-
-  // Aplicar automáticamente la fuente activa al escribir
-  editor.addEventListener("beforeinput", e => {
     restoreSelection();
-  });
 
-  editor.addEventListener("input", () => {
     const sel = window.getSelection();
-    if (!sel.rangeCount) return;
-    const range = sel.getRangeAt(0);
-    const node = range.startContainer.parentElement;
-    if (node && node === editor) {
-      const span = document.createElement("span");
-      span.style.fontFamily = currentFont;
-      range.surroundContents(span);
-    }
-    saveSelection();
-  });
 
-  // -------------------- COLOR --------------------
-  const colorPicker = document.querySelector(".color-picker");
-  if (colorPicker) {
-    colorPicker.addEventListener("input", e => {
-      restoreSelection();
-      document.execCommand("foreColor", false, e.target.value);
-      saveSelection();
-      editor.focus();
-    });
-  }
+    // Caso 1 — texto seleccionado
+    if (sel && !sel.isCollapsed) {
+      document.execCommand("fontName", false, font);
+    }
+
+    // Caso 2 — sin selección → insertar span invisible para continuar con esa fuente
+    else if (sel.rangeCount > 0) {
+      const range = sel.getRangeAt(0);
+
+      const span = document.createElement("span");
+      span.style.fontFamily = font;
+      span.appendChild(document.createTextNode("\u200B")); // invisible
+
+      range.insertNode(span);
+
+      // mover el cursor dentro del span
+      const newRange = document.createRange();
+      newRange.setStart(span.firstChild, 1);
+      newRange.collapse(true);
+
+      sel.removeAllRanges();
+      sel.addRange(newRange);
+    }
+
+    saveSelection();
+    editor.focus();
+  });
+});
+
+// -------------------- COLOR --------------------
+const colorPicker = document.querySelector(".color-picker");
+
+if (colorPicker) {
+  colorPicker.addEventListener("input", e => {
+    const color = e.target.value;
+    restoreSelection();
+
+    const sel = window.getSelection();
+
+    // CASO 1 — Hay texto seleccionado → colorear
+    if (sel && !sel.isCollapsed) {
+      document.execCommand("foreColor", false, color);
+    }
+
+    // CASO 2 — NO hay selección → insertar span invisible
+    // que deja configurado el color para lo que se escriba después
+    else if (sel.rangeCount > 0) {
+      const range = sel.getRangeAt(0);
+
+      const span = document.createElement("span");
+      span.style.color = color;
+      span.appendChild(document.createTextNode("\u200B")); // cursor vivo
+
+      range.insertNode(span);
+
+      // Colocar cursor dentro del span (para continuar escribiendo con ese color)
+      const newRange = document.createRange();
+      newRange.setStart(span.firstChild, 1);
+      newRange.collapse(true);
+
+      sel.removeAllRanges();
+      sel.addRange(newRange);
+    }
+
+    saveSelection();
+    editor.focus();
+  });
+}
 
   // -------------------- LINK --------------------
   const linkTool = document.querySelector(".tool-link");
@@ -272,7 +290,7 @@ editor.addEventListener("beforeinput", e => {
     btn.addEventListener("mousedown", e => {
       e.preventDefault();
       restoreSelection();
-      document.execCommand("formatBlock", false, tag);
+      document.execCommand("formatBlock", false, `<${tag}>`);
       saveSelection();
       editor.focus();
     });
@@ -304,7 +322,7 @@ imageInput.addEventListener("change", e => {
     wrapper.classList.add("image-wrapper");
     wrapper.style.position = "relative";
 
-    // 🔥 NECESARIO → evita que el editor capture clics
+    // NECESARIO → evita que el editor capture clics
     wrapper.contentEditable = "false";
 
     const img = document.createElement("img");
@@ -395,22 +413,10 @@ function activateResize(wrapper, img, handle) {
   });
 }
 
-
-  // -------------------- MENÚ ACTIVO --------------------
-  menuItems.forEach(item => {
-    if (!['tool-aa', 'format-bold', 'format-italic', 'tool-color'].some(cls => item.classList.contains(cls))) {
-      item.addEventListener("click", () => {
-        menuItems.forEach(i => i.classList.remove("active"));
-        item.classList.add("active");
-      });
-    }
-  });
-
   // -------------------- TOGGLE MENÚ MÓVIL --------------------
   menuToggle.addEventListener("click", () => {
     sidebar.classList.toggle("show");
   });
-});
 
 document.getElementById("publicarBtn").addEventListener("click", () => {
   const editorContent = document.getElementById("editor").innerHTML;
@@ -425,4 +431,15 @@ document.getElementById("publicarBtn").addEventListener("click", () => {
 
   localStorage.setItem("miArticuloGuardado", JSON.stringify(articulo));
   window.location.href = "post.html";
+});
+});
+
+// -------------------- PEGAR COMO TEXTO PLANO --------------------
+editor.addEventListener("paste", e => {
+  e.preventDefault(); // evita que pegue con estilos
+
+  const text = (e.clipboardData || window.clipboardData).getData("text/plain");
+
+  // Inserta el texto en la posición del cursor
+  document.execCommand("insertText", false, text);
 });
