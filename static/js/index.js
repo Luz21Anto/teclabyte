@@ -206,24 +206,24 @@ document.addEventListener("DOMContentLoaded", () => {
   const clasificacionSelector = document.getElementById("clasificacion-selector");
   const clasificacionSelect = document.getElementById("clasificacion-select");
 
-    // Mostrar u ocultar el selector según el tipo elegido
+  // Mostrar u ocultar selector según el tipo elegido
   selectionType.addEventListener("change", () => {
     if (selectionType.value === "clasificacion") {
       clasificacionSelector.style.display = "block";
-      actualizarClasificaciones(); // Rellenamos el dropdown
+      actualizarClasificaciones(); 
     } else {
       clasificacionSelector.style.display = "none";
     }
   });
 
-  // Función para crear una sección de clasificación si no existe
+  // Crear sección si no existe
   function getOrCreateList(clasificacion) {
     let existingSection = mailListContainer.querySelector(
       `[data-clasificacion="${clasificacion.toLowerCase()}"]`
     );
 
     if (!existingSection) {
-      // Crear nuevo bloque
+      // crear nueva sección
       const section = document.createElement("div");
       section.classList.add("mail-section");
       section.dataset.clasificacion = clasificacion.toLowerCase();
@@ -244,10 +244,10 @@ document.addEventListener("DOMContentLoaded", () => {
     return existingSection.querySelector("ul");
   }
 
-  // Cargar dinámicamente las clasificaciones en el select
+  // Actualizar dropdown de clasificaciones
   function actualizarClasificaciones() {
     const secciones = document.querySelectorAll(".mail-section");
-    clasificacionSelect.innerHTML = ""; // limpiar opciones
+    clasificacionSelect.innerHTML = "";
 
     secciones.forEach(section => {
       const nombre = section.dataset.clasificacion;
@@ -257,7 +257,6 @@ document.addEventListener("DOMContentLoaded", () => {
       clasificacionSelect.appendChild(option);
     });
   }
-
 
   // Agregar mail
   addMailBtn.addEventListener("click", () => {
@@ -276,7 +275,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const ul = getOrCreateList(clasificacion);
 
-    // Evita duplicados dentro de la misma clasificación
+    // Evitar duplicados dentro de la misma clasificación
     const existingMail = Array.from(ul.querySelectorAll("li")).some(
       li => li.dataset.mail === mail.toLowerCase()
     );
@@ -285,7 +284,7 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    // Crear elemento del mail
+    // crear mail
     const li = document.createElement("li");
     li.dataset.mail = mail.toLowerCase();
     li.textContent = mail;
@@ -301,7 +300,7 @@ document.addEventListener("DOMContentLoaded", () => {
     mailInput.value = "";
   });
 
-  // Copiar todos los mails
+  // Copiar mails
   copyBtn.addEventListener("click", () => {
     const mails = Array.from(document.querySelectorAll(".mail-group li")).map(
       li => li.dataset.mail
@@ -317,7 +316,7 @@ document.addEventListener("DOMContentLoaded", () => {
     setTimeout(() => (copyConfirm.style.display = "none"), 2000);
   });
 
-  // Abrir Gmail con los mails seleccionados
+  // Abrir Gmail
   openGmailBtn.addEventListener("click", () => {
     let mails = [];
 
@@ -326,19 +325,17 @@ document.addEventListener("DOMContentLoaded", () => {
     );
 
     if (selectionType.value === "todos") {
-      mails = [...new Set(allMails)]; // todos, sin duplicados
+      mails = [...new Set(allMails)];
 
     } else if (selectionType.value === "clasificacion") {
       const clasifElegida = clasificacionSelect.value.toLowerCase();
-      const section = document.querySelector(`[data-clasificacion="${clasifElegida}"]`);
+      const section = document.querySelector(
+        `[data-clasificacion="${clasifElegida}"]`
+      );
       if (section) {
-        mails = Array.from(section.querySelectorAll("li")).map(li => li.dataset.mail);
-      }
-
-    } else if (selectionType.value === "manual") {
-      const seleccionadas = prompt("Ingresá los mails separados por coma (,):");
-      if (seleccionadas) {
-        mails = seleccionadas.split(",").map(m => m.trim());
+        mails = Array.from(section.querySelectorAll("li")).map(
+          li => li.dataset.mail
+        );
       }
     }
 
@@ -347,10 +344,11 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    const gmailURL = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(mails.join(","))}`;
+    const gmailURL = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(
+      mails.join(",")
+    )}`;
     window.open(gmailURL, "_blank");
   });
-
 });
 
 // --- Logout ---
@@ -427,61 +425,60 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 
-//Donaciones
+// Donaciones
 document.addEventListener("DOMContentLoaded", () => {
   const montoSelect = document.getElementById("monto-select");
-  const aliasInput = document.getElementById("donacion-alias");
   const linkInput = document.getElementById("donacion-link");
+  const aliasGlobalInput = document.getElementById("alias-global");
   const addBtn = document.getElementById("add-donacion-btn");
   const listContainer = document.getElementById("donaciones-ul");
 
-  // Objeto donde se guardan los links por monto
+  let aliasGlobal = "";
   const donaciones = {};
 
-  // Función para actualizar la lista visible
+  aliasGlobalInput.addEventListener("input", e => {
+    aliasGlobal = e.target.value.trim();
+  });
+
   function renderDonaciones() {
     listContainer.innerHTML = "";
     for (const monto in donaciones) {
+      const link = donaciones[monto];
+
       const li = document.createElement("li");
-      const info = donaciones[monto];
       li.innerHTML = `
         <strong>${monto === "personalizado" ? "Personalizado" : "$" + monto}</strong> 
-        - <a href="${info.link}" target="_blank">${info.link}</a>
-        ${info.alias ? ` (Alias: ${info.alias})` : ""}
+        - <a href="${link}" target="_blank">${link}</a>
         <button class="editar" data-monto="${monto}">✏️ Editar</button>
         <button class="borrar" data-monto="${monto}">❌</button>
       `;
+
       listContainer.appendChild(li);
     }
   }
 
-  // Guardar / actualizar una donación
   addBtn.addEventListener("click", () => {
     const monto = montoSelect.value;
-    const alias = aliasInput.value.trim();
     const link = linkInput.value.trim();
 
     if (!link) {
-      alert("Por favor, ingresá un link de pago.");
+      alert("Por favor ingresá un link de pago.");
       return;
     }
 
-    donaciones[monto] = { alias, link };
+    donaciones[monto] = link;
     renderDonaciones();
-    aliasInput.value = "";
     linkInput.value = "";
   });
 
-  // Delegación de eventos para editar / borrar
+  // Delegación de eventos (sí va acá adentro)
   listContainer.addEventListener("click", (e) => {
     const target = e.target;
     const monto = target.dataset.monto;
 
     if (target.classList.contains("editar")) {
-      const info = donaciones[monto];
+      linkInput.value = donaciones[monto];
       montoSelect.value = monto;
-      aliasInput.value = info.alias || "";
-      linkInput.value = info.link;
     }
 
     if (target.classList.contains("borrar")) {
@@ -490,4 +487,3 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 });
-
