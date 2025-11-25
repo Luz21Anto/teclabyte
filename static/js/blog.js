@@ -69,56 +69,112 @@ document.addEventListener("DOMContentLoaded", () => {
   editor.addEventListener("mouseup", updateButtonStates);
 });
 
-  // -------------------- SUBMENÚ DE FUENTES --------------------
-  const fontTool = document.querySelector(".tool-font");
-  const fontItems = document.querySelectorAll(".font-submenu li");
 
-  if (fontTool) {
-    fontTool.addEventListener("mouseenter", () => fontTool.classList.add("show"));
-    fontTool.addEventListener("mouseleave", () => fontTool.classList.remove("show"));
+// -------------------- VARIABLES --------------------
+const fontTool = document.querySelector(".tool-font");
+const fontItems = document.querySelectorAll(".font-submenu li");
+const editor = document.getElementById("editor");
+
+let currentFont = "";       // Fuente activa
+let savedSelection = null;  // Para guardar/restaurar selección
+
+// -------------------- GUARDAR/RESTAURAR SELECCIÓN --------------------
+function saveSelection() {
+  const sel = window.getSelection();
+  if (sel.rangeCount > 0) savedSelection = sel.getRangeAt(0).cloneRange();
+}
+
+function restoreSelection() {
+  if (savedSelection) {
+    const sel = window.getSelection();
+    sel.removeAllRanges();
+    sel.addRange(savedSelection.cloneRange());
   }
+}
 
-  let currentFont = "'Nunito', sans-serif";
+// Guardamos selección al mover el cursor o seleccionar texto
+editor.addEventListener("keyup", saveSelection);
+editor.addEventListener("mouseup", saveSelection);
 
-  // Aplicar fuente al texto seleccionado o futura escritura
-  fontItems.forEach(item => {
-    item.addEventListener("click", e => {
-      e.preventDefault();
+// -------------------- SUBMENÚ DE FUENTES --------------------
+if (fontTool) {
+  fontTool.addEventListener("mouseenter", () => fontTool.classList.add("show"));
+  fontTool.addEventListener("mouseleave", () => fontTool.classList.remove("show"));
+}
 
-      fontItems.forEach(i => i.classList.remove("active"));
-      item.classList.add("active");
+// -------------------- CAMBIO DE FUENTE --------------------
+fontItems.forEach(item => {
+  item.addEventListener("click", () => {
+    // Actualizar visualmente
+    fontItems.forEach(i => i.classList.remove("selected"));
+    item.classList.add("selected");
 
-      const font = item.getAttribute("data-font");
-      currentFont = font;
+    currentFont = item.dataset.font;
 
-      restoreSelection();
-      const sel = window.getSelection();
+    // Restaurar la selección para no mover el cursor
+    restoreSelection();
 
-      if (sel && !sel.isCollapsed) {
-        document.execCommand("fontName", false, font);
-      } else if (sel.rangeCount > 0) {
-        // Insertar un span visible con un espacio y aplicar la fuente, luego posicionar el cursor dentro
-        const range = sel.getRangeAt(0);
-        const span = document.createElement("span");
-        span.style.fontFamily = font;
-        span.appendChild(document.createTextNode(" "));
+    // Aplicar la fuente al texto seleccionado si hay
+    applyFontToSelection(currentFont);
 
-        range.insertNode(span);
-
-        // mover el cursor dentro del span (después del espacio)
-        const newRange = document.createRange();
-        newRange.setStart(span.firstChild, 1);
-        newRange.collapse(true);
-
-        sel.removeAllRanges();
-        sel.addRange(newRange);
-        savedSelection = newRange.cloneRange();
-      }
-
-      saveSelection();
-      editor.focus();
-    });
+    editor.focus();
   });
+});
+
+// -------------------- FUNCIONES --------------------
+
+// Aplica fuente al texto seleccionado
+function applyFontToSelection(font) {
+  const selection = window.getSelection();
+  if (!selection.rangeCount) return;
+
+  const range = selection.getRangeAt(0);
+
+  if (!selection.isCollapsed) {
+    const span = document.createElement("span");
+    span.style.fontFamily = font;
+
+    // Extraemos el contenido seleccionado y lo insertamos en el span
+    span.appendChild(range.extractContents());
+    range.insertNode(span);
+
+    // Mantener la selección dentro del span
+    selection.removeAllRanges();
+    const newRange = document.createRange();
+    newRange.selectNodeContents(span);
+    selection.addRange(newRange);
+  }
+}
+
+// -------------------- TEXTO FUTURO --------------------
+editor.addEventListener("keydown", (e) => {
+  if (!currentFont) return;
+
+  const selection = window.getSelection();
+  if (!selection.rangeCount) return;
+
+  // Solo actuamos si el cursor está colapsado (sin texto seleccionado)
+  if (selection.isCollapsed) {
+    const range = selection.getRangeAt(0);
+    let container = selection.anchorNode;
+
+    // Si estamos en el editor directamente o el nodo padre no tiene la fuente
+    if (container === editor || container.nodeType !== Node.TEXT_NODE || container.parentNode.style.fontFamily !== currentFont) {
+      const span = document.createElement("span");
+      span.style.fontFamily = currentFont;
+      span.appendChild(document.createTextNode("\u200B")); // zero-width space
+
+      range.insertNode(span);
+
+      // Mover cursor dentro del span
+      const newRange = document.createRange();
+      newRange.setStart(span.firstChild, 1);
+      newRange.collapse(true);
+      selection.removeAllRanges();
+      selection.addRange(newRange);
+    }
+  }
+});
 
   // -------------------- COLOR --------------------
   const colorPicker = document.querySelector(".color-picker");
