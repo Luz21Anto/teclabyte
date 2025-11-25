@@ -176,38 +176,69 @@ editor.addEventListener("keydown", (e) => {
   }
 });
 
-  // -------------------- COLOR --------------------
-  const colorPicker = document.querySelector(".color-picker");
-
-  if (colorPicker) {
-    colorPicker.addEventListener("input", e => {
-      const color = e.target.value;
-      restoreSelection();
-      const sel = window.getSelection();
-
-      if (sel && !sel.isCollapsed) {
-        document.execCommand("foreColor", false, color);
-      } else if (sel.rangeCount > 0) {
-        const range = sel.getRangeAt(0);
-        const span = document.createElement("span");
-        span.style.color = color;
-        span.appendChild(document.createTextNode(" "));
-
-        range.insertNode(span);
-
-        const newRange = document.createRange();
-        newRange.setStart(span.firstChild, 1);
-        newRange.collapse(true);
-
-        sel.removeAllRanges();
-        sel.addRange(newRange);
-        savedSelection = newRange.cloneRange();
-      }
-
-      saveSelection();
-      editor.focus();
-    });
+// -------------------- COLOR --------------------
+// Guardar selección real del usuario
+function saveSelection() {
+  const sel = window.getSelection();
+  if (sel && sel.rangeCount > 0) {
+    savedSelection = sel.getRangeAt(0).cloneRange();
   }
+}
+
+// Reconstruir objeto Selection desde savedSelection
+function applyRange(range) {
+  const sel = window.getSelection();
+  sel.removeAllRanges();
+  sel.addRange(range);
+}
+
+// Guardamos selección cuando el usuario realmente selecciona texto
+editor.addEventListener("mouseup", saveSelection);
+editor.addEventListener("keyup", saveSelection);
+
+
+// ===================== COLOR PICKER =====================
+const colorPicker = document.querySelector(".color-picker");
+
+if (colorPicker) {
+  colorPicker.addEventListener("input", e => {
+    const color = e.target.value;
+
+    // -------------------------
+    // CASO 1: hay texto seleccionado previamente
+    // -------------------------
+    if (savedSelection && !savedSelection.collapsed) {
+
+      // restauramos sin pedir al navegador la selección actual
+      applyRange(savedSelection.cloneRange());
+
+      document.execCommand("foreColor", false, color);
+
+      // guardar nueva selección
+      saveSelection();
+      return;
+    }
+
+    // -------------------------
+    // CASO 2: texto futuro
+    // -------------------------
+    editor.focus();
+
+    // Si no había selección, creamos un rango al final
+    const sel = window.getSelection();
+    if (sel.rangeCount === 0) {
+      const r = document.createRange();
+      r.selectNodeContents(editor);
+      r.collapse(false);
+      sel.addRange(r);
+      savedSelection = r.cloneRange();
+    }
+
+    document.execCommand("foreColor", false, color);
+
+    saveSelection();
+  });
+}
 
   // -------------------- LINK --------------------
   const linkTool = document.querySelector(".tool-link");
