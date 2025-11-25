@@ -24,182 +24,49 @@ document.addEventListener("DOMContentLoaded", () => {
   editor.addEventListener("keyup", saveSelection);
   editor.addEventListener("mouseup", saveSelection);
 
-// -------------------- SUBMENÚ Aa --------------------
-const toolAa = document.querySelector(".tool-aa");
-const boldBtn = document.querySelector(".format-bold");
-const italicBtn = document.querySelector(".format-italic");
+ // ---------------------- NEGRITA / CURSIVA --------------------
+  const boldBtn = document.querySelector(".format-bold");
+  const italicBtn = document.querySelector(".format-italic");
+  const toolAa = document.querySelector(".tool-aa");
 
-// Abrir/cerrar menú
-if (toolAa) {
-  toolAa.addEventListener("click", e => {
-    e.stopPropagation();
+  // --- Mostrar/Ocultar submenú Aa ---
+  toolAa.addEventListener("click", (e) => {
+    e.stopPropagation(); // Evita que el clic cierre el submenú inmediatamente
     toolAa.classList.toggle("show");
   });
 
-  document.addEventListener("click", e => {
-    if (!toolAa.contains(e.target)) toolAa.classList.remove("show");
+  // Cerrar submenú si se hace clic fuera
+  document.addEventListener("click", () => {
+    toolAa.classList.remove("show");
   });
-}
 
-// Estados persistentes
-let boldActive = false;
-let italicActive = false;
-
-// Activar/desactivar botones persistentes
-function toggle(button, flagName) {
-  if (!button) return;
-  button.addEventListener("mousedown", e => {
-    e.preventDefault();
-    restoreSelection();
-
-    const sel = window.getSelection();
-    if (!sel || sel.rangeCount === 0) return;
-    const range = sel.getRangeAt(0);
-
-    if (flagName === "bold") boldActive = !boldActive;
-    if (flagName === "italic") italicActive = !italicActive;
-
-    // Si se desactivó un estilo, asegurarse de que el caret salga del span antiguo
-    const spanCheck = findParentWithStyle(range.startContainer, {
-      fontWeight: boldActive ? "bold" : "",
-      fontStyle: italicActive ? "italic" : "",
-    });
-    if (spanCheck && (!boldActive && spanCheck.style.fontWeight === "bold") || (!italicActive && spanCheck.style.fontStyle === "italic")) {
-      moveCaretAfterNode(spanCheck, sel);
-    }
-
-    button.classList.toggle("active");
-    saveSelection();
+  // --- NEGRITA ---
+  boldBtn.addEventListener("click", () => {
+    restoreSelection();                 // <-- Restauramos la selección
+    document.execCommand("bold", false, null);
+    saveSelection();                    // <-- Guardamos la selección actualizada
     editor.focus();
+    updateButtonStates();
   });
-}
 
-toggle(boldBtn, "bold");
-toggle(italicBtn, "italic");
+  // --- CURSIVA ---
+  italicBtn.addEventListener("click", () => {
+    restoreSelection();                 // <-- Restauramos la selección
+    document.execCommand("italic", false, null);
+    saveSelection();                    // <-- Guardamos la selección actualizada
+    editor.focus();
+    updateButtonStates();
+  });
 
-// -------------------- FUNCIONES AUXILIARES --------------------
-function findParentWithStyle(node, styleObj) {
-  while (node && node !== editor) {
-    if (node.nodeType === Node.ELEMENT_NODE && node.tagName === "SPAN") {
-      let match = true;
-      for (let key in styleObj) {
-        if (styleObj[key] && node.style[key] !== styleObj[key]) match = false;
-      }
-      if (match) return node;
-    }
-    node = node.parentNode;
-  }
-  return null;
-}
-
-function moveCaretAfterNode(node, sel) {
-  const range = document.createRange();
-  const textNode = document.createTextNode("");
-  node.parentNode.insertBefore(textNode, node.nextSibling);
-  range.setStart(textNode, 0);
-  range.collapse(true);
-  sel.removeAllRanges();
-  sel.addRange(range);
-}
-
-// -------------------- BEFOREINPUT --------------------
-function sameStyle(a, b) {
-  if (!a || !b) return false;
-  return (a.style.fontWeight || "") === (b.fontWeight || b.style?.fontWeight || "") &&
-         (a.style.fontStyle || "") === (b.fontStyle || b.style?.fontStyle || "") &&
-         (a.style.fontFamily || "") === (b.fontFamily || b.style?.fontFamily || "") &&
-         (a.style.color || "") === (b.color || b.style?.color || "");
-}
-
-editor.addEventListener("beforeinput", e => {
-  const sel = window.getSelection();
-  if (!sel || sel.rangeCount === 0) return;
-  const range = sel.getRangeAt(0);
-
-  // -------------------- ENTER --------------------
-  if (e.inputType === "insertParagraph") {
-    e.preventDefault();
-
-    const p = document.createElement("p");
-    p.innerHTML = "<br>";
-
-    let block = range.startContainer;
-    while (block && block !== editor && !/P|DIV|LI/.test(block.tagName)) {
-      block = block.parentNode;
-    }
-
-    if (block && block.parentNode) {
-      block.parentNode.insertBefore(p, block.nextSibling);
-    } else {
-      editor.appendChild(p);
-    }
-
-    const newRange = document.createRange();
-    newRange.setStart(p, 0);
-    newRange.collapse(true);
-    sel.removeAllRanges();
-    sel.addRange(newRange);
-
-    saveSelection();
-    return;
+  // --- Actualizar estado de botones según selección ---
+  function updateButtonStates() {
+    boldBtn.classList.toggle("active", document.queryCommandState("bold"));
+    italicBtn.classList.toggle("active", document.queryCommandState("italic"));
   }
 
-  // -------------------- INSERTAR TEXTO --------------------
-  if (e.inputType !== "insertText" || !e.data) return;
-  e.preventDefault();
-
-  const text = e.data;
-  const styles = {};
-  if (boldActive) styles.fontWeight = "bold";
-  if (italicActive) styles.fontStyle = "italic";
-  if (currentFont) styles.fontFamily = currentFont;
-  if (colorPicker?.value) styles.color = colorPicker.value;
-
-  let nodeToInsert;
-
-  // Evitar insertar en un span con estilo desactivado
-  const parent = range.startContainer;
-  if (parent.nodeType === Node.ELEMENT_NODE && parent.tagName === "SPAN") {
-    if ((!boldActive && parent.style.fontWeight === "bold") || (!italicActive && parent.style.fontStyle === "italic")) {
-      const textNode = document.createTextNode("");
-      parent.parentNode.insertBefore(textNode, parent.nextSibling);
-      range.setStart(textNode, 0);
-      range.collapse(true);
-    }
-  }
-
-  // Crear nodo según estilos activos
-  if (Object.keys(styles).length) {
-    nodeToInsert = document.createElement("span");
-    nodeToInsert.textContent = text;
-    Object.assign(nodeToInsert.style, styles);
-  } else {
-    nodeToInsert = document.createTextNode(text);
-  }
-
-  range.insertNode(nodeToInsert);
-
-  // Fusionar con hermano anterior si tiene mismos estilos
-  let prev = nodeToInsert.previousSibling;
-  if (prev && prev.nodeType === Node.ELEMENT_NODE && prev.tagName === "SPAN" && sameStyle(prev, nodeToInsert)) {
-    const prevTextNode = prev.lastChild && prev.lastChild.nodeType === Node.TEXT_NODE
-      ? prev.lastChild
-      : prev.appendChild(document.createTextNode(""));
-
-    prevTextNode.data += nodeToInsert.textContent;
-    nodeToInsert.remove();
-    nodeToInsert = prevTextNode;
-  }
-
-  // Colocar caret al final
-  const newRange = document.createRange();
-  newRange.setStart(nodeToInsert, nodeToInsert.data?.length || nodeToInsert.textContent.length);
-  newRange.collapse(true);
-  sel.removeAllRanges();
-  sel.addRange(newRange);
-  savedSelection = newRange.cloneRange();
-
-  saveSelection();
+  // Actualizar botones cuando cambia la selección en el editor
+  editor.addEventListener("keyup", updateButtonStates);
+  editor.addEventListener("mouseup", updateButtonStates);
 });
 
   // -------------------- SUBMENÚ DE FUENTES --------------------
@@ -532,6 +399,4 @@ editor.addEventListener("beforeinput", e => {
       sel.removeAllRanges();
       sel.addRange(range);
     }
-  });
-
 });

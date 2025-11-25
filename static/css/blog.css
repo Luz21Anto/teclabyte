@@ -7,36 +7,32 @@
 
 html, body {
   max-width: 100%;
-  overflow-x: hidden; /* evita scroll horizontal */
-  box-sizing: border-box;
-}
-
-body {
+  overflow-x: hidden;
+  font-family: 'Nunito', sans-serif;
   background-color: #f2f7ff;
   min-height: 100vh;
-  font-family: 'Nunito', sans-serif;
 }
 
 /* -------------------- CONTENEDOR PRINCIPAL -------------------- */
 .editor-container {
   display: flex;
   height: 100vh;
-  overflow-x: hidden; /* evita que los hijos generen scroll horizontal */
+  overflow-x: hidden;
 }
 
 /* Área de escritura */
 .editor-main {
-  flex: 1 1 0; /* base en 0 para que se encoja correctamente */
-  min-width: 0;   /* evita overflow en flexbox */
+  flex: 1;
   padding: 1rem;
-  overflow-x: hidden; /* asegura que contenido interno no expanda el ancho */
+  min-width: 0;
+  overflow-x: hidden;
 }
 
-/* Botones */
+/* -------------------- BOTONES -------------------- */
 .btn {
   display: inline-block;
   background-color: #007bff;
-  color: white;
+  color: #fff;
   padding: 10px 20px;
   border-radius: 6px;
   text-decoration: none;
@@ -47,7 +43,7 @@ body {
   background-color: #0056b3;
 }
 
-/* Editor de contenido */
+/* -------------------- EDITOR -------------------- */
 .editor-area {
   width: 100%;
   height: 100%;
@@ -55,18 +51,13 @@ body {
   border-radius: 10px;
   padding: 1rem;
   overflow-y: auto;
-  overflow-x: hidden;      /* previene que el contenido horizontal se expanda */
   background-color: #fff;
-  max-width: 100%;        /* evita que el contenedor se haga más ancho que su padre */
-  word-wrap: break-word;   /* quiebra palabras largas */
-  word-break: break-word;  /* compatibilidad adicional */
-  white-space: pre-wrap; /* respeta espacios y saltos de línea */
+  word-break: break-word;
+  white-space: pre-wrap;
 }
 
 .editor-area span {
-  display: inline-block;
-  max-width: 100%;
-  word-break: break-word;  /* evita que palabras largas generen overflow */
+  display: inline;
 }
 
 .editor-area:empty:before {
@@ -81,25 +72,23 @@ body {
 .editor-area h3 { font-size:1.5em; font-weight:600; margin:0.6em 0; }
 .editor-area h4 { font-size:1.3em; font-weight:600; margin:0.5em 0; }
 .editor-area h5 { font-size:1.1em; font-weight:600; margin:0.4em 0; }
-.editor-area p { font-size:1em; font-weight:400; margin:0.5em 0; }
+.editor-area p  { font-size:1em; font-weight:400; margin:0.5em 0; }
 
 /* Links */
 .editor-area a { color: #0077cc; text-decoration: underline; cursor: pointer; }
 .editor-area a:hover { color:#004a80; text-decoration:none; }
 
-/* Imágenes dentro del editor */
+/* -------------------- IMÁGENES -------------------- */
 .image-wrapper {
-  display: inline-block;      /* evita overflow con inline-block */
-  vertical-align: middle; /* opcional, alinea vertical con texto */
+  display: inline-block;
   position: relative;
-  border: 1px dashed transparent;
   margin: 8px 0;
-  max-width: 100%;     /* nunca se sale del contenedor */
-  width: auto;         /* se ajusta automáticamente */
-  overflow-x: hidden;  /* previene overflow si se redimensiona */
+  max-width: 100%;
+  overflow-x: hidden;
+  border: 1px dashed transparent;
 }
 
-.image-wrapper:hover { border: 1px dashed #8bb3ff; }
+.image-wrapper:hover { border-color: #8bb3ff; }
 
 .image-wrapper img {
   display: block;
@@ -119,107 +108,117 @@ body {
   cursor: se-resize;
 }
 
-/* Menú lateral */
+/* -------------------- SIDEBAR -------------------- */
 .editor-sidebar {
   width: 220px;
   background-color: #e6eeff;
   padding: 1rem;
   border-left: 1px solid #ccd8ff;
-  height: 100vh;         /* ocupa todo el alto del viewport */
-  overflow-y: auto;      /* scroll vertical si contenido largo */
+  height: 100vh;
+  overflow-y: auto;
   display: flex;
   flex-direction: column;
 }
 
-.editor-sidebar ul { list-style:none; }
+.editor-sidebar ul { list-style: none; }
 
 .editor-sidebar li {
-  padding:0.6rem 1rem;
-  margin-bottom:0.3rem;
-  border-radius:8px;
-  cursor:pointer;
-  position:relative;
+  padding: 0.6rem 1rem;
+  margin-bottom: 0.3rem;
+  border-radius: 8px;
+  cursor: pointer;
+  position: relative;
 }
 
 .editor-sidebar li:hover { background-color:#b4cfff; color:white; }
 .editor-sidebar li.active { background-color:#8bb3ff; color:white; }
 
+/* -------------------- SUBMENÚS -------------------- */
 .submenu {
-  display:none;
-  flex-direction:column;
-  background-color:#b4cfff;
-  border-radius:8px;
-  margin-top:0.3rem;
-  margin-left:1rem;
-  padding-left:0;
-  list-style:none;
-}
-
-.submenu li { padding:0.5rem 1rem; border-radius:6px; }
-.submenu li:hover { background-color:#66a1ff; }
-
-.color-picker { margin-left:0.5rem; vertical-align:middle; width:30px; height:25px; border:none; cursor:pointer; }
-
-.menu-toggle {
-  display:none;
-  position:fixed;
-  bottom:1rem;
-  right:1rem;
-  background-color:#8bb3ff;
-  color:white;
-  border:none;
-  border-radius:50%;
-  width:50px;
-  height:50px;
-  font-size:1.5rem;
-  cursor:pointer;
-}
-
-/* Responsive */
-@media (max-width:900px) {
-  .editor-container { flex-direction:column; }
-  .editor-sidebar {
-    position:fixed;
-    bottom:0;
-    right:0;
-    background-color:#e6eeff;
-    width:200px;
-    height:auto;
-    transform:translateY(100%);
-    transition: transform 0.3s ease;
-    border-left:none;
-    border-top:1px solid #ccd8ff;
-    z-index:100;
-  }
-  .editor-sidebar.show { transform:translateY(0); }
-  .menu-toggle { display:block; }
-}
-
-/* Submenús controlados por click */
-.tool-font .submenu,
-.tool-aa .submenu {
   display: none;
-}
-
-.tool-font.show .submenu,
-.tool-aa.show .submenu {
-  display: flex;
   flex-direction: column;
+  background-color: #b4cfff;
+  border-radius: 8px;
+  margin-top: 0.3rem;
+  margin-left: 1rem;
+  padding-left: 0;
+  list-style: none;
+  position: absolute;
+  min-width: 120px;
+  z-index: 100;
 }
 
-/* Fuente aplicada en el editor */
-.editor-area span[style*="font-family"] {
-  display: inline;
+.submenu li {
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  cursor: pointer;
 }
 
-.editor-area:empty::before {
-  font-family: 'Nunito', sans-serif;
+.submenu li:hover {
+  background-color: #66a1ff;
+  color: white;
 }
 
-.editor-area .custom-font {
-  font-family: inherit;
+/* Submenú específico Aa */
+.tool-aa.show .submenu { display: flex; }
+
+/* Submenú de fuentes */
+.tool-font.show .submenu { display: flex; }
+
+/* -------------------- HERRAMIENTAS -------------------- */
+.color-picker { 
+  margin-left: 0.5rem; 
+  vertical-align: middle; 
+  width: 30px; 
+  height: 25px; 
+  border: none; 
+  cursor: pointer; 
 }
 
+/* Botones activos */
+.format-bold.active,
+.format-italic.active {
+  background-color: #007bff;
+  color: white;
+  border-radius: 4px;
+}
+
+/* -------------------- MENU RESPONSIVE -------------------- */
+.menu-toggle {
+  display: none;
+  position: fixed;
+  bottom: 1rem;
+  right: 1rem;
+  background-color: #8bb3ff;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+@media (max-width: 900px) {
+  .editor-container { flex-direction: column; }
+  .editor-sidebar {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    background-color: #e6eeff;
+    width: 200px;
+    height: auto;
+    transform: translateY(100%);
+    transition: transform 0.3s ease;
+    border-left: none;
+    border-top: 1px solid #ccd8ff;
+    z-index: 100;
+  }
+  .editor-sidebar.show { transform: translateY(0); }
+  .menu-toggle { display: block; }
+}
+
+/* -------------------- ACCESIBILIDAD -------------------- */
 .editor-sidebar li:focus,
 .editor-sidebar button:focus {
   outline: none;
