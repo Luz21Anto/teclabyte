@@ -486,4 +486,289 @@ document.addEventListener("DOMContentLoaded", () => {
       renderDonaciones();
     }
   });
+
+  // MAPA
+
+  const addressInput = document.getElementById("addressInput");
+  const mapFrame = document.getElementById("mapFrame");
+  const showMapBtn = document.getElementById("showMapBtn");
+
+  showMapBtn.addEventListener("click", () => {
+    const address = addressInput.value.trim();
+    if (!address) return alert("Escribí una dirección!");
+
+    const encoded = encodeURIComponent(address);
+
+    // Versión sin API key
+    mapFrame.src = `https://www.google.com/maps?q=${encoded}&output=embed`;
+  });
+
+// -------------------- PLUGIN REDES SOCIALES --------------------
+const redesForm = document.getElementById("redes-form");
+
+function cargarRedes() {
+  const data = JSON.parse(localStorage.getItem("plugin_redes")) || {};
+
+  // Cargar valores si existen
+  redesForm.instagram.value = data.instagram || "";
+  redesForm.x.value = data.x || "";
+  redesForm.facebook.value = data.facebook || "";
+  redesForm["whatsapp"].value = data.whatsapp || "";
+  redesForm.tiktok.value = data.tiktok || "";
+  redesForm.youtube.value = data.youtube || "";
+  redesForm.linkedin.value = data.linkedin || "";
+}
+
+// Guardar / Modificar
+redesForm.addEventListener("submit", e => {
+  e.preventDefault();
+
+  const data = {
+    instagram: redesForm.instagram.value.trim(),
+    x: redesForm.x.value.trim(),
+    facebook: redesForm.facebook.value.trim(),
+    whatsapp: redesForm.whatsapp.value.trim(),
+    tiktok: redesForm.tiktok.value.trim(),
+    youtube: redesForm.youtube.value.trim(),
+    linkedin: redesForm.linkedin.value.trim(),
+  };
+
+  localStorage.setItem("plugin_redes", JSON.stringify(data));
+  alert("Redes sociales guardadas correctamente.");
+});
+
+// Eliminar plugin (vaciar)
+function eliminarRedes() {
+  if (confirm("¿Seguro que querés eliminar todas las redes sociales?")) {
+    localStorage.removeItem("plugin_redes");
+    redesForm.reset();
+    alert("Redes sociales eliminadas.");
+  }
+}
+
+// Ver solo los campos completos
+function obtenerRedesCompletas() {
+  const data = JSON.parse(localStorage.getItem("plugin_redes")) || {};
+  const completas = {};
+
+  for (const key in data) {
+    if (data[key] && data[key].trim() !== "") {
+      completas[key] = data[key];
+    }
+  }
+
+  return completas;
+}
+
+/* ---------------------- LINKS EXTERNOS ---------------------- */
+const paginaInput = document.getElementById("pagina");
+const urlInput = document.getElementById("url");
+const btnGuardar = document.getElementById("guardarLink");
+const btnCancelar = document.getElementById("cancelarEdicion");
+const listaLinksExternos = document.getElementById("listaLinksExternos");
+
+let linksExternos = JSON.parse(localStorage.getItem("linksExternos")) || [];
+let editIndex = null; // índice del link que estamos editando
+
+// Renderizar links
+function renderLinksExternos() {
+  listaLinksExternos.innerHTML = "";
+
+  if (linksExternos.length === 0) {
+    listaLinksExternos.innerHTML = "<p>No hay links agregados aún.</p>";
+    return;
+  }
+
+  linksExternos.forEach((item, index) => {
+    const div = document.createElement("div");
+    div.classList.add("link-item");
+
+    div.innerHTML = `
+      <strong>${item.pagina}</strong>
+      <p><a href="${item.url}" target="_blank">${item.url}</a></p>
+
+      <button class="editar-link" data-index="${index}">Editar</button>
+      <button class="eliminar-link" data-index="${index}">Eliminar</button>
+      <hr>
+    `;
+
+    listaLinksExternos.appendChild(div);
+  });
+
+  addListenersToButtons();
+}
+
+// Agregar o actualizar
+btnGuardar.addEventListener("click", () => {
+  const pagina = paginaInput.value.trim();
+  const url = urlInput.value.trim();
+
+  if (!pagina || !url) {
+    alert("Completá todos los campos");
+    return;
+  }
+
+  if (editIndex === null) {
+    // Nuevo
+    linksExternos.push({ pagina, url });
+  } else {
+    // Editando
+    linksExternos[editIndex] = { pagina, url };
+    editIndex = null;
+    btnCancelar.style.display = "none";
+    btnGuardar.textContent = "Guardar Link";
+  }
+
+  paginaInput.value = "";
+  urlInput.value = "";
+
+  localStorage.setItem("linksExternos", JSON.stringify(linksExternos));
+  renderLinksExternos();
+});
+
+// Cancelar edición
+btnCancelar.addEventListener("click", () => {
+  paginaInput.value = "";
+  urlInput.value = "";
+  editIndex = null;
+  btnCancelar.style.display = "none";
+  btnGuardar.textContent = "Guardar Link";
+});
+
+// Editar y eliminar
+function addListenersToButtons() {
+  document.querySelectorAll(".editar-link").forEach(btn => {
+    btn.addEventListener("click", () => {
+      editIndex = btn.dataset.index;
+      const link = linksExternos[editIndex];
+
+      paginaInput.value = link.pagina;
+      urlInput.value = link.url;
+
+      btnGuardar.textContent = "Actualizar";
+      btnCancelar.style.display = "inline-block";
+    });
+  });
+
+  document.querySelectorAll(".eliminar-link").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const i = btn.dataset.index;
+      linksExternos.splice(i, 1);
+
+      localStorage.setItem("linksExternos", JSON.stringify(linksExternos));
+      renderLinksExternos();
+    });
+  });
+}
+
+// Render inicial
+renderLinksExternos();
+
+/* ---------------- CARRUSEL ---------------- */
+const imgFile = document.getElementById("imgFile");
+const imgDesc = document.getElementById("imgDesc");
+const imgLink = document.getElementById("imgLink");
+const btnAddImg = document.getElementById("btnAddImg");
+const carouselList = document.getElementById("carouselList");
+
+let carousel = JSON.parse(localStorage.getItem("carouselImgs")) || [];
+
+// Render
+function renderCarousel() {
+  carouselList.innerHTML = "";
+
+  if (carousel.length === 0) {
+    carouselList.innerHTML = "<p>No hay imágenes aún.</p>";
+    return;
+  }
+
+  carousel.forEach((item, index) => {
+    const div = document.createElement("div");
+    div.classList.add("item");
+
+    div.innerHTML = `
+      <img src="${item.src}">
+      <div>
+        <p><strong>${item.desc || "(sin descripción)"}</strong></p>
+        <p>${item.link ? `<a href="${item.link}" target="_blank">${item.link}</a>` : "(sin link)"}</p>
+      </div>
+
+      <div class="order-buttons">
+        <button data-index="${index}" class="btnUp">▲</button>
+        <button data-index="${index}" class="btnDown">▼</button>
+      </div>
+
+      <button class="btnDelete" data-index="${index}">Eliminar</button>
+    `;
+
+    carouselList.appendChild(div);
+  });
+
+  addListListeners();
+}
+
+// Listeners de botones
+function addListListeners() {
+  document.querySelectorAll(".btnDelete").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const i = btn.dataset.index;
+      carousel.splice(i, 1);
+      saveCarousel();
+      renderCarousel();
+    });
+  });
+
+  document.querySelectorAll(".btnUp").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const i = Number(btn.dataset.index);
+      if (i === 0) return;
+      [carousel[i - 1], carousel[i]] = [carousel[i], carousel[i - 1]];
+      saveCarousel();
+      renderCarousel();
+    });
+  });
+
+  document.querySelectorAll(".btnDown").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const i = Number(btn.dataset.index);
+      if (i === carousel.length - 1) return;
+      [carousel[i + 1], carousel[i]] = [carousel[i], carousel[i + 1]];
+      saveCarousel();
+      renderCarousel();
+    });
+  });
+}
+
+// Guardar
+function saveCarousel() {
+  localStorage.setItem("carouselImgs", JSON.stringify(carousel));
+}
+
+// Subir imagén (se convierte en base64 así te queda guardada sin backend)
+btnAddImg.addEventListener("click", () => {
+  const file = imgFile.files[0];
+  if (!file) return alert("Seleccioná una imagen");
+
+  const reader = new FileReader();
+  reader.onload = () => {
+    carousel.push({
+      src: reader.result,
+      desc: imgDesc.value.trim(),
+      link: imgLink.value.trim()
+    });
+
+    imgFile.value = "";
+    imgDesc.value = "";
+    imgLink.value = "";
+
+    saveCarousel();
+    renderCarousel();
+  };
+
+  reader.readAsDataURL(file);
+});
+
+// Inicial
+renderCarousel();
+
 });

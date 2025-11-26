@@ -33,7 +33,9 @@
               <li data-seccion="whatsapp">WhatsApp</li>
               <li data-seccion="redes">Redes sociales</li>
               <li data-seccion="galeria">Galeria</li>
-              <li data-seccion="donaciones">Donaciones</li>
+              <li data-seccion="carrusel">Carrusel de imagenes</li>
+              <li data-seccion="mapa">Mapa</li>
+              <li data-seccion="links-externos">Links Externos</li>
             </ul>
           </li>
           <li data-seccion="configuracion">Configuración</li>
@@ -372,11 +374,76 @@
         </div>
       </section>
 
+      <section id="carrusel" class="plugin seccion" style="display:none;">
+        <h2>Carrusel de Imágenes</h2>
+
+        <div class="form-carrusel">
+          <label>Imagen:</label>
+          <input type="file" id="imgFile" accept="image/*">
+
+          <label>Descripción:</label>
+          <input type="text" id="imgDesc" placeholder="Descripción de la imagen">
+
+          <label>Link:</label>
+          <input type="text" id="imgLink" placeholder="https://...">
+
+          <button id="btnAddImg">Agregar Imagen</button>
+        </div>
+
+        <h3>Imágenes en el carrusel</h3>
+        <div id="carouselList"></div>
+      </section>
+
+
+      <seccion class="plugin seccion" id="mapa" style="display:none;">
+        <h2>📍 Mapa</h2>
+
+        <label for="addressInput">Dirección:</label>
+        <input type="text" id="addressInput" placeholder="Escribí una dirección..." />
+
+        <button id="showMapBtn">Mostrar mapa</button>
+
+        <div class="map-preview" style="margin-top:10px;">
+          <iframe
+            id="mapFrame"
+            width="100%"
+            height="300"
+            style="border:0"
+            loading="lazy">
+          </iframe>
+        </div>
+      </seccion>
+
+      <section id="links-externos" class="plugin seccion" style="display:none;">
+        <h2>🔗 Links Externos</h2>
+
+        <!-- Formulario para agregar o editar -->
+        <div class="form-links-externos">
+          <label for="pagina">Página:</label>
+          <input type="text" id="pagina" placeholder="Ej: Página Inicio, Productos, Contacto">
+
+          <label for="url">URL externa:</label>
+          <input type="url" id="url" placeholder="https://ejemplo.com/tienda">
+
+          <button id="guardarLink">Guardar Link</button>
+          <button id="cancelarEdicion" style="display:none;">Cancelar</button>
+        </div>
+
+        <hr>
+
+        <!-- Lista donde se mostrarán todos los links -->
+        <h3>Links guardados</h3>
+        <div id="listaLinksExternos" class="lista-links"></div>
+      </section>
+
       <footer class="progress">
         <p>Progreso del proyecto: <strong>40% completado ✅</strong></p>
       </footer>
     </main>
   </div>
+
+
+
   <script src="../static/js/index.js" defer></script>
   <script src="../static/js/panel.js"></script>
 </body>
