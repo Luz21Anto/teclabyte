@@ -348,60 +348,72 @@ if (colorPicker) {
     });
   }
 
-  imageInput.addEventListener("change", e => {
-    const file = e.target.files[0];
-    if (!file) return;
+imageInput.addEventListener("change", e => {
+  const file = e.target.files[0];
+  if (!file) return;
 
-    const reader = new FileReader();
-    reader.onload = ev => {
-      restoreSelection();
+  const reader = new FileReader();
+  reader.onload = ev => {
+    restoreSelection();
 
-      const wrapper = document.createElement("div");
-      wrapper.classList.add("image-wrapper");
-      wrapper.style.position = "relative";
-      wrapper.contentEditable = "false";
+    const wrapper = document.createElement("div");
+    wrapper.classList.add("image-wrapper");
+    wrapper.style.position = "relative";
+    wrapper.contentEditable = "false";
 
-      const img = document.createElement("img");
-      img.src = ev.target.result;
-      img.alt = "Imagen insertada";
-      img.style.width = "100%";
-      img.style.height = "auto";
+    const img = document.createElement("img");
+    img.src = ev.target.result;
+    img.alt = "Imagen insertada";
+    img.style.width = "100%";
+    img.style.height = "auto";
 
-      const handle = document.createElement("div");
-      handle.classList.add("resize-handle");
-      handle.style.pointerEvents = "auto";
-      handle.style.cursor = "nwse-resize";
-      handle.contentEditable = "false";
+    const handle = document.createElement("div");
+    handle.classList.add("resize-handle");
+    handle.style.pointerEvents = "auto";
+    handle.style.cursor = "nwse-resize";
+    handle.contentEditable = "false";
 
-      wrapper.appendChild(img);
-      wrapper.appendChild(handle);
+    wrapper.appendChild(img);
+    wrapper.appendChild(handle);
 
-      const sel = window.getSelection();
-      if (sel.rangeCount > 0) {
-        const range = sel.getRangeAt(0);
-        range.collapse(false);
-        range.insertNode(wrapper);
+    const sel = window.getSelection();
+    if (sel.rangeCount > 0) {
+      const range = sel.getRangeAt(0);
 
-        // separador visible para posicionar el cursor
-        const separator = document.createTextNode(" ");
-        wrapper.after(separator);
+      // --- A) Si hay texto antes, forzar salto de línea ---
+      const needsBreakBefore =
+        range.startOffset !== 0 || range.startContainer.nodeType === 3;
 
-        // Mover el cursor después del separador
-        range.setStartAfter(separator);
-        range.collapse(true);
-        sel.removeAllRanges();
-        sel.addRange(range);
-      } else {
-        editor.appendChild(wrapper);
+      if (needsBreakBefore) {
+        const brBefore = document.createElement("br");
+        range.insertNode(brBefore);
+        range.setStartAfter(brBefore);
       }
 
-      activateResize(wrapper, img, handle);
-      imageInput.value = "";
-      saveSelection();
-      editor.focus();
-    };
-    reader.readAsDataURL(file);
-  });
+      // Insertar la imagen
+      range.insertNode(wrapper);
+
+      // --- B) Salto de línea luego de la imagen ---
+      const brAfter = document.createElement("br");
+      wrapper.after(brAfter);
+
+      // Mover cursor debajo de la imagen
+      range.setStartAfter(brAfter);
+      range.collapse(true);
+      sel.removeAllRanges();
+      sel.addRange(range);
+    } else {
+      editor.appendChild(wrapper);
+      editor.appendChild(document.createElement("br"));
+    }
+
+    activateResize(wrapper, img, handle);
+    imageInput.value = "";
+    saveSelection();
+    editor.focus();
+  };
+  reader.readAsDataURL(file);
+});
 
   function activateResize(wrapper, img, handle) {
     let isResizing = false;

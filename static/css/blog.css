@@ -80,12 +80,10 @@ html, body {
 
 /* -------------------- IMÁGENES -------------------- */
 .image-wrapper {
-  display: inline-block;
-  position: relative;
-  margin: 8px 0;
-  max-width: 100%;
-  overflow-x: hidden;
-  border: 1px dashed transparent;
+  display: block;
+  width: 100%;
+  clear: both;
+  margin: 12px 0;
 }
 
 .image-wrapper:hover { border-color: #8bb3ff; }
