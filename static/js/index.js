@@ -205,16 +205,50 @@ document.addEventListener("DOMContentLoaded", () => {
   const selectionType = document.getElementById("selection-type");
   const clasificacionSelector = document.getElementById("clasificacion-selector");
   const clasificacionSelect = document.getElementById("clasificacion-select");
+  const multiSelector = document.getElementById("multi-clasificacion-selector");
+  const multiList = document.getElementById("multi-clasificacion-list");
+
 
   // Mostrar u ocultar selector según el tipo elegido
   selectionType.addEventListener("change", () => {
     if (selectionType.value === "clasificacion") {
       clasificacionSelector.style.display = "block";
+      multiSelector.style.display = "none";
       actualizarClasificaciones(); 
+
+    } else if (selectionType.value === "multi") {
+      clasificacionSelector.style.display = "none";
+      multiSelector.style.display = "block";
+      actualizarMultiClasificaciones();
+
     } else {
       clasificacionSelector.style.display = "none";
+      multiSelector.style.display = "none";
     }
   });
+
+  function actualizarMultiClasificaciones() {
+    const secciones = document.querySelectorAll(".mail-section");
+    multiList.innerHTML = "";
+
+    secciones.forEach(section => {
+      const nombre = section.dataset.clasificacion;
+
+      const li = document.createElement("li");
+      const checkbox = document.createElement("input");
+
+      checkbox.type = "checkbox";
+      checkbox.value = nombre;
+
+      const label = document.createElement("label");
+      label.textContent = " " + nombre.charAt(0).toUpperCase() + nombre.slice(1);
+
+      li.appendChild(checkbox);
+      li.appendChild(label);
+      multiList.appendChild(li);
+    });
+  }
+
 
   // Crear sección si no existe
   function getOrCreateList(clasificacion) {
@@ -337,6 +371,24 @@ document.addEventListener("DOMContentLoaded", () => {
           li => li.dataset.mail
         );
       }
+    } else if (selectionType.value === "multi") {
+      const checks = multiList.querySelectorAll("input[type='checkbox']:checked");
+      let mailsTemp = [];
+
+      checks.forEach(chk => {
+        const section = document.querySelector(
+          `[data-clasificacion="${chk.value.toLowerCase()}"]`
+        );
+
+        if (section) {
+          const mailsSec = Array.from(section.querySelectorAll("li"))
+            .map(li => li.dataset.mail);
+          mailsTemp = mailsTemp.concat(mailsSec);
+        }
+      });
+
+      // eliminar duplicados
+      mails = [...new Set(mailsTemp)];
     }
 
     if (mails.length === 0) {
