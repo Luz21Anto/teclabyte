@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> register de usuario </title>
+    <link rel="stylesheet" href="/css/panel/register.css">
+    <script src="/js/panel/register.js" defer></script>
+</head>
+<body>
+    <div class="registro">
+        <h1>Crear cuenta</h1>
+        <form id="registro_email">
+            <div id="paso_nombre">
+                <div class="input-group">
+                    <label>
+                        Nombre: 
+                        <input type="text" id="input_nombre" name="nombre" required>
+                    </label>
+                </div>
+                <div class="input-group">
+                    <label>
+                        Apellido: 
+                        <input type="text" id="input_apellido" name="apellido" required>
+                    </label>
+                </div>
+                <button type="button" id="siguiente1"> Siguiente </button>
+
+            </div>
+            <div id="paso_email">
+                <div class="input-group">
+                    <label>
+                        Email: 
+                        <input type="email" id="input_email" name="email" placeholder="tu@email.com">
+                    </label>
+                </div>
+                <div class="input-group">
+                    <label> 
+                        Confirmar email:
+                        <input type="email" id="input_confirmar_email" name="email" placeholder="tu@email.com">
+                    </label>
+                </div>
+                <button type="button" id="siguiente2"> Siguiente </button>
+            </div>
+
+            <div id="paso_contraseña">
+                <div  class="input-group">
+                    <label>
+                        Contraseña: 
+                        <input type="password" id="input_contraseña" name="contraseña" placeholder="********">
+                    </label>
+                </div>
+                <div class="input-group">
+                    <label> 
+                        Confirmar contraseña:
+                        <input type="password" id="input_confirmar_contraseña" name="contraseña_confirmada" placeholder="********">
+                    </label>
+                </div>
+                <div class="input-group">
+                    <label> 
+                        <input type="checkbox" id="acepto" required>
+                        Acepto los términos y condiciones.
+                    </label>
+                </div>
+                <button type="submit"> Crear cuenta </button>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
