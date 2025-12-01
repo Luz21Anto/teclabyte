@@ -539,21 +539,44 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // MAPA
+// MAPA
+const addressInput = document.getElementById("addressInput");
+const mapFrame = document.getElementById("mapFrame");
+const showMapBtn = document.getElementById("showMapBtn");
+const saveMapBtn = document.getElementById("saveMapBtn");
 
-  const addressInput = document.getElementById("addressInput");
-  const mapFrame = document.getElementById("mapFrame");
-  const showMapBtn = document.getElementById("showMapBtn");
+// Mostrar mapa
+showMapBtn.addEventListener("click", () => {
+  const address = addressInput.value.trim();
+  if (!address) return alert("Escribí una dirección!");
 
-  showMapBtn.addEventListener("click", () => {
-    const address = addressInput.value.trim();
-    if (!address) return alert("Escribí una dirección!");
+  const encoded = encodeURIComponent(address);
+  mapFrame.src = `https://www.google.com/maps?q=${encoded}&output=embed`;
+});
 
-    const encoded = encodeURIComponent(address);
+// Guardar mapa en localStorage
+saveMapBtn.addEventListener("click", () => {
+  const address = addressInput.value.trim();
+  if (!address) return alert("No podés guardar una dirección vacía.");
 
-    // Versión sin API key
+  localStorage.setItem("savedMapAddress", address);
+
+  alert("Dirección guardada correctamente ✔️");
+});
+
+// Cargar dirección guardada si existe
+window.addEventListener("DOMContentLoaded", () => {
+  const saved = localStorage.getItem("savedMapAddress");
+
+  if (saved) {
+    addressInput.value = saved;
+
+    // Mostrar mapa automáticamente
+    const encoded = encodeURIComponent(saved);
     mapFrame.src = `https://www.google.com/maps?q=${encoded}&output=embed`;
-  });
+  }
+});
+
 
 // -------------------- PLUGIN REDES SOCIALES --------------------
 const redesForm = document.getElementById("redes-form");
