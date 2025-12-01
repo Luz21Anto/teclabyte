@@ -717,9 +717,8 @@ function addListenersToButtons() {
 renderLinksExternos();
 
 /* ---------------- CARRUSEL ---------------- */
-const imgFile = document.getElementById("imgFile");
+const imgUrl = document.getElementById("imgUrl");
 const imgDesc = document.getElementById("imgDesc");
-const imgLink = document.getElementById("imgLink");
 const btnAddImg = document.getElementById("btnAddImg");
 const carouselList = document.getElementById("carouselList");
 
@@ -742,7 +741,6 @@ function renderCarousel() {
       <img src="${item.src}">
       <div>
         <p><strong>${item.desc || "(sin descripción)"}</strong></p>
-        <p>${item.link ? `<a href="${item.link}" target="_blank">${item.link}</a>` : "(sin link)"}</p>
       </div>
 
       <div class="order-buttons">
@@ -759,7 +757,7 @@ function renderCarousel() {
   addListListeners();
 }
 
-// Listeners de botones
+// Botones: eliminar, subir, bajar
 function addListListeners() {
   document.querySelectorAll(".btnDelete").forEach(btn => {
     btn.addEventListener("click", () => {
@@ -796,28 +794,23 @@ function saveCarousel() {
   localStorage.setItem("carouselImgs", JSON.stringify(carousel));
 }
 
-// Subir imagén (se convierte en base64 así te queda guardada sin backend)
+// Agregar imagen SOLO desde URL
 btnAddImg.addEventListener("click", () => {
-  const file = imgFile.files[0];
-  if (!file) return alert("Seleccioná una imagen");
+  const url = imgUrl.value.trim();
+  const desc = imgDesc.value.trim();
 
-  const reader = new FileReader();
-  reader.onload = () => {
-    carousel.push({
-      src: reader.result,
-      desc: imgDesc.value.trim(),
-      link: imgLink.value.trim()
-    });
+  if (!url) return alert("Debes ingresar un link válido a una imagen.");
 
-    imgFile.value = "";
-    imgDesc.value = "";
-    imgLink.value = "";
+  carousel.push({
+    src: url,
+    desc: desc
+  });
 
-    saveCarousel();
-    renderCarousel();
-  };
+  imgUrl.value = "";
+  imgDesc.value = "";
 
-  reader.readAsDataURL(file);
+  saveCarousel();
+  renderCarousel();
 });
 
 // Inicial
