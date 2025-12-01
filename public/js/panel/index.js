@@ -793,50 +793,361 @@ function addListListeners() {
 
   document.querySelectorAll(".btnUp").forEach(btn => {
     btn.addEventListener("click", () => {
-      const i = Number(btn.dataset.index);
-      if (i === 0) return;
-      [carousel[i - 1], carousel[i]] = [carousel[i], carousel[i - 1]];
-      saveCarousel();
-      renderCarousel();
+      const i = parseInt(btn.dataset.index);
+
+      if (i > 0) {
+        // Intercambiar elementos
+        [carousel[i - 1], carousel[i]] = [carousel[i], carousel[i - 1]];
+        saveCarousel();
+        renderCarousel();
+      }
     });
   });
 
   document.querySelectorAll(".btnDown").forEach(btn => {
     btn.addEventListener("click", () => {
-      const i = Number(btn.dataset.index);
-      if (i === carousel.length - 1) return;
-      [carousel[i + 1], carousel[i]] = [carousel[i], carousel[i + 1]];
-      saveCarousel();
-      renderCarousel();
+      const i = parseInt(btn.dataset.index);
+
+      if (i < carousel.length - 1) {
+        // Intercambiar elementos
+        [carousel[i + 1], carousel[i]] = [carousel[i], carousel[i + 1]];
+        saveCarousel();
+        renderCarousel();
+      }
     });
   });
 }
 
-// Guardar
+// Guardar carrusel
 function saveCarousel() {
   localStorage.setItem("carouselImgs", JSON.stringify(carousel));
 }
 
-// Agregar imagen SOLO desde URL
+// Agregar imagen
 btnAddImg.addEventListener("click", () => {
-  const url = imgUrl.value.trim();
+  const src = imgUrl.value.trim();
   const desc = imgDesc.value.trim();
 
-  if (!url) return alert("Debes ingresar un link válido a una imagen.");
+  if (!src) {
+    alert("Ingresá la URL de la imagen");
+    return;
+  }
 
-  carousel.push({
-    src: url,
-    desc: desc
-  });
+  carousel.push({ src, desc });
+  saveCarousel();
+  renderCarousel();
 
   imgUrl.value = "";
   imgDesc.value = "";
-
-  saveCarousel();
-  renderCarousel();
 });
 
-// Inicial
+// Render inicial del carrusel
 renderCarousel();
 
+//Según la pagina que esta activa se muestra
+
+const webNombre = document.querySelector(".web-nombre");
+
+document.querySelectorAll(".tab").forEach((tab, index) => {
+  tab.addEventListener("click", () => {
+    webNombre.textContent = "Página " + (index + 1);
+  });
 });
+
+//Listar nombres
+
+const nombreWeb = document.querySelector(".sidebar h2");
+const listaWebs = document.getElementById("listaWebs");
+
+// Ejemplo: esto te lo debería retornar el backend
+const websDelUsuario = [
+  { nombre: "Web 1", estado: "Activa", url: "https://web1.com" },
+  { nombre: "Web 2", estado: "En progreso", url: "https://web2.com" },
+  { nombre: "Web 3", estado: "Pendiente de pago", url: "https://web3.com" },
+  { nombre: "Web 4", estado: "Inactiva", url: "https://web4.com" }
+];
+
+nombreWeb.addEventListener("click", () => {
+  listaWebs.style.display = listaWebs.style.display === "none" ? "block" : "none";
+  renderWebs();
+});
+
+function renderWebs() {
+  listaWebs.innerHTML = "";
+
+  websDelUsuario.forEach(web => {
+    listaWebs.innerHTML += `
+      <div class="web-item">
+        <span class="web-nombre">${web.nombre}</span>
+        <span class="web-estado ${web.estado.toLowerCase().replace(" ", "-")}">${web.estado}</span>
+        <a href="${web.url}" target="_blank" class="external-link" title="Ir a la web">
+          <span class="icono-externo"></span>
+        </a>
+      </div>
+    `;
+  });
+}
+
+// ======= Web selector + vistas por estado =======
+document.addEventListener("DOMContentLoaded", () => {
+  // Datos de ejemplo / el backend debería devolver esto
+  const websDelUsuario = [
+    {
+      nombre: "Web 1",
+      estado: "Activa",
+      url: "https://web1.com",
+      dominio: "web1.com",
+      hostingPlan: "Básico",
+      paymentStatus: "Pagado",
+      expiryDate: "2026-04-15",
+      deactivationDate: "2026-05-01",
+      pluginsActive: ["Blog", "Galería", "WhatsApp"],
+      paymentLink: "https://pagos.com/pagar/web1"
+    },
+    {
+      nombre: "Web 2",
+      estado: "En progreso",
+      url: "https://web2.com",
+      dominio: "web2.com",
+      hostingPlan: "Pro",
+      paymentStatus: "Pagado",
+      expiryDate: "2026-06-10",
+      deactivationDate: "2026-06-25",
+      pluginsActive: ["Calendario"],
+      paymentLink: "https://pagos.com/pagar/web2"
+    },
+    {
+      nombre: "Web 3",
+      estado: "Pendiente de pago",
+      url: "https://web3.com",
+      dominio: "web3.com",
+      hostingPlan: "Starter",
+      paymentStatus: "Pendiente",
+      expiryDate: "2025-12-05",
+      deactivationDate: "2025-12-20",
+      pluginsActive: ["Donaciones","Redes Sociales"],
+      paymentLink: "https://pagos.com/pagar/web3"
+    },
+    {
+      nombre: "Web 4",
+      estado: "Inactiva",
+      url: "https://web4.com",
+      dominio: "web4.com",
+      hostingPlan: "Básico",
+      paymentStatus: "Vencido",
+      expiryDate: "2024-10-01",
+      deactivationDate: "2024-10-15",
+      pluginsActive: ["Carrusel","Galería"],
+      paymentLink: "https://pagos.com/pagar/web4"
+    }
+  ];
+
+  // Estado local
+  let currentIndex = 0;
+
+  // Elementos
+  const listaWebsEl = document.getElementById("listaWebs");
+  const btnMostrarWebs = document.getElementById("btnMostrarWebs");
+  const sidebarExternalLink = document.getElementById("sidebarExternalLink");
+  const sidebarWebNombre = document.querySelector(".web-nombre");
+  const sidebarWebEstado = document.querySelector(".web-estado");
+
+  // Main section elements
+  const resumenSec = document.getElementById("resumen");
+  const enProgresoSec = document.getElementById("en-progreso");
+  const pendientePagoSec = document.getElementById("pendiente-pago");
+  const reactivarSec = document.getElementById("reactivar-web");
+
+  // Resumen fields
+  const resNombre = document.getElementById("res-nombre");
+  const resDominio = document.getElementById("res-dominio");
+  const resPlan = document.getElementById("res-plan");
+  const resPago = document.getElementById("res-pago");
+  const resExp = document.getElementById("res-exp");
+  const resPendienteCta = document.getElementById("res-pendiente-cta");
+
+  // Pendiente fields
+  const ppExp = document.getElementById("pp-exp");
+  const ppDesact = document.getElementById("pp-desact");
+  const ppMantBtn = document.getElementById("pp-mantener-btn");
+
+  // Reactivar fields
+  const reactPlugins = document.getElementById("reactivar-plugins");
+  const reactExp = document.getElementById("react-exp");
+  const reactDesact = document.getElementById("react-desact");
+  const reactivarBtn = document.getElementById("reactivarBtn");
+
+  // Buttons
+  const mantenerActivaBtn = document.getElementById("mantenerActivaBtn");
+
+  // Inicializa UI
+  function initWebComponent() {
+    renderSidebarCurrent();
+    renderWebsList();
+    attachListeners();
+    showSectionForCurrent();
+    updateSidebarExternalLink();
+  }
+
+  // Render sidebar current name + estado
+  function renderSidebarCurrent() {
+    const web = websDelUsuario[currentIndex];
+    sidebarWebNombre.textContent = web.nombre;
+    sidebarWebEstado.textContent = web.estado;
+    // clases de estado
+    sidebarWebEstado.className = "web-estado " + estadoClass(web.estado);
+  }
+
+  // Estado => clase
+  function estadoClass(estado) {
+    const key = estado.toString().toLowerCase();
+    if (key.includes("act")) return "estado-activa";
+    if (key.includes("progreso")) return "estado-en-progreso";
+    if (key.includes("pend")) return "estado-pendiente-de-pago";
+    return "estado-inactiva";
+  }
+
+  // Render lista desplegable
+  function renderWebsList() {
+    listaWebsEl.innerHTML = "";
+    websDelUsuario.forEach((web, idx) => {
+      const div = document.createElement("div");
+      div.className = "web-item";
+      div.innerHTML = `
+        <div class="left">
+          <strong>${web.nombre}</strong>
+          <small class="web-estado ${estadoClass(web.estado)}" style="display:block;margin-top:4px;">${web.estado}</small>
+        </div>
+        <div class="right">
+          <a href="${web.url}" target="_blank" title="Ir a la web" rel="noopener" class="external-link">
+            <span class="icono-externo"></span>
+          </a>
+          <button class="select-web" data-index="${idx}" style="background:none;border:0;cursor:pointer;padding:6px 8px;">Seleccionar</button>
+        </div>
+      `;
+      listaWebsEl.appendChild(div);
+    });
+  }
+
+  // Adjunta listeners
+  function attachListeners() {
+    btnMostrarWebs.addEventListener("click", (e) => {
+      e.preventDefault();
+      const isVisible = listaWebsEl.style.display === "block";
+      listaWebsEl.style.display = isVisible ? "none" : "block";
+      btnMostrarWebs.setAttribute("aria-expanded", String(!isVisible));
+    });
+
+    // Delegación para botones "Seleccionar"
+    listaWebsEl.addEventListener("click", (e) => {
+      const btn = e.target.closest(".select-web");
+      if (!btn) return;
+      const idx = Number(btn.dataset.index);
+      selectWeb(idx);
+      listaWebsEl.style.display = "none";
+    });
+
+    // Mantener Activa (desde resumen)
+    if (mantenerActivaBtn) {
+      mantenerActivaBtn.addEventListener("click", () => {
+        const w = websDelUsuario[currentIndex];
+        if (w.paymentLink) window.open(w.paymentLink, "_blank");
+      });
+    }
+
+    if (ppMantBtn) {
+      ppMantBtn.addEventListener("click", () => {
+        const w = websDelUsuario[currentIndex];
+        if (w.paymentLink) window.open(w.paymentLink, "_blank");
+      });
+    }
+
+    if (reactivarBtn) {
+      reactivarBtn.addEventListener("click", () => {
+        const w = websDelUsuario[currentIndex];
+        if (w.paymentLink) window.open(w.paymentLink, "_blank");
+      });
+    }
+  }
+
+  // Seleccionar web
+  function selectWeb(idx) {
+    if (idx < 0 || idx >= websDelUsuario.length) return;
+    currentIndex = idx;
+    renderSidebarCurrent();
+    updateSidebarExternalLink();
+    showSectionForCurrent();
+  }
+
+  // Actualiza link externo del sidebar
+  function updateSidebarExternalLink() {
+    const w = websDelUsuario[currentIndex];
+    if (sidebarExternalLink) {
+      sidebarExternalLink.href = w.url || "#";
+    }
+  }
+
+  // Mostrar la sección correspondiente y ocultar las otras
+  function showSectionForCurrent() {
+    const w = websDelUsuario[currentIndex];
+    // oculta todo
+    [resumenSec, enProgresoSec, pendientePagoSec, reactivarSec].forEach(s => { if(s) s.style.display = "none"; });
+
+    if (!w) return;
+
+    if (w.estado.toLowerCase().includes("act")) {
+      // Mostrar resumen
+      populateResumen(w);
+      resumenSec.style.display = "block";
+    } else if (w.estado.toLowerCase().includes("progreso")) {
+      enProgresoSec.style.display = "block";
+    } else if (w.estado.toLowerCase().includes("pend")) {
+      populateResumen(w);
+      // mostrar resumen + pendiente CTA
+      resumenSec.style.display = "block";
+      resPendienteCta.style.display = "block";
+      // adicional: sección de pendiente
+      ppExp.textContent = w.expiryDate || "-";
+      ppDesact.textContent = w.deactivationDate || "-";
+      pendientePagoSec.style.display = "block";
+    } else { // inactiva o cualquier otro
+      // Mostrar solo reactivar
+      reactivarSec.style.display = "block";
+      renderReactivar(w);
+    }
+  }
+
+  function populateResumen(w) {
+    resNombre.textContent = w.nombre || "";
+    resDominio.textContent = w.dominio || (new URL(w.url || "http://example.com")).hostname;
+    resPlan.textContent = w.hostingPlan || "-";
+    resPago.textContent = w.paymentStatus || "-";
+    resExp.textContent = w.expiryDate || "-";
+    resPendienteCta.style.display = "none";
+  }
+
+  function renderReactivar(w) {
+    reactPlugins.innerHTML = "";
+    (w.pluginsActive || []).forEach(p => {
+      const li = document.createElement("li");
+      li.textContent = p;
+      reactPlugins.appendChild(li);
+    });
+    reactExp.textContent = w.expiryDate || "-";
+    reactDesact.textContent = w.deactivationDate || "-";
+  }
+
+  // Inicial
+  initWebComponent();
+
+  // --- opcional: si cambiás tabs en la parte superior, podés sincronizar el nombre ---
+  document.querySelectorAll(".tab").forEach((tab, index) => {
+    tab.addEventListener("click", () => {
+      // si querés que cambiar tabs reemplace la web seleccionada, descomenta:
+      // selectWeb(index);
+    });
+  });
+});
+
+});
+

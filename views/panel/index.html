@@ -13,21 +13,29 @@
 
     <!-- Barra lateral -->
     <aside class="sidebar" id="sidebar">
-      <h2>Nombre</h2>
+      <!-- COMPONENTE: Web Actual (clic en la columna 2 despliega lista) -->
+      <div class="web-actual-wrapper">
+        <a href="#" class="web-actual clickable" id="btnMostrarWebs" aria-haspopup="true" aria-expanded="false">
+          <div class="col-2">
+            <h3 class="web-nombre">Página 1</h3>
+            <p class="web-estado estado-activa">Activa</p>
+          </div>
+        </a>
+        <!-- Icono externo (columna 3) -->
+        <div class="web-externo">
+          <a id="sidebarExternalLink" href="https://tusitio.com" target="_blank" class="external-link" title="Ir a la web" rel="noopener">
+            <span class="icono-externo"></span>
+          </a>
+        </div>
+      </div>
       <nav>
         <ul>
-          <li class="has-submenu">
-            Paginas activas ▼
-            <ul class="submenu">
-              <li data-seccion="blog"><a href="/admin/blog">Blog</a></li>
-            </ul>
-          </li>
           <li data-seccion="progreso" >En progreso</li>
-          <li data-seccion="dominios">Dominios</li>
           <li data-seccion="hosting">Hostings</li>
           <li class="has-submenu">
             Plugins ▼
             <ul class="submenu">
+              <li data-seccion="blog"><a href="/admin/blog">Blog</a></li>
               <li data-seccion="calendario">Calendario</li>
               <li data-seccion="mails">Captura de mails</li>
               <li data-seccion="whatsapp">WhatsApp</li>
@@ -61,6 +69,55 @@
  
         </div>
       </header>
+
+        <!-- Secciones dinámicas según estado de la web seleccionada -->
+      <section id="resumen" class="plugin seccion web-state-section" style="display:none;">
+        <h2>Resumen</h2>
+        <div class="resumen-grid">
+          <p><strong>Nombre:</strong> <span id="res-nombre"></span></p>
+          <p><strong>Dominio:</strong> <span id="res-dominio"></span></p>
+          <p><strong>Plan hosting:</strong> <span id="res-plan"></span></p>
+          <p><strong>Estado pago:</strong> <span id="res-pago"></span></p>
+          <p><strong>Fecha expiración:</strong> <span id="res-exp"></span></p>
+        </div>
+
+        <div id="res-pendiente-cta" style="margin-top:12px; display:none;">
+          <p class="pendiente-msg">Tu web está pendiente de pago.</p>
+          <button id="mantenerActivaBtn" class="big-cta">Mantener Web Activa</button>
+        </div>
+      </section>
+
+      <section id="en-progreso" class="plugin seccion web-state-section" style="display:none;">
+        <h2>En progreso</h2>
+        <p>Esta página se encuentra en construcción. Mostramos el estado de avance y próximos pasos.</p>
+        <!-- Aquí podés añadir la info específica de progreso -->
+      </section>
+
+      <section id="pendiente-pago" class="plugin seccion web-state-section" style="display:none;">
+        <h2>Pendiente de pago</h2>
+        <p>La web está pendiente de pago. Para mantener la web activa, realizá el pago.</p>
+        <div class="pendiente-detalle">
+          <p><strong>Expiración:</strong> <span id="pp-exp"></span></p>
+          <p><strong>Se desactivará:</strong> <span id="pp-desact"></span></p>
+          <button id="pp-mantener-btn" class="big-cta">Mantener Web Activa</button>
+        </div>
+      </section>
+
+      <section id="reactivar-web" class="plugin seccion web-state-section" style="display:none;">
+        <h2>Tu web está inactiva</h2>
+        <p>Activala para seguir disfrutando de nuestros servicios:</p>
+
+        <div class="plugins-activos">
+          <h4>Plugins activos:</h4>
+          <ul id="reactivar-plugins"></ul>
+        </div>
+
+        <div style="margin-top:12px;">
+          <p><strong>Fecha de expiración anterior:</strong> <span id="react-exp"></span></p>
+          <p><strong>Fecha prevista de desactivación:</strong> <span id="react-desact"></span></p>
+          <button id="reactivarBtn" class="big-cta">Activar</button>
+        </div>
+      </section>
 
       <!-- Secciones alternables -->
       <div id="progreso" class="seccion" style="display:block;">
