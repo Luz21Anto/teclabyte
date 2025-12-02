@@ -1476,3 +1476,47 @@ section h2 {
 
 /* Visibilidad secciones estado */
 .web-state-section { padding:14px; border:1px solid #eee; border-radius:8px; margin-bottom:12px; background:#fff; }
+
+/* modo oscuro/claro */
+.dark-mode {
+  background-color: #121212;
+}
+
+.dark-mode .inicio,
+.dark-mode .intro-content,
+.dark-mode .project-card,
+.dark-mode header,
+.dark-mode nav,
+.dark-mode footer {
+  background-color: #1b1b1b !important;
+  color: #ffffff !important;
+}
+
+.dark-mode .project-card {
+  box-shadow: 0 2px 6px rgba(255,255,255,0.05);
+}
+
+.dark-mode a {
+  color: #9cc2ff;
+}
+
+.dark-mode input,
+.dark-mode textarea,
+.dark-mode select {
+  background: #222;
+  border-color: #444;
+  color: #fff;
+}
+
+.dark-mode .sidebar {
+  background: #1c1c1c;
+}
+
+.dark-mode .sidebar li.active {
+  background: #2b4a75;
+}
+
+.dark-mode .sidebar li:hover {
+  background: #2d3b55;
+}
+
