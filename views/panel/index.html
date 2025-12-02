@@ -56,7 +56,6 @@
     <main class="main-content">
 
       <header class="top-bar">
-        <button id="theme-toggle" class="theme-toggle">🌙</button>
         <div class="header-actions">
           <div class="notificaciones">
             <button class="bell" id="bellBtn">🔔</button>
@@ -493,6 +492,37 @@
         <!-- Lista donde se mostrarán todos los links -->
         <h3>Links guardados</h3>
         <div id="listaLinksExternos" class="lista-links"></div>
+      </section>
+
+      <section id="configuracion" class="seccion" style="display:none;">
+
+        <h2>Perfil</h2>
+
+        <!-- Foto de perfil -->
+        <div class="perfil-foto-container">
+          <img id="preview-foto" src="/img/default-profile.png" alt="Foto de perfil" class="perfil-foto">
+          
+          <label for="imagen">Cambiar foto:</label>
+          <input type="file" id="imagen" accept="image/*">
+
+          <button id="eliminar-foto" class="btn-eliminar-foto">Eliminar foto</button>
+        </div>
+
+        <!-- Nombre de usuario -->
+        <label for="nombre_usuario">Nombre de usuario:</label>
+        <input id="nombre_usuario" name="nombre_usuario" type="text" placeholder="Ej.: lucas_admin">
+
+        <!-- Email -->
+        <label for="user_email">Email:</label>
+        <input id="user_email" name="email" type="email" placeholder="ej. usuario@mail.com">
+
+        <!-- Teléfono -->
+        <label for="telefono">Número de Teléfono:</label>
+        <input id="telefono" name="telefono" type="tel" placeholder="ej. 11 2222 2222">
+
+        <h2>Tema:</h2>
+        <button id="theme-toggle" class="theme-toggle">☀️/🌙</button>
+
       </section>
 
       <footer class="progress">

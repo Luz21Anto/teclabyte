@@ -1520,3 +1520,91 @@ section h2 {
   background: #2d3b55;
 }
 
+/* --- CONTENEDOR GENERAL --- */
+#configuracion {
+  padding: 20px;
+  max-width: 500px;
+}
+
+#configuracion h2 {
+  font-size: 1.6rem;
+  margin-bottom: 15px;
+}
+
+/* --- FOTO DE PERFIL --- */
+.perfil-foto-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-bottom: 20px;
+}
+
+.perfil-foto {
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 2px solid var(--color-primary, #3b82f6);
+  margin-bottom: 10px;
+}
+
+/* Input file */
+#imagen {
+  margin-bottom: 10px;
+  cursor: pointer;
+}
+
+/* Botón eliminar foto */
+.btn-eliminar-foto {
+  background: #ff4d4d;
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.btn-eliminar-foto:hover {
+  background: #d93636;
+}
+
+/* --- CAMPOS DE TEXTO --- */
+#configuracion label {
+  display: block;
+  margin-top: 15px;
+  margin-bottom: 5px;
+  font-weight: 600;
+}
+
+#configuracion input[type="text"],
+#configuracion input[type="email"],
+#configuracion input[type="tel"] {
+  width: 100%;
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+  transition: border 0.2s;
+}
+
+#configuracion input:focus {
+  border-color: var(--color-primary, #3b82f6);
+  outline: none;
+}
+
+/* --- MODO OSCURO si usás body.dark-mode --- */
+body.dark-mode #configuracion input {
+  background: #1f1f1f;
+  color: #f1f1f1;
+  border-color: #444;
+}
+
+body.dark-mode .btn-eliminar-foto {
+  background: #c84040;
+}
+
+body.dark-mode .perfil-foto {
+  border-color: var(--color-primary, #3b82f6);
+}
+

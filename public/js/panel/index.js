@@ -1,5 +1,6 @@
 // index.js - Unificado, limpio y seguro
 document.addEventListener("DOMContentLoaded", () => {
+
   /* --------------------------
      Helpers
   -------------------------- */
@@ -892,5 +893,72 @@ document.addEventListener("DOMContentLoaded", () => {
     renderSidebarCurrent(); renderWebsList(); attachListeners(); showSectionForCurrent();
   })();
 
-  // fin DOMContentLoaded
+  // --- PERFIL – Foto, Inputs y LocalStorage ---
+  const inputImagen = document.getElementById("imagen");
+  const previewFoto = document.getElementById("preview-foto");
+  const eliminarBtn = document.getElementById("eliminar-foto");
+
+  const nombreInput = document.getElementById("nombre_usuario");
+  const emailInput = document.getElementById("user_email");
+  const telefonoInput = document.getElementById("telefono");
+
+  const FOTO_DEFAULT = "/img/default-profile.png";
+
+  // --------------------------------------
+  // CARGAR DATOS GUARDADOS AL INICIAR
+  // --------------------------------------
+  const datosGuardados = JSON.parse(localStorage.getItem("perfil_usuario"));
+
+  if (datosGuardados) {
+    nombreInput.value = datosGuardados.nombre || "";
+    emailInput.value = datosGuardados.email || "";
+    telefonoInput.value = datosGuardados.telefono || "";
+    previewFoto.src = datosGuardados.foto || FOTO_DEFAULT;
+  }
+
+  // --------------------------------------
+  // PREVISUALIZAR IMAGEN
+  // --------------------------------------
+  inputImagen.addEventListener("change", () => {
+    const file = inputImagen.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        previewFoto.src = e.target.result;
+        guardarPerfil();
+      };
+      reader.readAsDataURL(file);
+    }
+  });
+
+  // --------------------------------------
+  // ELIMINAR FOTO
+  // --------------------------------------
+  eliminarBtn.addEventListener("click", () => {
+    previewFoto.src = FOTO_DEFAULT;
+    inputImagen.value = "";
+    guardarPerfil();
+  });
+
+  // --------------------------------------
+  // GUARDADO AUTOMÁTICO
+  // --------------------------------------
+  [nombreInput, emailInput, telefonoInput].forEach(input => {
+    input.addEventListener("input", guardarPerfil);
+  });
+
+  // --------------------------------------
+  // FUNCIÓN GUARDAR
+  // --------------------------------------
+  function guardarPerfil() {
+    const datos = {
+      nombre: nombreInput.value,
+      email: emailInput.value,
+      telefono: telefonoInput.value,
+      foto: previewFoto.src
+    };
+
+    localStorage.setItem("perfil_usuario", JSON.stringify(datos));
+  }
+
 }); // <<< end
