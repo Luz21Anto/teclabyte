@@ -777,44 +777,46 @@ document.addEventListener("DOMContentLoaded", () => {
       renderCarousel();
     })();
 
-  /* --------------------------
-     Pequeños widgets: tabs / web selector
-  -------------------------- */
-  (function uiHelpersModule() {
-    // tabs superior que cambian texto de .web-nombre
-    const webNombre = document.querySelectorAll('.web-nombre')[0];
-    if (webNombre) {
-      $$('.tab').forEach((tab, index) => tab.addEventListener('click', () => { webNombre.textContent = 'Página ' + (index + 1); }));
-    }
+/* --------------------------
+   Tabs de páginas + estado
+-------------------------- */
 
-    // lista de webs (sidebar quick list)
-    const nombreWebHeader = $('.sidebar h2');
-    const listaWebs = $('#listaWebs');
-    if (nombreWebHeader && listaWebs) {
-      const websDelUsuario = [
-        { nombre: 'Web 1', estado: 'Activa', url: 'https://web1.com' },
-        { nombre: 'Web 2', estado: 'En progreso', url: 'https://web2.com' },
-        { nombre: 'Web 3', estado: 'Pendiente de pago', url: 'https://web3.com' },
-        { nombre: 'Web 4', estado: 'Inactiva', url: 'https://web4.com' }
-      ];
+const tabs = document.querySelectorAll('.tab');
+const webNombre = document.getElementById('webNombre');
+const webEstado = document.getElementById('webEstado');
 
-      nombreWebHeader.addEventListener('click', () => {
-        listaWebs.style.display = listaWebs.style.display === 'none' ? 'block' : 'none';
-        listaWebs.innerHTML = '';
-        websDelUsuario.forEach(web => {
-          listaWebs.innerHTML += `
-            <div class="web-item">
-              <span class="web-nombre">${web.nombre}</span>
-              <span class="web-estado ${web.estado.toLowerCase().replace(' ', '-')}">${web.estado}</span>
-              <a href="${web.url}" target="_blank" class="external-link" title="Ir a la web">
-                <span class="icono-externo"></span>
-              </a>
-            </div>
-          `;
-        });
-      });
-    }
-  })();
+// estados simulados por página (alineados con el CSS)
+const paginas = [
+  { nombre: 'Página 1', estado: '🟢 Activa', clase: 'activa' },
+  { nombre: 'Página 2', estado: '🟡 En progreso', clase: 'en-progreso' },
+  { nombre: 'Página 3', estado: '🔴 Pendiente de pago', clase: 'pendiente' }
+];
+
+tabs.forEach((tab, index) => {
+  tab.addEventListener('click', () => {
+
+    // activar tab
+    tabs.forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+
+    // actualizar nombre
+    webNombre.textContent = paginas[index].nombre;
+
+    // ✅ reset limpio del estado (SIN romper layout)
+    webEstado.classList.remove(
+      'activa',
+      'en-progreso',
+      'pendiente',
+      'inactiva'
+    );
+
+    // aplicar nuevo estado
+    webEstado.classList.add(paginas[index].clase);
+    webEstado.textContent = paginas[index].estado;
+
+    console.log('Cambio a:', paginas[index]);
+  });
+});
 
   /* --------------------------
      Web selector + vistas por estado (componente principal)

@@ -13,24 +13,39 @@
 
     <!-- Barra lateral -->
     <aside class="sidebar" id="sidebar">
-      <!-- COMPONENTE: Web Actual (clic en la columna 2 despliega lista) -->
+      <h2>Nombre</h2>
+
+      <!-- COMPONENTE: Web Actual -->
       <div class="web-actual-wrapper">
-        <a href="#" class="web-actual clickable" id="btnMostrarWebs" aria-haspopup="true" aria-expanded="false">
+        <a href="#" class="web-actual clickable" id="btnMostrarWebs"
+          aria-haspopup="true" aria-expanded="false">
+
           <div class="col-2">
-            <h3 class="web-nombre">Página 1</h3>
-            <p class="web-estado estado-activa">Activa</p>
+            <h3 class="web-nombre" id="webNombre">Página 1</h3>
+            <p class="web-estado estado-activa" id="webEstado">
+              🟢 Activa
+            </p>
           </div>
+
         </a>
+
         <!-- Icono externo (columna 3) -->
-        <div class="web-externo">
-          <a id="sidebarExternalLink" href="https://tusitio.com" target="_blank" class="external-link" title="Ir a la web" rel="noopener">
-            <span class="icono-externo"></span>
-          </a>
-        </div>
+        <a href="https://ejemplo.com"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="link-externo">
+          <svg class="icono-externo" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+            <path d="M5 5h6V3H5c-1.1 0-2 .9-2 2v14c0 
+                    1.1.9 2 2 2h14c1.1 0 2-.9 
+                    2-2v-6h-2v6H5V5z"/>
+          </svg>
+        </a>
       </div>
+
       <nav>
         <ul>
-          <li data-seccion="progreso" >En progreso</li>
+          <li data-seccion="progreso">En progreso</li>
           <li data-seccion="hosting">Hostings</li>
           <li class="has-submenu">
             Plugins ▼
