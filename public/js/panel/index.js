@@ -647,15 +647,66 @@ document.addEventListener("DOMContentLoaded", () => {
   -------------------------- */
   (function carouselModule() {
     const imgUrl = $('#imgUrl');
+    const imgFile = $('#imgFile');
     const imgDesc = $('#imgDesc');
     const btnAddImg = $('#btnAddImg');
     const carouselList = $('#carouselList');
+    const previewImg = $('#previewImg');
 
     if (!imgUrl || !btnAddImg || !carouselList) return;
 
     let carousel = JSON.parse(localStorage.getItem('carouselImgs')) || [];
+    let currentImage = '';
 
     function saveCarousel() { localStorage.setItem('carouselImgs', JSON.stringify(carousel)); }
+
+    function validateImageUrl(url, onSuccess, onError) {
+      const img = new Image();
+      img.onload = () => onSuccess();
+      img.onerror = () => onError();
+      img.src = url;
+    }
+
+     // ---- PREVIEW desde URL (validado) ----
+    imgUrl.addEventListener('input', () => {
+      const url = imgUrl.value.trim();
+      if (!url) return;
+
+      validateImageUrl(
+        url,
+        () => {
+          currentImage = url;
+          previewImg.src = url;
+          previewImg.style.display = 'block';
+
+          if (imgFile) imgFile.value = '';
+        },
+        () => {
+          currentImage = '';
+          previewImg.style.display = 'none';
+          alert('La URL no corresponde a una imagen válida.');
+        }
+      );
+    });
+
+
+    // ---- PREVIEW desde archivo ----
+    if (imgFile) {
+      imgFile.addEventListener('change', () => {
+        const file = imgFile.files[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = e => {
+          currentImage = e.target.result; // base64
+          previewImg.src = currentImage;
+          previewImg.style.display = 'block';
+
+          imgUrl.value = '';
+        };
+        reader.readAsDataURL(file);
+      });
+    }
 
     function renderCarousel() {
       carouselList.innerHTML = '';
@@ -664,7 +715,13 @@ document.addEventListener("DOMContentLoaded", () => {
         const div = document.createElement('div'); div.classList.add('item');
         div.innerHTML = `
           <img src="${item.src}">
-          <div><p><strong>${item.desc || '(sin descripción)'}</strong></p></div>
+          <div><input 
+          type="text"
+          class="descInput"
+          data-index="${index}"
+          placeholder="Descripción de la imagen"
+          value="${item.desc || ''}">
+          </div>
           <div class="order-buttons">
             <button data-index="${index}" class="btnUp">▲</button>
             <button data-index="${index}" class="btnDown">▼</button>
@@ -686,17 +743,39 @@ document.addEventListener("DOMContentLoaded", () => {
       $$('.btnDown', carouselList).forEach(btn => btn.addEventListener('click', () => {
         const i = Number(btn.dataset.index); if (i === carousel.length - 1) return; [carousel[i + 1], carousel[i]] = [carousel[i], carousel[i + 1]]; saveCarousel(); renderCarousel();
       }));
+      $$('.descInput', carouselList).forEach(input => {
+        input.addEventListener('input', () => {
+          const i = Number(input.dataset.index);
+          carousel[i].desc = input.value;
+          saveCarousel();
+        });
+      });
     }
 
-    btnAddImg.addEventListener('click', () => {
-      const url = imgUrl.value.trim();
-      const desc = imgDesc ? imgDesc.value.trim() : '';
-      if (!url) return alert('Debes ingresar un link válido a una imagen.');
-      carousel.push({ src: url, desc }); imgUrl.value = ''; if (imgDesc) imgDesc.value = ''; saveCarousel(); renderCarousel();
-    });
+    // ---- AGREGAR imagen ----
+      btnAddImg.addEventListener('click', () => {
+        const desc = imgDesc ? imgDesc.value.trim() : '';
 
-    renderCarousel();
-  })();
+        if (!currentImage) {
+          alert('Debes ingresar una imagen (link o archivo).');
+          return;
+        }
+
+        carousel.push({ src: currentImage, desc });
+
+        // reset
+        currentImage = '';
+        imgUrl.value = '';
+        if (imgDesc) imgDesc.value = '';
+        if (imgFile) imgFile.value = '';
+        previewImg.style.display = 'none';
+
+        saveCarousel();
+        renderCarousel();
+      });
+
+      renderCarousel();
+    })();
 
   /* --------------------------
      Pequeños widgets: tabs / web selector

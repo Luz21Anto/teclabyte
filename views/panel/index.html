@@ -440,10 +440,18 @@
           <label>Link a imagen:</label>
           <input type="text" id="imgUrl" placeholder="https://ejemplo.com/imagen.jpg">
 
+          <label>Imagen desde la compu:</label>
+          <input type="file" id="imgFile" accept="image/*">
+
           <label>Descripción:</label>
           <input type="text" id="imgDesc" placeholder="Descripción de la imagen">
 
           <button id="btnAddImg">Agregar Imagen</button>
+        </div>
+
+        <!-- Preview -->
+        <div class="preview">
+          <img id="previewImg" style="max-width:200px; display:none;">
         </div>
 
         <h3>Imágenes del carrusel</h3>
