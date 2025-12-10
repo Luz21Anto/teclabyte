@@ -821,158 +821,74 @@ tabs.forEach((tab, index) => {
   /* --------------------------
      Web selector + vistas por estado (componente principal)
   -------------------------- */
-  (function webComponentModule() {
-    // datos de ejemplo
-    const websDelUsuario = [
-      { nombre: 'Web 1', estado: 'Activa', url: 'https://web1.com', dominio: 'web1.com', hostingPlan: 'Básico', paymentStatus: 'Pagado', expiryDate: '2026-04-15', deactivationDate: '2026-05-01', pluginsActive: ['Blog', 'Galería', 'WhatsApp'], paymentLink: 'https://pagos.com/pagar/web1' },
-      { nombre: 'Web 2', estado: 'En progreso', url: 'https://web2.com', dominio: 'web2.com', hostingPlan: 'Pro', paymentStatus: 'Pagado', expiryDate: '2026-06-10', deactivationDate: '2026-06-25', pluginsActive: ['Calendario'], paymentLink: 'https://pagos.com/pagar/web2' },
-      { nombre: 'Web 3', estado: 'Pendiente de pago', url: 'https://web3.com', dominio: 'web3.com', hostingPlan: 'Starter', paymentStatus: 'Pendiente', expiryDate: '2025-12-05', deactivationDate: '2025-12-20', pluginsActive: ['Donaciones','Redes Sociales'], paymentLink: 'https://pagos.com/pagar/web3' },
-      { nombre: 'Web 4', estado: 'Inactiva', url: 'https://web4.com', dominio: 'web4.com', hostingPlan: 'Básico', paymentStatus: 'Vencido', expiryDate: '2024-10-01', deactivationDate: '2024-10-15', pluginsActive: ['Carrusel','Galería'], paymentLink: 'https://pagos.com/pagar/web4' }
-    ];
+(function webComponentModule() {
+  const websDelUsuario = [
+    { nombre: 'Pagina 1', estado: 'Activa', url: 'https://web1.com', dominio: 'web1.com', hostingPlan: 'Básico', paymentStatus: 'Pagado', expiryDate: '2026-04-15', deactivationDate: '2026-05-01', pluginsActive: ['Blog', 'Galería', 'WhatsApp'], paymentLink: 'https://pagos.com/pagar/web1' },
+    { nombre: 'Pagina 2', estado: 'En progreso', url: 'https://web2.com', dominio: 'web2.com', hostingPlan: 'Pro', paymentStatus: 'Pagado', expiryDate: '2026-06-10', deactivationDate: '2026-06-25', pluginsActive: ['Calendario'], paymentLink: 'https://pagos.com/pagar/web2' },
+    { nombre: 'Pagina 3', estado: 'Pendiente de pago', url: 'https://web3.com', dominio: 'web3.com', hostingPlan: 'Starter', paymentStatus: 'Pendiente', expiryDate: '2025-12-05', deactivationDate: '2025-12-20', pluginsActive: ['Donaciones','Redes Sociales'], paymentLink: 'https://pagos.com/pagar/web3' },
+    { nombre: 'Pagina 4', estado: 'Inactiva', url: 'https://web4.com', dominio: 'web4.com', hostingPlan: 'Básico', paymentStatus: 'Vencido', expiryDate: '2024-10-01', deactivationDate: '2024-10-15', pluginsActive: ['Carrusel','Galería'], paymentLink: 'https://pagos.com/pagar/web4' }
+  ];
 
-    let currentIndex = 0;
-    const listaWebsEl = $('#listaWebs');
-    const btnMostrarWebs = $('#btnMostrarWebs');
-    const sidebarExternalLink = $('#sidebarExternalLink');
-    const sidebarWebNombre = document.querySelector('.web-actual .web-nombre') || document.querySelector('.web-nombre');
-    const sidebarWebEstado = document.querySelector('.web-actual .web-estado') || document.querySelector('.web-estado');
+  let currentIndex = 0;
 
-    const resumenSec = $('#resumen');
-    const enProgresoSec = $('#en-progreso');
-    const pendientePagoSec = $('#pendiente-pago');
-    const reactivarSec = $('#reactivar-web');
+  const btnMostrarWebs = document.getElementById('btnMostrarWebs');
+  const dropdownWebs = document.getElementById('dropdownWebs');
+  const sidebarWebNombre = document.querySelector('.web-actual .web-nombre');
+  const sidebarWebEstado = document.querySelector('.web-actual .web-estado');
 
-    const resNombre = $('#res-nombre');
-    const resDominio = $('#res-dominio');
-    const resPlan = $('#res-plan');
-    const resPago = $('#res-pago');
-    const resExp = $('#res-exp');
-    const resPendienteCta = $('#res-pendiente-cta');
+  // Función para asignar clase según estado
+  function estadoClass(estado) {
+    const key = String(estado).toLowerCase();
+    if (key.includes('act')) return 'estado-activa';
+    if (key.includes('progreso')) return 'estado-en-progreso';
+    if (key.includes('pend')) return 'estado-pendiente-de-pago';
+    return 'estado-inactiva';
+  }
 
-    const ppExp = $('#pp-exp');
-    const ppDesact = $('#pp-desact');
-    const ppMantBtn = $('#pp-mantener-btn');
+  // Actualiza el sidebar con la web actual
+  function renderSidebarCurrent() {
+    const web = websDelUsuario[currentIndex];
+    sidebarWebNombre.textContent = web.nombre;
+    sidebarWebEstado.textContent = web.estado;
+    sidebarWebEstado.className = 'web-estado ' + estadoClass(web.estado);
+  }
 
-    const reactPlugins = $('#reactivar-plugins');
-    const reactExp = $('#react-exp');
-    const reactDesact = $('#react-desact');
-    const reactivarBtn = $('#reactivarBtn');
+  // Genera la lista del dropdown
+  function renderDropdown() {
+    dropdownWebs.innerHTML = '';
+    websDelUsuario.forEach((web, idx) => {
+      const item = document.createElement('div');
+      item.className = 'web-item';
+      item.innerHTML = `
+        <strong>${web.nombre}</strong>
+        <small class="web-estado ${estadoClass(web.estado)}">${web.estado}</small>
+        <button class="select-web" data-index="${idx}" style="margin-left:8px;">Seleccionar</button>
+      `;
+      dropdownWebs.appendChild(item);
+    });
 
-    const mantenerActivaBtn = $('#mantenerActivaBtn');
-
-    function estadoClass(estado) {
-      const key = String(estado).toLowerCase();
-      if (key.includes('act')) return 'estado-activa';
-      if (key.includes('progreso')) return 'estado-en-progreso';
-      if (key.includes('pend')) return 'estado-pendiente-de-pago';
-      return 'estado-inactiva';
-    }
-
-    function renderSidebarCurrent() {
-      const web = websDelUsuario[currentIndex];
-      if (sidebarWebNombre) sidebarWebNombre.textContent = web.nombre;
-      if (sidebarWebEstado) { sidebarWebEstado.textContent = web.estado; sidebarWebEstado.className = 'web-estado ' + estadoClass(web.estado); }
-    }
-
-    function renderWebsList() {
-      if (!listaWebsEl) return;
-      listaWebsEl.innerHTML = '';
-      websDelUsuario.forEach((web, idx) => {
-        const div = document.createElement('div');
-        div.className = 'web-item';
-        div.innerHTML = `
-          <div class="left">
-            <strong>${web.nombre}</strong>
-            <small class="web-estado ${estadoClass(web.estado)}" style="display:block;margin-top:4px;">${web.estado}</small>
-          </div>
-          <div class="right">
-            <a href="${web.url}" target="_blank" title="Ir a la web" rel="noopener" class="external-link">
-              <span class="icono-externo"></span>
-            </a>
-            <button class="select-web" data-index="${idx}" style="background:none;border:0;cursor:pointer;padding:6px 8px;">Seleccionar</button>
-          </div>
-        `;
-        listaWebsEl.appendChild(div);
+    // Listener para cada botón de seleccionar
+    dropdownWebs.querySelectorAll('.select-web').forEach(btn => {
+      btn.addEventListener('click', () => {
+        currentIndex = Number(btn.dataset.index);
+        renderSidebarCurrent();
+        dropdownWebs.style.display = 'none';
       });
-    }
+    });
+  }
 
-    function attachListeners() {
-      if (btnMostrarWebs && listaWebsEl) {
-        btnMostrarWebs.addEventListener('click', (e) => {
-          e.preventDefault();
-          const isVisible = listaWebsEl.style.display === 'block';
-          listaWebsEl.style.display = isVisible ? 'none' : 'block';
-          btnMostrarWebs.setAttribute('aria-expanded', String(!isVisible));
-        });
+  // Toggle dropdown al hacer click en el botón de sidebar
+  btnMostrarWebs.addEventListener('click', (e) => {
+    e.preventDefault();
+    const isVisible = dropdownWebs.style.display === 'block';
+    dropdownWebs.style.display = isVisible ? 'none' : 'block';
+  });
 
-        // Delegación para "Seleccionar"
-        listaWebsEl.addEventListener('click', (e) => {
-          const btn = e.target.closest('.select-web');
-          if (!btn) return;
-          const idx = Number(btn.dataset.index);
-          selectWeb(idx);
-          listaWebsEl.style.display = 'none';
-        });
-      }
+  // Inicializar
+  renderSidebarCurrent();
+  renderDropdown();
+})();
 
-      if (mantenerActivaBtn) mantenerActivaBtn.addEventListener('click', () => { const w = websDelUsuario[currentIndex]; if (w.paymentLink) window.open(w.paymentLink, '_blank'); });
-      if (ppMantBtn) ppMantBtn.addEventListener('click', () => { const w = websDelUsuario[currentIndex]; if (w.paymentLink) window.open(w.paymentLink, '_blank'); });
-      if (reactivarBtn) reactivarBtn.addEventListener('click', () => { const w = websDelUsuario[currentIndex]; if (w.paymentLink) window.open(w.paymentLink, '_blank'); });
-    }
-
-    function selectWeb(idx) {
-      if (idx < 0 || idx >= websDelUsuario.length) return;
-      currentIndex = idx; renderSidebarCurrent(); updateSidebarExternalLink(); showSectionForCurrent();
-    }
-
-    function updateSidebarExternalLink() {
-      const w = websDelUsuario[currentIndex];
-      if (sidebarExternalLink) sidebarExternalLink.href = w.url || '#';
-    }
-
-    function populateResumen(w) {
-      if (resNombre) resNombre.textContent = w.nombre || '';
-      if (resDominio) resDominio.textContent = w.dominio || (new URL(w.url || 'http://example.com')).hostname;
-      if (resPlan) resPlan.textContent = w.hostingPlan || '-';
-      if (resPago) resPago.textContent = w.paymentStatus || '-';
-      if (resExp) resExp.textContent = w.expiryDate || '-';
-      if (resPendienteCta) resPendienteCta.style.display = 'none';
-    }
-
-    function renderReactivar(w) {
-      if (!reactPlugins) return;
-      reactPlugins.innerHTML = '';
-      (w.pluginsActive || []).forEach(p => {
-        const li = document.createElement('li'); li.textContent = p; reactPlugins.appendChild(li);
-      });
-      if (reactExp) reactExp.textContent = w.expiryDate || '-';
-      if (reactDesact) reactDesact.textContent = w.deactivationDate || '-';
-    }
-
-    function showSectionForCurrent() {
-      const w = websDelUsuario[currentIndex];
-      // ocultar todas
-      [resumenSec, enProgresoSec, pendientePagoSec, reactivarSec].forEach(s => { if (s) s.style.display = 'none'; });
-      if (!w) return;
-      if (String(w.estado).toLowerCase().includes('act')) {
-        populateResumen(w); if (resumenSec) resumenSec.style.display = 'block';
-      } else if (String(w.estado).toLowerCase().includes('progreso')) {
-        if (enProgresoSec) enProgresoSec.style.display = 'block';
-      } else if (String(w.estado).toLowerCase().includes('pend')) {
-        populateResumen(w); if (resumenSec) resumenSec.style.display = 'block';
-        if (resPendienteCta) resPendienteCta.style.display = 'block';
-        if (ppExp) ppExp.textContent = w.expiryDate || '-';
-        if (ppDesact) ppDesact.textContent = w.deactivationDate || '-';
-        if (pendientePagoSec) pendientePagoSec.style.display = 'block';
-      } else {
-        if (reactivarSec) reactivarSec.style.display = 'block';
-        renderReactivar(w);
-      }
-    }
-
-    // Inicial
-    renderSidebarCurrent(); renderWebsList(); attachListeners(); showSectionForCurrent();
-  })();
 
   // --- PERFIL – Foto, Inputs y LocalStorage ---
   const inputImagen = document.getElementById("imagen");
@@ -983,7 +899,7 @@ tabs.forEach((tab, index) => {
   const emailInput = document.getElementById("user_email");
   const telefonoInput = document.getElementById("telefono");
 
-  const FOTO_DEFAULT = "/img/default-profile.png";
+  const FOTO_DEFAULT = "/imag/default-profile.png";
 
   // --------------------------------------
   // CARGAR DATOS GUARDADOS AL INICIAR

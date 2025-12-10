@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/Luz21Anto/teclabyte#readme",
   "dependencies": {
+    "ejs": "^3.1.10",
     "express": "^5.1.0"
   }
 }

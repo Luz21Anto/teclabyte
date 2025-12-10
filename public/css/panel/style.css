@@ -1354,6 +1354,93 @@ section h2 {
   color: #dc3545; /* rojo */
 }
 
+/* Limites del icono a link externo */
+/* ----- ICONO EXTERNO ----- */
+.web-actual-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  position: relative; /* para que el dropdown se posicione correctamente */
+}
+
+.lista-webs {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  background: #fff;
+  border: 1px solid #cdd9f0;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+}
+
+.web-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 12px;
+  cursor: pointer;
+}
+
+.web-item .left {
+  display: flex;
+  flex-direction: column;
+}
+
+.web-item .right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.col-2 {
+  display: flex;
+  flex-direction: column; /* mantiene nombre y estado uno debajo del otro */
+}
+
+.link-externo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.icono-externo {
+  width: 24px;      /* tamaño fijo */
+  height: 24px;     /* tamaño fijo */
+  flex-shrink: 0;   /* evita que se comprima o crezca */
+}
+
+.dropdown-webs {
+  position: absolute; /* se superpone */
+  top: 100%; /* justo debajo del contenedor */
+  left: 0;
+  width: 100%;
+  background: #fff;
+  border: 1px solid #cdd9f0;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  z-index: 100;
+  flex-direction: column;
+}
+
+.dropdown-webs .dropdown-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 12px;
+  cursor: pointer;
+}
+
+.dropdown-webs .dropdown-item:hover {
+  background-color: #f0f4ff;
+}
+
+
+
 /* --- CONTENEDOR GENERAL --- */
 #configuracion {
   padding: 20px;
@@ -1374,12 +1461,14 @@ section h2 {
 }
 
 .perfil-foto {
+  display: block;
   width: 120px;
   height: 120px;
   object-fit: cover;
   border-radius: 50%;
   border: 2px solid var(--color-primary, #3b82f6);
   margin-bottom: 10px;
+  background-color: lightgray; /* temporal para ver el área */
 }
 
 /* Input file */
@@ -1404,6 +1493,11 @@ section h2 {
 }
 
 /* --- CAMPOS DE TEXTO --- */
+#configuracion {
+  visibility: hidden;
+  position: absolute;
+}
+
 #configuracion label {
   display: block;
   margin-top: 15px;
