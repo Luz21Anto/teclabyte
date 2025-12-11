@@ -1439,7 +1439,25 @@ section h2 {
   background-color: #f0f4ff;
 }
 
+/* Mostrar dropdown al pasar el mouse por encima */
+.web-actual-wrapper:hover #dropdownWebs {
+  display: block !important;
+}
 
+/* Ajuste visual */
+.dropdown-webs {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  background: #fff;
+  border: 1px solid #cdd9f0;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  z-index: 200;
+  padding: 6px 0;
+}
 
 /* --- CONTENEDOR GENERAL --- */
 #configuracion {

@@ -818,34 +818,34 @@ tabs.forEach((tab, index) => {
   });
 });
 
-  /* --------------------------
-     Web selector + vistas por estado (componente principal)
-  -------------------------- */
+ /* --------------------------
+   Web selector
+-------------------------- */
 (function webComponentModule() {
   const websDelUsuario = [
-    { nombre: 'Pagina 1', estado: 'Activa', url: 'https://web1.com', dominio: 'web1.com', hostingPlan: 'Básico', paymentStatus: 'Pagado', expiryDate: '2026-04-15', deactivationDate: '2026-05-01', pluginsActive: ['Blog', 'Galería', 'WhatsApp'], paymentLink: 'https://pagos.com/pagar/web1' },
-    { nombre: 'Pagina 2', estado: 'En progreso', url: 'https://web2.com', dominio: 'web2.com', hostingPlan: 'Pro', paymentStatus: 'Pagado', expiryDate: '2026-06-10', deactivationDate: '2026-06-25', pluginsActive: ['Calendario'], paymentLink: 'https://pagos.com/pagar/web2' },
-    { nombre: 'Pagina 3', estado: 'Pendiente de pago', url: 'https://web3.com', dominio: 'web3.com', hostingPlan: 'Starter', paymentStatus: 'Pendiente', expiryDate: '2025-12-05', deactivationDate: '2025-12-20', pluginsActive: ['Donaciones','Redes Sociales'], paymentLink: 'https://pagos.com/pagar/web3' },
-    { nombre: 'Pagina 4', estado: 'Inactiva', url: 'https://web4.com', dominio: 'web4.com', hostingPlan: 'Básico', paymentStatus: 'Vencido', expiryDate: '2024-10-01', deactivationDate: '2024-10-15', pluginsActive: ['Carrusel','Galería'], paymentLink: 'https://pagos.com/pagar/web4' }
+    { nombre: 'Pagina 1', estado: 'Activa', dominio:'web1.com'},
+    { nombre: 'Pagina 2', estado: 'En progreso', dominio:'web2.com'},
+    { nombre: 'Pagina 3', estado: 'Pendiente de pago', dominio:'web3.com'},
+    { nombre: 'Pagina 4', estado: 'Inactiva', dominio:'web4.com'}
   ];
 
   let currentIndex = 0;
 
   const btnMostrarWebs = document.getElementById('btnMostrarWebs');
   const dropdownWebs = document.getElementById('dropdownWebs');
-  const sidebarWebNombre = document.querySelector('.web-actual .web-nombre');
-  const sidebarWebEstado = document.querySelector('.web-actual .web-estado');
+  const sidebarWebNombre = document.getElementById('webNombre');
+  const sidebarWebEstado = document.getElementById('webEstado');
 
-  // Función para asignar clase según estado
+  // Clase visual según estado
   function estadoClass(estado) {
-    const key = String(estado).toLowerCase();
-    if (key.includes('act')) return 'estado-activa';
+    const key = estado.toLowerCase();
+    if (key.includes('activa')) return 'estado-activa';
     if (key.includes('progreso')) return 'estado-en-progreso';
-    if (key.includes('pend')) return 'estado-pendiente-de-pago';
+    if (key.includes('pendiente')) return 'estado-pendiente';
     return 'estado-inactiva';
   }
 
-  // Actualiza el sidebar con la web actual
+  // Actualizar cabecera del sidebar
   function renderSidebarCurrent() {
     const web = websDelUsuario[currentIndex];
     sidebarWebNombre.textContent = web.nombre;
@@ -853,42 +853,47 @@ tabs.forEach((tab, index) => {
     sidebarWebEstado.className = 'web-estado ' + estadoClass(web.estado);
   }
 
-  // Genera la lista del dropdown
+  // Render del dropdown
   function renderDropdown() {
     dropdownWebs.innerHTML = '';
-    websDelUsuario.forEach((web, idx) => {
-      const item = document.createElement('div');
-      item.className = 'web-item';
-      item.innerHTML = `
-        <strong>${web.nombre}</strong>
-        <small class="web-estado ${estadoClass(web.estado)}">${web.estado}</small>
-        <button class="select-web" data-index="${idx}" style="margin-left:8px;">Seleccionar</button>
-      `;
-      dropdownWebs.appendChild(item);
-    });
 
-    // Listener para cada botón de seleccionar
-    dropdownWebs.querySelectorAll('.select-web').forEach(btn => {
-      btn.addEventListener('click', () => {
-        currentIndex = Number(btn.dataset.index);
+    websDelUsuario.forEach((web, idx) => {
+      const div = document.createElement('div');
+      div.className = 'web-item';   // <- AHORA COINCIDE CON TU CSS
+
+      div.innerHTML = `
+        <div class="left">
+          <strong>${web.nombre}</strong>
+          <small class="web-estado ${estadoClass(web.estado)}">${web.estado}</small>
+        </div>
+      `;
+
+      div.addEventListener('click', () => {
+        currentIndex = idx;
         renderSidebarCurrent();
         dropdownWebs.style.display = 'none';
       });
+
+      dropdownWebs.appendChild(div);
     });
   }
 
-  // Toggle dropdown al hacer click en el botón de sidebar
+  // Hacer click en "Página 1" → toggle dropdown
   btnMostrarWebs.addEventListener('click', (e) => {
     e.preventDefault();
-    const isVisible = dropdownWebs.style.display === 'block';
-    dropdownWebs.style.display = isVisible ? 'none' : 'block';
+    dropdownWebs.style.display =
+      dropdownWebs.style.display === 'block' ? 'none' : 'block';
   });
 
-  // Inicializar
+  // Ocultar al salir del área (opcional pero prolijo)
+  document.querySelector('.web-actual-wrapper')
+    .addEventListener('mouseleave', () => {
+      dropdownWebs.style.display = 'none';
+    });
+
   renderSidebarCurrent();
   renderDropdown();
 })();
-
 
   // --- PERFIL – Foto, Inputs y LocalStorage ---
   const inputImagen = document.getElementById("imagen");
