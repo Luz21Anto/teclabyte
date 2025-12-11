@@ -824,9 +824,9 @@ tabs.forEach((tab, index) => {
 (function webComponentModule() {
   const websDelUsuario = [
     { nombre: 'Pagina 1', estado: 'Activa', dominio:'web1.com'},
-    { nombre: 'Pagina 2', estado: 'En progreso', dominio:'web2.com'},
+    { nombre: 'Pagina 2', estado: 'En proceso', dominio:'web2.com'},
     { nombre: 'Pagina 3', estado: 'Pendiente de pago', dominio:'web3.com'},
-    { nombre: 'Pagina 4', estado: 'Inactiva', dominio:'web4.com'}
+    { nombre: 'Pagina 4', estado: 'suspendida', dominio:'web4.com'}
   ];
 
   let currentIndex = 0;
@@ -836,21 +836,101 @@ tabs.forEach((tab, index) => {
   const sidebarWebNombre = document.getElementById('webNombre');
   const sidebarWebEstado = document.getElementById('webEstado');
 
+  function actualizarSidebarOpciones(estado) {
+  const items = {
+    resumen: document.querySelector('[data-seccion="resumen"]'),
+    enProceso: document.querySelector('[data-seccion="en-proceso"]'),
+    pendiente: document.querySelector('[data-seccion="pendiente-pago"]'),
+    suspendida: document.querySelector('[data-seccion="suspendida-web"]'),
+  };
+
+  // Ocultar todos por defecto
+    Object.values(items).forEach(i => i.style.display = "none");
+
+    const key = estado.toLowerCase();
+
+    if (key.includes("activa")) {
+      items.resumen.style.display = "block";
+    } 
+    else if (key.includes("proceso")) {
+      items.enProceso.style.display = "block";
+    } 
+    else if (key.includes("pendiente")) {
+      items.pendiente.style.display = "block";
+    } 
+    else {
+      items.suspendida.style.display = "block";
+    }
+  }
+
   // Clase visual según estado
   function estadoClass(estado) {
     const key = estado.toLowerCase();
     if (key.includes('activa')) return 'estado-activa';
-    if (key.includes('progreso')) return 'estado-en-progreso';
+    if (key.includes('proceso')) return 'estado-en-proceso';
     if (key.includes('pendiente')) return 'estado-pendiente';
-    return 'estado-inactiva';
+    return 'estado-suspendida';
   }
 
   // Actualizar cabecera del sidebar
   function renderSidebarCurrent() {
     const web = websDelUsuario[currentIndex];
+
     sidebarWebNombre.textContent = web.nombre;
     sidebarWebEstado.textContent = web.estado;
     sidebarWebEstado.className = 'web-estado ' + estadoClass(web.estado);
+
+    // NUEVO: actualizar menú del sidebar según estado
+    actualizarSidebarOpciones(web.estado);
+  }
+
+  function mostrarSeccionSegunEstado(estadoRaw) {
+    // Normalizar el estado a un formato uniforme
+    const estado = estadoRaw.toLowerCase().trim();
+
+    let clave = "";
+    if (estado.includes("activa")) clave = "activa";
+    else if (estado.includes("proceso")) clave = "en-proceso";
+    else if (estado.includes("pendiente")) clave = "pendiente-pago";
+    else if (estado.includes("suspendida")) clave = "suspendida";
+    else clave = "activa";
+
+    // Ocultar todas las secciones
+    const secciones = [
+      "resumen",
+      "en-proceso",
+      "pendiente-pago",
+      "suspendida-web"
+    ];
+
+    secciones.forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.style.display = "none";
+    });
+
+    // Mostrar solo la sección correcta
+    let seccionCorrespondiente = "";
+
+    switch (clave) {
+      case "activa":
+        seccionCorrespondiente = "resumen";
+        break;
+
+      case "en-proceso":
+        seccionCorrespondiente = "en-proceso";
+        break;
+
+      case "pendiente-pago":
+        seccionCorrespondiente = "pendiente-pago";
+        break;
+
+      case "suspendida":
+        seccionCorrespondiente = "suspendida-web";
+        break;
+    }
+
+    const target = document.getElementById(seccionCorrespondiente);
+    if (target) target.style.display = "block";
   }
 
   // Render del dropdown
@@ -877,6 +957,15 @@ tabs.forEach((tab, index) => {
       dropdownWebs.appendChild(div);
     });
   }
+
+  // Cuando el usuario hace click en una opción del sidebar
+  document.querySelectorAll(".sidebar-opcion").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const web = websDelUsuario[currentIndex];
+      console.log("Click en opción del sidebar → estado:", web.estado);
+      mostrarSeccionSegunEstado(web.estado);
+    });
+  });
 
   // Hacer click en "Página 1" → toggle dropdown
   btnMostrarWebs.addEventListener('click', (e) => {
