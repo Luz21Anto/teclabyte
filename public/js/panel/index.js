@@ -984,72 +984,128 @@ tabs.forEach((tab, index) => {
   renderDropdown();
 })();
 
-  // --- PERFIL – Foto, Inputs y LocalStorage ---
-  const inputImagen = document.getElementById("imagen");
-  const previewFoto = document.getElementById("preview-foto");
-  const eliminarBtn = document.getElementById("eliminar-foto");
+// --- REFERENCIAS DEL DOM ---
+const preview = document.getElementById("preview-foto");
+const inputFile = document.getElementById("foto");     // <--- CAMBIADO AQUÍ
+const btnEliminar = document.getElementById("eliminar-foto");
 
-  const nombreInput = document.getElementById("nombre_usuario");
-  const emailInput = document.getElementById("user_email");
-  const telefonoInput = document.getElementById("telefono");
+const nombreInput = document.getElementById("nombre_usuario");
+const emailInput = document.getElementById("user_email");
+const telefonoInput = document.getElementById("telefono");
 
-  const FOTO_DEFAULT = "/imag/default-profile.png";
+const FOTO_DEFAULT = "/images/panel/perfil.jpg";
 
-  // --------------------------------------
-  // CARGAR DATOS GUARDADOS AL INICIAR
-  // --------------------------------------
-  const datosGuardados = JSON.parse(localStorage.getItem("perfil_usuario"));
+// ----------------------------------------------------
+// CARGAR PERFIL GUARDADO
+// ----------------------------------------------------
+cargarPerfilGuardado();
 
-  if (datosGuardados) {
-    nombreInput.value = datosGuardados.nombre || "";
-    emailInput.value = datosGuardados.email || "";
-    telefonoInput.value = datosGuardados.telefono || "";
-    previewFoto.src = datosGuardados.foto || FOTO_DEFAULT;
-  }
+// ----------------------------------------------------
+// SUBIR FOTO
+// ----------------------------------------------------
+inputFile.addEventListener("change", (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
 
-  // --------------------------------------
-  // PREVISUALIZAR IMAGEN
-  // --------------------------------------
-  inputImagen.addEventListener("change", () => {
-    const file = inputImagen.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        previewFoto.src = e.target.result;
-        guardarPerfil();
-      };
-      reader.readAsDataURL(file);
+  const reader = new FileReader();
+
+  reader.onload = (ev) => {
+    abrirRecortador(ev.target.result);
+  };
+
+  reader.readAsDataURL(file);
+});
+
+// ----------------------------------------------------
+// ELIMINAR FOTO
+// ----------------------------------------------------
+btnEliminar.addEventListener("click", () => {
+  preview.src = FOTO_DEFAULT;
+  guardarPerfil();
+});
+
+// ----------------------------------------------------
+// RECORTADOR BÁSICO CON CANVAS (SIN LIBRERÍAS)
+// ----------------------------------------------------
+function abrirRecortador(imgSrc) {
+  const modal = document.createElement("div");
+  modal.style = `
+    position: fixed; inset: 0; background: rgba(0,0,0,0.7);
+    display:flex; align-items:center; justify-content:center;
+    z-index: 9999;
+  `;
+
+  modal.innerHTML = `
+    <div style="background:#fff; padding:15px; border-radius:10px; display:flex; flex-direction:column; align-items:center;">
+      <canvas id="crop-canvas" style="max-width:300px; border:1px solid #ccc;"></canvas>
+      <div style="margin-top:10px;">
+        <button id="crop-ok" style="padding:6px 12px; margin-right:5px;">Recortar</button>
+        <button id="crop-cancel" style="padding:6px 12px;">Cancelar</button>
+      </div>
+    </div>
+  `;
+
+  document.body.appendChild(modal);
+
+  const canvas = modal.querySelector("#crop-canvas");
+  const ctx = canvas.getContext("2d");
+  const img = new Image();
+  img.src = imgSrc;
+
+  img.onload = () => {
+    const maxSize = 300;
+    const ratio = img.width / img.height;
+
+    if (ratio > 1) {
+      canvas.width = maxSize;
+      canvas.height = maxSize / ratio;
+    } else {
+      canvas.height = maxSize;
+      canvas.width = maxSize * ratio;
     }
-  });
 
-  // --------------------------------------
-  // ELIMINAR FOTO
-  // --------------------------------------
-  eliminarBtn.addEventListener("click", () => {
-    previewFoto.src = FOTO_DEFAULT;
-    inputImagen.value = "";
+    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+  };
+
+  modal.querySelector("#crop-ok").onclick = () => {
+    const finalImg = canvas.toDataURL("image/jpeg");
+    preview.src = finalImg;
     guardarPerfil();
-  });
+    modal.remove();
+  };
 
-  // --------------------------------------
-  // GUARDADO AUTOMÁTICO
-  // --------------------------------------
-  [nombreInput, emailInput, telefonoInput].forEach(input => {
-    input.addEventListener("input", guardarPerfil);
-  });
+  modal.querySelector("#crop-cancel").onclick = () => modal.remove();
+}
 
-  // --------------------------------------
-  // FUNCIÓN GUARDAR
-  // --------------------------------------
-  function guardarPerfil() {
-    const datos = {
-      nombre: nombreInput.value,
-      email: emailInput.value,
-      telefono: telefonoInput.value,
-      foto: previewFoto.src
-    };
+// ----------------------------------------------------
+// GUARDAR PERFIL EN LOCALSTORAGE
+// ----------------------------------------------------
+function guardarPerfil() {
+  const data = {
+    foto: preview.src || FOTO_DEFAULT,
+    nombre: nombreInput.value,
+    email: emailInput.value,
+    telefono: telefonoInput.value
+  };
 
-    localStorage.setItem("perfil_usuario", JSON.stringify(datos));
+  localStorage.setItem("perfil_usuario", JSON.stringify(data));
+}
+
+// ----------------------------------------------------
+// CARGAR PERFIL
+// ----------------------------------------------------
+function cargarPerfilGuardado() {
+  const datos = JSON.parse(localStorage.getItem("perfil_usuario"));
+
+  if (!datos) {
+    preview.src = FOTO_DEFAULT;
+    return;
   }
 
-}); // <<< end
+  preview.src = datos.foto || FOTO_DEFAULT;
+  nombreInput.value = datos.nombre || "";
+  emailInput.value = datos.email || "";
+  telefonoInput.value = datos.telefono || "";
+}
+
+ }); // <<< end

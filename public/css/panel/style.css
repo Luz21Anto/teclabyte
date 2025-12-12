@@ -1511,11 +1511,6 @@ section h2 {
 }
 
 /* --- CAMPOS DE TEXTO --- */
-#configuracion {
-  visibility: hidden;
-  position: absolute;
-}
-
 #configuracion label {
   display: block;
   margin-top: 15px;

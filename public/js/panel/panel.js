@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
-  verificarSesion();
+  //verificarSesion();
 });
 
 async function verificarSesion() {
@@ -37,6 +37,5 @@ function redirectToLogin() {
 }
 
 function showPanelLoadError() {
-    const panel = document.getElementById("panel-container");
-    panel.innerHTML = `<p style="color:red;">No se pudo cargar la información del usuario.</p>`;
+    console.error("No se pudo cargar la información del usuario.");
 }
