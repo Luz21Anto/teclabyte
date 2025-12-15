@@ -1108,4 +1108,59 @@ function cargarPerfilGuardado() {
   telefonoInput.value = datos.telefono || "";
 }
 
+// ----------------------------------------------------
+// MODO VISTA / MODO EDICIÓN PERFIL
+// ----------------------------------------------------
+
+const configSection = document.getElementById("configuracion");
+
+// Textos
+const textoNombre = document.getElementById("texto-nombre");
+const textoEmail = document.getElementById("texto-email");
+const textoTelefono = document.getElementById("texto-telefono");
+
+// Botones
+const btnGuardarPerfil = document.getElementById("guardar-perfil");
+const btnEditarPerfil = document.getElementById("editar-perfil");
+
+// Guardar → pasar a modo vista
+btnGuardarPerfil.addEventListener("click", () => {
+  textoNombre.textContent = nombreInput.value || "—";
+  textoEmail.textContent = emailInput.value || "—";
+  textoTelefono.textContent = telefonoInput.value || "—";
+
+  guardarPerfil(); // usa tu función existente
+
+  configSection.classList.add("modo-vista");
+  btnGuardarPerfil.style.display = "none";
+  btnEditarPerfil.style.display = "inline-block";
+});
+
+// Editar → volver a modo edición
+btnEditarPerfil.addEventListener("click", () => {
+  configSection.classList.remove("modo-vista");
+  btnGuardarPerfil.style.display = "inline-block";
+  btnEditarPerfil.style.display = "none";
+});
+
+// ----------------------------------------------------
+// INTEGRACIÓN CON CARGA DE PERFIL
+// ----------------------------------------------------
+
+const _cargarPerfilOriginal = cargarPerfilGuardado;
+
+cargarPerfilGuardado = function () {
+  _cargarPerfilOriginal();
+
+  textoNombre.textContent = nombreInput.value || "—";
+  textoEmail.textContent = emailInput.value || "—";
+  textoTelefono.textContent = telefonoInput.value || "—";
+
+  if (nombreInput.value || emailInput.value || telefonoInput.value) {
+    configSection.classList.add("modo-vista");
+    btnGuardarPerfil.style.display = "none";
+    btnEditarPerfil.style.display = "inline-block";
+  }
+};
+
  }); // <<< end

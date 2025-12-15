@@ -541,16 +541,24 @@
         </div>
 
         <!-- Nombre de usuario -->
-        <label for="nombre_usuario">Nombre de usuario:</label>
-        <input id="nombre_usuario" name="nombre_usuario" type="text" placeholder="Ej.: lucas_admin">
+        <label>Nombre de usuario:</label>
+        <input id="nombre_usuario" type="text">
+        <span class="dato-texto" id="texto-nombre"></span>
 
         <!-- Email -->
-        <label for="user_email">Email:</label>
-        <input id="user_email" name="email" type="email" placeholder="ej. usuario@mail.com">
+        <label>Email:</label>
+        <input id="user_email" type="email">
+        <span class="dato-texto" id="texto-email"></span>
 
         <!-- Teléfono -->
-        <label for="telefono">Número de Teléfono:</label>
-        <input id="telefono" name="telefono" type="tel" placeholder="ej. 11 2222 2222">
+        <label>Número de Teléfono:</label>
+        <input id="telefono" type="tel">
+        <span class="dato-texto" id="texto-telefono"></span>
+
+        <!-- Botones -->
+        <button id="guardar-perfil">Guardar</button>
+        <button id="editar-perfil" style="display:none;">✏️ Editar</button>
+
 
         <h2>Tema:</h2>
         <button id="theme-toggle" class="theme-toggle">☀️/🌙</button>

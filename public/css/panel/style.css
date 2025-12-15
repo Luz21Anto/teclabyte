@@ -1549,3 +1549,18 @@ body.dark-mode .perfil-foto {
   border-color: var(--color-primary, #3b82f6);
 }
 
+/* Texto mostrado en modo vista */
+.dato-texto {
+  display: none;
+  padding: 8px 0;
+  font-weight: 500;
+}
+
+/* MODO VISTA */
+#configuracion.modo-vista input {
+  display: none;
+}
+
+#configuracion.modo-vista .dato-texto {
+  display: block;
+}
