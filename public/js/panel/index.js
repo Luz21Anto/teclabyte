@@ -1163,4 +1163,68 @@ cargarPerfilGuardado = function () {
   }
 };
 
+/* =========================
+   SISTEMA DE TEMAS
+========================= */
+
+(() => {
+
+  const body = document.body;
+  const btnTheme = document.getElementById("theme-toggle");
+  const accentButtons = document.querySelectorAll(".accent-btn");
+
+  if (!btnTheme) return; // seguridad
+
+  /* =========================
+     CARGA ESTADO GUARDADO
+  ========================= */
+
+  const savedTheme = localStorage.getItem("theme") || "light";
+  const savedAccent = localStorage.getItem("accent") || "blue";
+
+  body.dataset.theme = savedTheme;
+  body.dataset.accent = savedAccent;
+
+  /* =========================
+     ICONO DEL BOTÓN
+  ========================= */
+
+  const updateIcon = () => {
+    btnTheme.textContent =
+      body.dataset.theme === "dark" ? "🌙" : "☀️";
+  };
+
+  updateIcon();
+
+  /* =========================
+     TOGGLE CLARO / OSCURO
+  ========================= */
+
+  btnTheme.addEventListener("click", () => {
+    body.dataset.theme =
+      body.dataset.theme === "dark" ? "light" : "dark";
+
+    localStorage.setItem("theme", body.dataset.theme);
+    updateIcon();
+  });
+
+  /* =========================
+     COLOR PRIMARIO
+  ========================= */
+
+  accentButtons.forEach(btn => {
+    btn.addEventListener("click", () => {
+      const accent = btn.dataset.accent;
+
+      body.dataset.accent = accent;
+      localStorage.setItem("accent", accent);
+
+      accentButtons.forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+    });
+  });
+
+})();
+
+
  }); // <<< end

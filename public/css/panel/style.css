@@ -1,3 +1,98 @@
+:root {
+  /* Fondo general */
+  --bg-body: #f2f7ff;
+  --bg-sidebar: #e6eeff;
+  --bg-main: #eef4ff;
+  --bg-card: #ffffff;
+  --bg-tab: #e5ecff;
+  --bg-tab-active: #66a1ff;
+  --bg-hover: #8bb3ff;
+
+  /* Texto */
+  --text-main: #000000;
+  --text-muted: #555555;
+  --text-inverse: #ffffff;
+
+  /* Bordes */
+  --border-soft: #cdd9f0;
+  --border-input: #ccd8ff;
+  --border-dashed: #bbbbbb;
+
+  /* Primario (color del panel) */
+  --primary: #007bff;
+  --primary-soft: #66a1ff;
+
+  /* Estados */
+  --success-bg: #c6f1d6;
+
+  /* Hosting / cards */
+  --bg-light: #f8f9fa;
+  --bg-white: #ffffff;
+  --bg-gray-soft: #e9e9e9;
+  --bg-hover-soft: #f0f8ff;
+
+  --border-gray: #cccccc;
+
+  /* Estados / branding */
+  --success: #00b894;
+  --success-soft: #55efc4;
+  --info: #0984e3;
+  --info-soft: #74b9ff;
+
+  /* Planes */
+  --plan-basic: #74b9ff;
+  --plan-pro: #00cec9;
+  --plan-premium: #fdcb6e;
+
+  /* Texto */
+  --text-dark: #222222;
+  --text-title: #2c3e50;
+
+  /* WhatsApp */
+  --whatsapp: #25D366;
+  --whatsapp-hover: #1ebe5b;
+
+  /* Fondos */
+  --bg-card: #ffffff;
+  --bg-soft: #f9f9f9;
+  --bg-soft-2: #f8f8f8;
+  --bg-soft-3: #f1f1f1;
+  --bg-soft-4: #fafafa;
+
+  /* Bordes */
+  --border-soft: #ccd8ff;
+  --border-light: #dddddd;
+
+  /* Estados */
+  --danger: #dc3545;
+  --danger-soft: rgba(255, 0, 0, 0.8);
+  --danger-hover: rgba(220, 0, 0, 1);
+
+  /* Fondo */
+  --bg-page: #f2f7ff;
+  --bg-card: #ffffff;
+  --bg-soft: #f8faff;
+  --bg-hover: #f0f4ff;
+
+  /* Texto */
+  --text-main: #222;
+  --text-soft: #333;
+  --text-muted: #555;
+
+  /* Bordes */
+  --border-main: #cdd9f0;
+  --border-soft: #e4e8f5;
+
+  /* Primario (tema claro actual) */
+  --color-primary: #007bff;
+  --color-primary-hover: #0056b3;
+
+  /* Estados */
+  --success: #00b894;
+  --warning: #ffc107;
+  --danger: #dc3545;
+}
+
 * {
   box-sizing: border-box;
   margin: 0;
@@ -6,13 +101,13 @@
 }
 
 body {
-  background-color: #f2f7ff;
-  color: #000;
+  background-color: var(--bg-body);
+  color: var(--text-main);
   min-height: 100vh;
-  width: 100vw;           /* ✅ ocupa todo el ancho de la pantalla */
+  width: 100vw;
   display: flex;
   justify-content: center;
-  align-items: stretch;   /* ✅ hace que los hijos (panel-container) se estiren a toda la altura */
+  align-items: stretch;
   margin: 0;
   padding: 0;
 }
@@ -27,15 +122,24 @@ body {
 
 /* ----- SIDEBAR ----- */
 .sidebar {
-  background-color: #e6eeff;
-  width: 20%;             /* ✅ ancho fijo */
+  background-color: var(--bg-sidebar);
+  width: 20%;
   padding: 2rem 1rem;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  border-radius: 0;       /* opcional: quita bordes si querés estilo más limpio */
-  height: 100vh;          /* ✅ altura completa */
-  overflow-y: auto;       /* ✅ permite hacer scroll si es larga */
+  height: 100vh;
+  overflow-y: auto;
+}
+
+.sidebar li:hover {
+  background-color: var(--bg-hover);
+  color: var(--text-inverse);
+}
+
+.sidebar li.active {
+  background-color: var(--primary);
+  color: var(--text-inverse);
 }
 
 .sidebar h2 {
@@ -53,17 +157,6 @@ body {
   padding: 0.75rem 1rem;
   border-radius: 10px;
   cursor: pointer;
-}
-
-.sidebar li:hover {
-  background-color: #8bb3ff;
-  color: white;
-}
-
-.sidebar li.active {
-  background-color: #007bff; /* Azul */
-  color: white;
-  border-radius: 5px; /* Opcional, bordes suaves */
 }
 
 .sidebar li a {
@@ -110,7 +203,7 @@ body {
 }
 
 .submenu li:hover {
-  background-color: #66a1ff ;
+  background-color: var(--primary-soft);
 }
 
 /* Mostrar al pasar el mouse */
@@ -141,7 +234,7 @@ body {
 }
 
 .tab {
-  background-color: #e5ecff;
+  background-color: var(--bg-tab);
   border: none;
   padding: 0.5rem 1.2rem;
   border-radius: 12px;
@@ -150,8 +243,8 @@ body {
 }
 
 .tab.active {
-  background-color: #66a1ff;
-  color: white;
+  background-color: var(--bg-tab-active);
+  color: var(--text-inverse);
 }
 
 .header-actions {
@@ -202,8 +295,8 @@ body {
 
 .bell,
 .logout {
-  background: white;
-  border: 1px solid #cdd9f0;
+  background: var(--bg-card);
+  border: 1px solid var(--border-soft);
   border-radius: 8px;
   padding: 0.4rem 0.8rem;
   cursor: pointer;
@@ -212,7 +305,7 @@ body {
 
 /* Banner */
 .banner {
-  background-color: #c6f1d6;
+  background-color: var(--success-bg);
   padding: 1rem;
   border-radius: 12px;
   margin: 1rem 0;
@@ -231,7 +324,7 @@ body {
 /* Columna izquierda */
 .reunion,
 .despliegue {
-  background-color: #eef4ff;
+  background-color: var(--bg-main);
   padding: 1rem;
   border-radius: 12px;
   margin-bottom: 1rem;
@@ -242,7 +335,7 @@ body {
 }
 
 .reunion input[type="datetime-local"] {
-  border: 1px solid #ccd8ff;
+  border: 1px solid var(--border-input);
   border-radius: 8px;
   padding: 0.3rem;
   width: 100%;
@@ -273,7 +366,7 @@ body {
 .despliegue textarea {
   width: 100%;
   min-height: 80px;
-  border: 1px solid #ccd8ff;
+  border: 1px solid var(--border-input);
   border-radius: 10px;
   padding: 0.5rem;
   resize: vertical;
@@ -282,7 +375,7 @@ body {
 /* Columna derecha */
 .elementos,
 .maqueta {
-  background-color: #eef4ff;
+  background-color: var(--bg-main);
   padding: 1rem;
   border-radius: 12px;
   margin-bottom: 1rem;
@@ -306,15 +399,15 @@ body {
 .preview {
   width: 100%;
   height: 160px;
-  background-color: white;
+  background-color: var(--bg-card);
   border-radius: 10px;
-  border: 1px dashed #bbb;
+  border: 1px dashed var(--border-dashed);
   margin-top: 0.8rem;
 }
 
 /* Footer */
 .progress {
-  background-color: white;
+  background-color: var(--bg-card);
   border-radius: 12px;
   padding: 1rem;
   margin-top: auto;        /* ✅ empuja el footer al final de la columna */
@@ -327,15 +420,15 @@ body {
 
 .hosting-section {
   font-family: 'Nunito', sans-serif;
-  color: #222;
+  color: var(--text-dark);
   max-width: 900px;
   margin: 0 auto;
   padding: 20px;
 }
 
 .current-plan {
-  background: #f8f9fa;
-  border: 2px solid #ccc;
+  background: var(--bg-light);
+  border: 2px solid var(--border-gray);
   border-radius: 10px;
   padding: 20px;
   margin-bottom: 30px;
@@ -351,11 +444,11 @@ body {
 
 .bar .fill {
   height: 10px;
-  background: linear-gradient(90deg, #00b894, #0984e3);
+  background: linear-gradient(90deg, var(--success), var(--info));
 }
 
 .online {
-  color: #00b894;
+  color: var(--success);
   font-weight: bold;
 }
 
@@ -365,13 +458,13 @@ body {
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  background: #0984e3;
-  color: white;
+  background: var(--info);
+  color: var(--text-inverse);
   transition: 0.3s;
 }
 
 .actions button:hover {
-  background: #74b9ff;
+  background: var(--info-soft);
 }
 
 .plans {
@@ -381,7 +474,7 @@ body {
 }
 
 .plan-card {
-  border: 2px solid #ccc;
+  border: 2px solid var(--border-gray);
   border-radius: 10px;
   padding: 20px;
 }
@@ -416,17 +509,17 @@ body {
 }
 
 .plan-card button.upgrade {
-  background: #00b894;
+  background: var(--success);
 }
 
 .plan-card button.upgrade:hover {
-  background: #55efc4;
+  background: var(--success-soft);
 }
 
 /* Colores distintivos por plan */
-.plan-card.basico { border-left: 6px solid #74b9ff; }
-.plan-card.pro { border-left: 6px solid #00cec9; }
-.plan-card.premium { border-left: 6px solid #fdcb6e; }
+.plan-card.basico { border-left: 6px solid var(--plan-basic); }
+.plan-card.pro { border-left: 6px solid var(--plan-pro); }
+.plan-card.premium { border-left: 6px solid var(--plan-premium); }
 
 /* Contenedor de plugins */
 .plugin-container {
@@ -442,7 +535,7 @@ body {
   width: 100%;
   max-width: 800px;
   margin: 30px auto;
-  background: #fff;
+  background: var(--bg-white);
   padding: 30px;
   border-radius: 12px;
   box-shadow: 0 2px 10px rgba(0,0,0,0.08);
@@ -484,7 +577,7 @@ main {
 
 /* ----- CALENDARIO ----- */
 .contenedor {
-  background: white;
+  background: var(--bg-white);
   border-radius: 12px;
   box-shadow: 0 2px 10px rgba(0,0,0,0.1);
   padding: 20px;
@@ -500,15 +593,15 @@ main {
 
 button {
   cursor: pointer;
-  background: #007bff;
-  color: black;
+  background: var(--primary);
+  color: var(--text-main);
   border: none;
   border-radius: 6px;
   padding: 6px 10px;
 }
 
 button:hover {
-  background: #0056b3;
+  background: var(--primary-hover);
 }
 
 .calendario {
@@ -518,8 +611,8 @@ button:hover {
 .encabezado {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
-  background: #007bff;
-  color: white;
+  background: var(--primary);
+  color: var(--text-inverse);
   text-align: center;
   border-radius: 8px 8px 0 0;
 }
@@ -544,7 +637,7 @@ button:hover {
 }
 
 .dia:hover {
-  background: #f0f8ff;
+  background: var(--bg-hover-soft);
 }
 
 .dia-num {
@@ -553,8 +646,8 @@ button:hover {
 }
 
 .evento {
-  background: #007bff;
-  color: white;
+  background: var(--primary);
+  color: var(--text-inverse);
   border-radius: 4px;
   padding: 2px 4px;
   font-size: 12px;
@@ -598,12 +691,12 @@ button:hover {
 section h2 {
   text-align: center;
   font-weight: 800;
-  color: #2c3e50;
+  color: var(--text-title);
 }
 
 /* ----- CAPTURA DE MAILS ----- */
 .mails-container {
-  background: #fff;
+  background: var(--bg-white);
   border-radius: 12px;
   padding: 20px;
   max-width: 600px;
@@ -638,7 +731,7 @@ section h2 {
 }
 
 .add-mail button {
-  background-color: #007bff;
+  background-color: var(--primary);
   color: white;
   border: none;
   border-radius: 8px;
@@ -648,7 +741,7 @@ section h2 {
 }
 
 .add-mail button:hover {
-  background-color: #0056b3;
+  background-color: var(--primary-hover);
 }
 
 .mail-list {
@@ -669,7 +762,7 @@ section h2 {
 }
 
 .mail-list li {
-  background: #eef4ff;
+  background: var(--bg-main);
   border-radius: 6px;
   padding: 6px 10px;
   margin-bottom: 6px;
@@ -685,7 +778,7 @@ section h2 {
 }
 
 .mail-actions button {
-  background-color: #66a1ff;
+  background-color: var(--primary-soft);
   color: white;
   border: none;
   border-radius: 8px;
@@ -695,12 +788,12 @@ section h2 {
 }
 
 .mail-actions button:hover {
-  background-color: #0056b3;
+  background-color: var(--primary-hover);
 }
 
 .copy-confirm {
   text-align: center;
-  color: #00b894;
+  color: var(--success);
   font-weight: 700;
   margin-top: 10px;
 }
@@ -711,7 +804,7 @@ section h2 {
   flex-direction: column;
   align-items: center;     /* ✅ centra todo horizontalmente */
   justify-content: center; /* ✅ centra verticalmente si hay espacio */
-  background: white;
+  background: var(--bg-card);
   padding: 40px 20px;
   border-radius: 12px;
   box-shadow: 0 3px 10px rgba(0,0,0,0.1);
@@ -727,7 +820,7 @@ section h2 {
   justify-content: center;
   gap: 8px;
   font-size: 1.6rem;
-  color: #222;
+  color: var(--text-dark);
   margin-bottom: 25px;
 }
 
@@ -744,7 +837,7 @@ section h2 {
   gap: 14px;
   width: 100%;
   max-width: 400px;
-  background: #f9f9f9;              /* ✅ recuadro gris claro */
+  background: var(--bg-soft);              /* ✅ recuadro gris claro */
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0 2px 6px rgba(0,0,0,0.05);
@@ -763,14 +856,14 @@ section h2 {
 #whatsapp-form input[type="tel"] {
   width: 100%;
   padding: 10px;
-  border: 1px solid #ccd8ff;
+  border: 1px solid var(--border-soft);
   border-radius: 8px;
   font-size: 1rem;
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 #whatsapp-form input:focus {
-  border-color: #25D366;
+  border-color: var(--whatsapp);
   box-shadow: 0 0 4px rgba(37, 211, 102, 0.4);
   outline: none;
 }
@@ -783,7 +876,7 @@ section h2 {
 
 /* ----- BOTÓN ----- */
 #whatsapp-form button {
-  background-color: #25D366;
+  background-color: var(--whatsapp);
   color: white;
   border: none;
   border-radius: 8px;
@@ -794,7 +887,7 @@ section h2 {
 }
 
 #whatsapp-form button:hover {
-  background-color: #1ebe5b;
+  background-color: var(--whatsapp-hover);
 }
 
 /* ----- REDES SOCIALES ----- */
@@ -803,7 +896,7 @@ section h2 {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background: white;
+  background: var(--bg-card);
   padding: 40px 20px;
   border-radius: 12px;
   box-shadow: 0 3px 10px rgba(0,0,0,0.1);
@@ -814,7 +907,7 @@ section h2 {
 
 #redes h2 {
   font-size: 1.6rem;
-  color: #222;
+  color: var(--text-dark);
   margin-bottom: 25px;
 }
 
@@ -824,7 +917,7 @@ section h2 {
   gap: 14px;
   width: 100%;
   max-width: 400px;
-  background: #f9f9f9;
+  background: var(--bg-soft);
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0 2px 6px rgba(0,0,0,0.05);
@@ -841,20 +934,20 @@ section h2 {
 #redes-form input[type="text"] {
   width: 100%;
   padding: 10px;
-  border: 1px solid #ccd8ff;
+  border: 1px solid var(--border-soft);
   border-radius: 8px;
   font-size: 1rem;
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 #redes-form input:focus {
-  border-color: #007bff;
+  border-color: var(--primary);
   box-shadow: 0 0 4px rgba(0, 123, 255, 0.4);
   outline: none;
 }
 
 #redes-form button {
-  background-color: #007bff;
+  background-color: var(--primary);
   color: white;
   border: none;
   border-radius: 8px;
@@ -865,12 +958,12 @@ section h2 {
 }
 
 #redes-form button:hover {
-  background-color: #0069d9;
+  background-color: var(--primary-hover);
 }
 
 /* ----- GALERÍA ----- */
 #galeria {
-  background: white;
+  background: var(--bg-card);
   padding: 30px;
   border-radius: 12px;
   box-shadow: 0 3px 10px rgba(0,0,0,0.1);
@@ -881,7 +974,7 @@ section h2 {
 
 #galeria h2 {
   margin-bottom: 20px;
-  color: #222;
+  color: var(--text-dark);
   font-size: 1.6rem;
 }
 
@@ -897,6 +990,7 @@ section h2 {
 }
 
 .galeria-item {
+  background: var(--bg-card);
   position: relative;
   width: 150px;
   height: 150px;
@@ -915,7 +1009,7 @@ section h2 {
   position: absolute;
   top: 6px;
   right: 6px;
-  background: rgba(255, 0, 0, 0.8);
+  background: var(--danger-soft);
   border: none;
   color: white;
   font-size: 14px;
@@ -926,7 +1020,7 @@ section h2 {
 }
 
 .borrar-btn:hover {
-  background: rgba(220, 0, 0, 1);
+  background: var(--danger-hover);
 }
 
 /* ----- DONACIONES ----- */
@@ -939,7 +1033,7 @@ section h2 {
   display: flex;
   flex-direction: column;
   gap: 10px;
-  background: #f8f8f8;
+  background: var(--bg-soft-2);
   border-radius: 12px;
   padding: 20px;
   box-shadow: 0 2px 6px rgba(0,0,0,0.1);
@@ -949,7 +1043,7 @@ section h2 {
 #donaciones select,
 #donaciones input {
   padding: 10px;
-  border: 1px solid #ccc;
+  border: 1px solid var(--border-gray);
   border-radius: 8px;
   font-size: 15px;
   font-family: inherit;
@@ -959,13 +1053,13 @@ section h2 {
 #donaciones select:focus,
 #donaciones input:focus {
   outline: none;
-  border-color: #007bff;
+  border-color: var(--primary);
 }
 
 /* Botón de guardar/actualizar */
 #add-donacion-btn {
   padding: 10px 16px;
-  background-color: #007bff;
+  background-color: var(--primary);
   color: white;
   border: none;
   border-radius: 8px;
@@ -976,16 +1070,16 @@ section h2 {
 }
 
 #add-donacion-btn:hover {
-  background-color: #0056b3;
+  background-color: var(--primary-hover);
 }
 
 /* Lista de montos */
 .donaciones-list {
   margin-top: 20px;
-  background: white;
+  background: var(--bg-card);
+  border: 1px solid var(--border-light);
   border-radius: 10px;
   padding: 15px;
-  border: 1px solid #ddd;
 }
 
 .donaciones-list h3 {
@@ -1003,7 +1097,7 @@ section h2 {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: #f1f1f1;
+  background: var(--bg-soft-3);
   margin-bottom: 8px;
   padding: 10px 14px;
   border-radius: 8px;
@@ -1011,7 +1105,7 @@ section h2 {
 }
 
 #donaciones-ul li a {
-  color: #007bff;
+  color: var(--primary);
   text-decoration: none;
 }
 
@@ -1034,16 +1128,16 @@ section h2 {
 }
 
 #donaciones-ul button.editar {
-  color: #007bff;
+  color: var(--primary);
 }
 
 #donaciones-ul button.borrar {
-  color: #dc3545;
+  color: var(--danger);
 }
 
 /* ----- CARRUSEL FORMULARIO----- */
 #carrusel {
-  background: #fff;
+  background: var(--bg-card);
   border-radius: 12px;
   padding: 20px;
   max-width: 600px;
@@ -1077,15 +1171,15 @@ section h2 {
 .form-carrusel input[type="file"] {
   width: 100%;
   padding: 8px 10px;
-  border: 1px solid #cdd9f0;
+  background: var(--bg-card);
+  border: 1px solid var(--border-soft);
   border-radius: 8px;
   font-size: 0.95rem;
-  background: #fff;
 }
 
 /* botón agregar */
 #btnAddImg {
-  background-color: #007bff;
+  background-color: var(--primary);
   color: white;
   border: none;
   border-radius: 8px;
@@ -1096,7 +1190,7 @@ section h2 {
 }
 
 #btnAddImg:hover {
-  background-color: #0056b3;
+  background-color: var(--primary-hover);
 }
 
 /* lista del carrusel */
@@ -1110,7 +1204,8 @@ section h2 {
 
 /* items */
 #carouselList .item {
-  background: #eef4ff;
+  background: var(--bg-soft-4);
+  border: 1px solid var(--border-light);
   border-radius: 6px;
   padding: 6px 10px;
   margin-bottom: 6px;
@@ -1167,12 +1262,12 @@ section h2 {
 
 /* ----- LINKS EXTERNOS ----- */
 #links-externos {
-  background: #fff;
+  background: var(--bg-card);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
   border-radius: 12px;
   padding: 20px;
   max-width: 600px;
   margin: 0 auto;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
   display: flex;
   flex-direction: column;
   gap: 15px;
@@ -1193,23 +1288,23 @@ section h2 {
 
 .form-links-externos label {
   font-weight: 700;
-  color: #333;
+  color: var(--text-soft);
 }
 
 .form-links-externos input[type="text"],
 .form-links-externos input[type="url"] {
   width: 100%;
   padding: 8px 10px;
-  border: 1px solid #cdd9f0;
+  border: 1px solid var(--border-main);
+  background: var(--bg-card);
   border-radius: 8px;
   font-size: 0.95rem;
-  background: #fff;
 }
 
 /* Botones */
 #guardarLink,
 #cancelarEdicion {
-  background-color: #007bff;
+  background-color: var(--color-primary);
   color: white;
   border: none;
   border-radius: 8px;
@@ -1221,7 +1316,7 @@ section h2 {
 
 #guardarLink:hover,
 #cancelarEdicion:hover {
-  background-color: #0056b3;
+  background-color: var(--color-primary-hover);
 }
 
 /* Separador */
@@ -1234,10 +1329,10 @@ section h2 {
 
 /* Lista de links */
 .lista-links {
-  background: #f8faff;
+  background: var(--bg-soft);
+  border: 1px solid var(--border-main);
   border-radius: 8px;
   padding: 12px;
-  border: 1px solid #d8e3ff;
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -1338,21 +1433,11 @@ section h2 {
   font-weight: 600;
 }
 
-.web-estado.activa {
-  color: #28a745; /* verde */
-}
+.web-estado.activa { color: var(--success); }
+.web-estado.en-progreso { color: var(--color-primary); }
+.web-estado.pendiente { color: var(--warning); }
+.web-estado.inactiva { color: var(--danger); }
 
-.web-estado.en-progreso {
-  color: #007bff; /* azul */
-}
-
-.web-estado.pendiente {
-  color: #ffc107; /* amarillo */
-}
-
-.web-estado.inactiva {
-  color: #dc3545; /* rojo */
-}
 
 /* Limites del icono a link externo */
 /* ----- ICONO EXTERNO ----- */
@@ -1369,7 +1454,7 @@ section h2 {
   top: 100%;
   left: 0;
   width: 100%;
-  background: #fff;
+  background: var(--bg-card);
   border: 1px solid #cdd9f0;
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0,0,0,0.1);
@@ -1524,7 +1609,7 @@ section h2 {
   width: 100%;
   padding: 10px;
   border-radius: 6px;
-  border: 1px solid #ccc;
+  border: 1px solid var(--border-main);
   font-size: 1rem;
   transition: border 0.2s;
 }
@@ -1534,20 +1619,74 @@ section h2 {
   outline: none;
 }
 
-/* --- MODO OSCURO si usás body.dark-mode --- */
-body.dark-mode #configuracion input {
-  background: #1f1f1f;
-  color: #f1f1f1;
-  border-color: #444;
+/* ============================= */
+/*        TEMA OSCURO            */
+/* ============================= */
+body[data-theme="dark"] {
+
+  /* Fondo general */
+  --bg-body: #0f172a;
+  --bg-page: #0f172a;
+
+  /* Layout */
+  --bg-sidebar: #111827;
+  --bg-main: #1e293b;
+
+  /* Cards / secciones */
+  --bg-card: #1f2937;
+  --bg-light: #1f2937;
+  --bg-white: #1f2937;
+
+  /* Fondos suaves */
+  --bg-soft: #1e293b;
+  --bg-soft-2: #1c2638;
+  --bg-soft-3: #1a2234;
+  --bg-soft-4: #111827;
+
+  /* Hovers */
+  --bg-hover: #334155;
+  --bg-hover-soft: #334155;
+
+  /* Tabs */
+  --bg-tab: #1e293b;
+  --bg-tab-active: var(--primary-soft);
+
+  /* Texto */
+  --text-main: #f1f5f9;
+  --text-soft: #e5e7eb;
+  --text-muted: #94a3b8;
+  --text-dark: #f8fafc;
+  --text-title: #f8fafc;
+  --text-inverse: #020617;
+
+  /* Bordes */
+  --border-main: #334155;
+  --border-soft: #334155;
+  --border-input: #475569;
+  --border-light: #475569;
+  --border-gray: #475569;
+  --border-dashed: #475569;
+
+  /* Estados */
+  --success-bg: #064e3b;
+
+  --success: #34d399;
+  --success-soft: #6ee7b7;
+
+  --info: #60a5fa;
+  --info-soft: #93c5fd;
+
+  --warning: #facc15;
+
+  --danger: #f87171;
+  --danger-soft: rgba(248, 113, 113, 0.7);
+  --danger-hover: #ef4444;
+
+  /* WhatsApp */
+  --whatsapp: #22c55e;
+  --whatsapp-hover: #16a34a;
 }
 
-body.dark-mode .btn-eliminar-foto {
-  background: #c84040;
-}
-
-body.dark-mode .perfil-foto {
-  border-color: var(--color-primary, #3b82f6);
-}
 
 /* Texto mostrado en modo vista */
 .dato-texto {
